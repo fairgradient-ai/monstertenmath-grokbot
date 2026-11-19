@@ -1,0 +1,30 @@
+# The Collab email (monstertenmath_social: instagram/growth-plan.md, section 6.5), as a template.
+# {first_name}, {personal_line} (one or two sentences the Grok Bot writes about one of their recent posts),
+# {status_line}, {fee}, {from_name} and {postal_address} are filled in by `run.sh outreach draft`.
+# Every email is checked against rules.toml (as category "email") and goes out only on the owner's tap.
+
+subject = "Paid Collab: a 5-minute cracker game with your child"
+
+body = """Hi {first_name},
+
+{personal_line}
+
+I'm {from_name}, founder of Monster Ten (@monstertenmath): math for 4–6 year olds that a parent and child play together, 10 minutes a night, with every word scripted for the grown-up. {status_line}
+
+I'd love to pay you for one Collab Reel: you and your child playing our cracker game, Monster's Cave, at your own table, filmed your way. It takes about 5 minutes and needs 10 crackers and a cup.
+
+${fee} when it's posted, plus a free year of Monster Ten. I'll send a one-page brief and a parent release.
+
+Would you be up for it? Just reply to this email.
+
+Thank you,
+{from_name}
+instagram.com/monstertenmath
+
+Not interested? Reply "no thanks" and we won't write again.
+Monster Ten · {postal_address}
+"""
+
+[status_line]
+building = "We're being built now."
+open = "It's open now: families start with a free 2-minute check."

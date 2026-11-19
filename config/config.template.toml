@@ -1,0 +1,62 @@
+# Monster Ten social bot: the live copy is /workspace/monsterten-desk/config.toml (install.sh copies this
+# file there once, then never touches it). No secrets here: the Instagram token is the IG_ACCESS_TOKEN
+# secret card. Unknown keys fail the load.
+
+# After launch: the stores the app is really in (launch-day gate, step 4). It decides the "iPhone or
+# Android?" reply and whether a reply may say "download". Leave empty before launch.
+stores = []            # [] | ["app_store"] | ["google_play"] | ["app_store", "google_play"]
+
+[account]
+username = "monstertenmath"
+timezone = "America/New_York"       # the plan's times are Eastern
+
+[instagram]
+graph_host = "https://graph.instagram.com"
+graph_version = "v24.0"             # check the current version in Meta's changelog when you update
+media_lookback = 12                 # how many of the newest posts each sweep reads
+timeout_seconds = 30
+
+[engage]
+auto_reply_max_age_hours = 72       # older comments get the canned reply as a draft for you to send
+max_auto_replies_per_sweep = 20
+max_auto_replies_per_day = 60       # cautious for a new account (growth plan 6.3 keeps comments to 30 a day)
+first_comments = true               # post a piece's first comment when it's live; you pin it by hand
+first_comment_max_age_hours = 24
+thanks = true                       # a thank-you line for short praise
+autosend_written = true             # a reply the Grok Bot writes posts by itself if it passes the check
+
+[dms]
+enabled = false                     # true once Meta grants Advanced Access for messages (SETUP.md, 12)
+window_hours = 23                   # Meta allows replies within 24 hours of the person's last message
+
+[scout]
+enabled = false                     # true once FB_ACCESS_TOKEN is on the card (SETUP.md, 13)
+ig_user_id = ""                     # blank: found from the token's Facebook Page
+graph_host = "https://graph.facebook.com"
+graph_version = "v24.0"
+hashtags = ["kindergartenmath", "preschoolactivities", "prekathome", "numbersense", "tenframe",
+            "homeschoolpreschool", "kindergartenteacher", "playbasedlearning", "earlymath", "mathgames",
+            "preschoolmath", "learningthroughplay"]
+hashtags_per_run = 4                # Meta allows 30 different hashtags in a rolling 7 days
+max_lookups = 40
+recheck_days = 14
+followers_min = 5000                # growth plan 6.3: 5,000-200,000 for commenting; 6.5: 10,000-40,000 for Collabs
+followers_max = 200000
+
+[outreach]
+enabled = false                     # true once the email login is on the card (SETUP.md, 14)
+from_name = ""                      # your name, as it signs the Collab email
+from_email = ""                     # the address replies come back to
+postal_address = ""                 # required in commercial email (CAN-SPAM); a PO box is fine
+smtp_host = "smtp.gmail.com"
+smtp_port = 587
+max_per_day = 10
+fee_usd = 200                       # the growth plan's flat Collab fee (6.5)
+
+# The growth plan's pace line (section 1): `run.sh stats` compares the follower count with it.
+[pace_line]
+"2026-11-19" = 40
+"2026-11-20" = 300
+"2026-11-21" = 500
+"2026-11-22" = 750
+"2026-11-23" = 1000

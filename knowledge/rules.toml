@@ -1,0 +1,105 @@
+# The 30-second check (monstertenmath_social: instagram/README.md, section 6), written as rules the bot's
+# replies must pass. src/monsterbot/policy.py applies them. Every canonical reply in replies.toml and
+# pieces.toml is tested against them (tests/test_knowledge.py), so a rule change that breaks one fails CI.
+#
+# Each rule: id, pattern (a Python regex, matched case-insensitively), why (shown when a reply breaks it).
+# phase = "building" | "open" limits a rule to one phase; categories limits it to some kinds of reply.
+
+max_hashtags = 0          # captions already use all 5; replies carry none (growth plan 6.2 and 12.17)
+max_length = 600          # Instagram allows 2,200; a reply that long reads like an ad
+handle = "monstertenmath"
+
+# Rival accounts are never named, tagged or answered by name (README "Rules every post follows").
+rivals = ["funexpected"]
+
+[[banned]]
+id = "outcome-promise"
+pattern = '''your (child|kid|son|daughter|little one)('ll| will)|learn math in|\bresults?\b|\bproven\b|\bsmarter\b|(get|getting|stay|staying|be|jump|leap)s? ahead\b'''
+why = "No outcome promises: describe what you do, not what the child will get (section 6)."
+
+[[banned]]
+id = "check-not-test"
+pattern = '''\b(test|tests|quiz|quizzes|screening|screen for|diagnos\w*|assessment)\b'''
+why = "The check is \"the check\", never a test, quiz, screening or diagnosis (section 6)."
+
+[[banned]]
+id = "no-pressure"
+pattern = '''\bstreaks?\b|fall(ing)? behind|count ?down|\b\d+\s+(days?|nights?|sleeps?)\s+(to go|left|until)\b|hurry|last chance|don't miss'''
+why = "No streaks, no guilt, no countdowns (section 6)."
+
+[[banned]]
+id = "retired-name"
+pattern = '''snack monster|count with me'''
+why = "The character is \"the Monster\"; the old names are retired (section 0)."
+
+[[banned]]
+id = "ai-honesty"
+pattern = '''\bnot ai\b|\bno ai\b|isn'?t ai|wasn'?t ai|filmed at home|real family|real footage|word for word'''
+why = "AI-made pieces never claim to be filmed or real, and a Reel's lines are never lesson 14's \"word for word\" (sections 6 and 7)."
+
+[[banned]]
+id = "child-content"
+pattern = '''(send|share|post|tag|dm)\s+(us\s+)?(a\s+)?(photo|picture|pic|video|clip)s?\s+of\s+(your|their|the)\s+(child|kid|kids|son|daughter|little one)'''
+why = "Never ask for a child's picture or video: any child shown needs a signed release first (section 6)."
+
+[[banned]]
+id = "mangled-price"
+pattern = '''(?<![$\d.])\d{1,3}\.\d\d\b'''
+why = "A price without its $ sign: the shell may have eaten it. Save drafts with the quoted heredoc (operations skill)."
+
+[[banned]]
+id = "never-no"
+pattern = '''^\s*(@\w+\s+)?no\b'''
+why = "Answer a guess the way the script does, never with \"No\" (growth plan 6.2)."
+categories = ["guess"]
+
+# --- Days 1-4: being built ---------------------------------------------------------------------------
+[[banned]]
+id = "building-no-cta"
+phase = "building"
+pattern = '''link in (the |our )?bio|\bsign up\b|\bsignup (now|today|here)\b|download|available now|start your free (trial|week)|out now|in the app store|on google play'''
+why = "Before launch nothing points to the site: no \"link in bio\", \"sign up\", \"download\" or \"available now\" (section 6)."
+
+[[banned]]
+id = "building-no-date"
+phase = "building"
+pattern = '''\blaunch(es|ing)?\s+(on|this|next|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b|opens?\s+(on|this|next)\b|\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b'''
+why = "Before launch, never announce the launch day (section 6)."
+# A Collab email names the days a creator posts; that isn't announcing the launch.
+skip_categories = ["email"]
+
+# --- From launch day, once the gate has passed ---------------------------------------------------------
+[[banned]]
+id = "open-no-building"
+phase = "open"
+pattern = '''being built|not open yet|isn'?t open yet'''
+why = "From launch day, nothing says \"being built\" or \"not open yet\" (section 6)."
+
+# Trial terms whole, or not at all (README section 0 and 6): a reply that mentions the free week or a price
+# carries every one of these.
+[trial]
+trigger = '''free week|free trial|7[- ]day|seven[- ]day|7 days free|\$\s?\d'''
+required = [
+  { id = "card", pattern = '''\bcard\b''', why = "the card is added at signup" },
+  { id = "nothing-charged", pattern = '''nothing (is )?charged''', why = "nothing is charged that day" },
+  { id = "day-5", pattern = '''day 5''', why = "the day-5 reminder" },
+  { id = "cancel", pattern = '''cancel in 2 taps''', why = "cancel in 2 taps" },
+  { id = "price", pattern = '''\$79\.99 a year''', why = "the price after: $79.99 a year (or $12.99 a month)" },
+]
+# Any dollar amount must be one of these (packages/shared/src/business.ts, PRICES, checked 17 Nov 2026).
+prices = ["$79.99", "$12.99", "$0"]
+
+# Links: only these, and only from launch day. A caption link isn't clickable anyway (section 0).
+[links]
+pattern = '''https?://\S+|www\.\S+|\b[\w-]+\.(com|net|org|io|app|co|ly|xyz)(/\S*)?'''
+allowed_open = ["monstertenmath.com/insta"]
+# The contact address on the profile (README section 1) may be given in either phase.
+allowed_always = ["info@monstertenmath.com"]
+# Collab emails may also point to the profile (growth plan 6.5: "leave the website out until launch").
+allowed_email = ["instagram.com/monstertenmath"]
+
+# "Download", "App Store" or "Google Play" only for a store the app is really in (gate step 4).
+[stores]
+app_store = '''app store|iphone app|on ios\b'''
+google_play = '''google play|play store|android app'''
+any = '''\bdownload'''

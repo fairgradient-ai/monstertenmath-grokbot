@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Tools (the engine itself needs no packages)
+        run: pip install "pytest>=8.3" "ruff>=0.8"
+      - name: Lint
+        run: |
+          ruff check src tests scripts
+          ruff format --check src tests scripts
+      - name: Tests
+        run: pytest -q
+      - name: Shell scripts parse
+        run: bash -n scripts/run.sh && bash -n scripts/install.sh && bash -n scripts/env.sh
+      - name: Install and doctor against the fake Instagram
+        env:
+          MT_DESK: ${{ runner.temp }}/desk
+          MT_CHANNEL: fake:src/monsterbot/fixtures/fake_instagram.json
+        run: |
+          bash scripts/install.sh
+          bash scripts/run.sh doctor --full
