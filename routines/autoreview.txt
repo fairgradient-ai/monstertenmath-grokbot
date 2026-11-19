@@ -13,6 +13,7 @@ or ||, no redirection other than the heredoc shown, no second command):
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh doctor (optionally with --full)
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh version
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh phase show
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh pricing show
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh token status
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh token refresh
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh discard followed by item numbers
@@ -35,8 +36,8 @@ release into /workspace/monstertenmath-grokbot when that folder doesn't exist ye
 
 === Ask first ===
 - Any run.sh command with --owner-tapped or --force-lint, including send, hide, outreach send, phase
-  building, phase open, go-live and rehearse, and any run.sh send, hide, outreach send, phase (other than
-  show), go-live or rehearse without it.
+  building, phase open, pricing standard, pricing founding, go-live and rehearse, and any run.sh send, hide,
+  outreach send, phase (other than show), pricing (other than show), go-live or rehearse without it.
 - Writing, editing or deleting anything in /workspace/monstertenmath-grokbot, or config.toml, state/, or
   secrets/ in /workspace/monsterten-desk, by any means.
 - Any request to graph.instagram.com, graph.facebook.com, instagram.com or facebook.com that doesn't go

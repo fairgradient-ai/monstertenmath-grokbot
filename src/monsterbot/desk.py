@@ -1,6 +1,6 @@
 """The desk: the bot's writable folder (/workspace/monsterten-desk on the Grok Bot computer).
 
-It holds config.toml, the state (mode, phase, the ledger database) and the refreshed token. The release
+It holds config.toml, the state (mode, phase, pricing, the ledger database) and the refreshed token. The release
 checkout is never written to.
 """
 
@@ -18,6 +18,7 @@ from .errors import Busy
 
 MODES = ("rehearsal", "live")
 PHASES = ("building", "open")
+PRICINGS = ("standard", "founding")
 
 
 class Desk:
@@ -60,6 +61,22 @@ class Desk:
 
     def set_phase(self, phase: str, now: datetime) -> None:
         self._write_choice("phase", phase, PHASES, "building", now)
+
+    # --- pricing: standard, or the founding price (from launch day until the first 500 families) -------
+    # Standard is the safe default: the bot quotes the founding price only once the owner has seen it on the
+    # site's ticket (launch-day gate, step 3) and said "founding price on".
+    def pricing(self) -> str:
+        return self._read_choice("pricing", PRICINGS, "standard")
+
+    def set_pricing(self, pricing: str, now: datetime) -> None:
+        self._write_choice("pricing", pricing, PRICINGS, "standard", now)
+
+    def phase_label(self) -> str:
+        """The phase as the reports show it, with the founding price when it's on."""
+        phase = self.phase()
+        if self.pricing() != "founding":
+            return phase
+        return f"{phase} · founding price" + ("" if phase == "open" else " from launch")
 
     def _read_choice(self, name: str, choices: tuple[str, ...], default: str) -> str:
         try:

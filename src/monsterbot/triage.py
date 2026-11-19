@@ -129,6 +129,7 @@ def triage(
     stores: tuple[str, ...],
     thanks: bool,
     line_index: int = 0,
+    pricing: str = "standard",
 ) -> Verdict:
     text = comment.text or ""
     is_question = bool(QUESTION.search(text))
@@ -152,9 +153,10 @@ def triage(
 
     if kn.spam.search(text):
         return Verdict("spam", "owner", reason="spam")
-    for reason, pattern in kn.escalate:
-        if pattern.search(text):
-            return escalation(kn, reason)
+    reasons = [reason for reason, pattern in kn.escalate if pattern.search(text)]
+    if reasons:
+        ahead = _ahead_of_escalation(kn, text, is_question, reasons, phase, stores, pricing)
+        return ahead or escalation(kn, reasons[0])
     if kn.tag_only.search(text) and not mentions_us:
         return Verdict("tag-only", "skip")
 
@@ -177,7 +179,7 @@ def triage(
             continue
         if not faq.pattern.search(text):
             continue
-        reply = faq.text_for(phase, stores)
+        reply = faq.text_for(phase, stores, pricing)
         if reply is None:
             return Verdict(f"faq:{faq.id}", "draft", reason=f"no canned {phase} reply for this question")
         return Verdict(f"faq:{faq.id}", "auto", reply, faq.id, notify=faq.notify)
@@ -192,6 +194,30 @@ def triage(
             return Verdict("played", "auto", kn.played.lines[line_index % len(kn.played.lines)], "played")
 
     return Verdict("draft", "draft", reason="a question" if is_question else "needs a written reply")
+
+
+def _ahead_of_escalation(
+    kn: Knowledge,
+    text: str,
+    is_question: bool,
+    reasons: list[str],
+    phase: str,
+    stores: tuple[str, ...],
+    pricing: str,
+) -> Verdict | None:
+    """A question an faq may answer although it also matches an escalation (faq.ahead_of_escalation): only
+    when every escalation it matches is one of those, `unless` doesn't match, and there's a canned text now."""
+    for faq in kn.faqs:
+        if not faq.ahead_of_escalation or not set(reasons) <= set(faq.ahead_of_escalation):
+            continue
+        if (faq.question_only and not is_question) or not faq.pattern.search(text):
+            continue
+        if faq.unless is not None and faq.unless.search(text):
+            continue
+        reply = faq.text_for(phase, stores, pricing)
+        if reply is not None:
+            return Verdict(f"faq:{faq.id}", "auto", reply, faq.id, notify=faq.notify)
+    return None
 
 
 def _emoji_only(text: str) -> bool:

@@ -1,4 +1,10 @@
-"""Instagram, through Meta's official Instagram API with Instagram Login (graph.instagram.com).
+"""Instagram, through Meta's official Instagram API.
+
+Two kinds of token work, and the bot tells them apart by their first letters:
+- an Instagram Login token ("IG…"), used on graph.instagram.com, with "me" meaning our account;
+- a Facebook-side token ("EAA…"), such as the never-expiring system-user token from the dashboard's
+  "API setup with Unified login", used on graph.facebook.com with our Instagram account's id.
+
 
 Only what the API allows on our own account: read our posts and their comments, reply under a comment, comment
 on our own post, hide a comment, refresh the token. It can't follow, like, or comment on anyone else's posts,
@@ -26,6 +32,19 @@ MEDIA_FIELDS = "id,caption,timestamp,permalink,media_type,comments_count,like_co
 RATE_CODES = {4, 17, 32, 613}
 PERMISSION_CODES = {3, 10, 200}
 MAX_PAGES = 10
+INSTAGRAM_HOST = "https://graph.instagram.com"
+FACEBOOK_HOST = "https://graph.facebook.com"
+
+
+def is_facebook_token(token: str | None) -> bool:
+    """Facebook-side tokens (user, page or system-user) start with EAA; Instagram Login tokens with IG."""
+    return bool(token) and token.strip().startswith("EAA")  # type: ignore[union-attr]
+
+
+def host_for(token: str | None, configured: str = "auto") -> str:
+    if configured and configured != "auto":
+        return configured
+    return FACEBOOK_HOST if is_facebook_token(token) else INSTAGRAM_HOST
 
 
 def parse_time(value: str) -> datetime:
@@ -57,14 +76,17 @@ class InstagramChannel:
         self,
         token: str,
         *,
-        host: str = "https://graph.instagram.com",
+        host: str = INSTAGRAM_HOST,
         version: str = "v24.0",
         timeout: int = 30,
         opener: Callable[..., object] | None = None,
+        ig_user_id: str = "",
     ):
         if not token:
             raise ChannelError("no Instagram token: add IG_ACCESS_TOKEN on the secret card", "token")
         self._token = token
+        self.facebook = "graph.facebook.com" in host
+        self._ig_user_id = ig_user_id
         self._base = f"{host.rstrip('/')}/{version}"
         self._host = host.rstrip("/")
         self._timeout = timeout
@@ -113,8 +135,36 @@ class InstagramChannel:
             page = self._call("GET", nxt)
         return out
 
+    def _account(self) -> str:
+        """Our account in a path: "me" with an Instagram Login token; our Instagram id on the Facebook side."""
+        if not self.facebook:
+            return "me"
+        if not self._ig_user_id:
+            pages = self._get("me/accounts", {"fields": "instagram_business_account{id,username}"}).get("data", [])
+            for page in pages:
+                acct = page.get("instagram_business_account")
+                if acct:
+                    self._ig_user_id = str(acct["id"])
+                    break
+        if not self._ig_user_id:
+            raise ChannelError(
+                "this token doesn't say which Instagram account it's for: set [instagram] ig_user_id in "
+                "config.toml to the number Meta's dashboard shows next to @monstertenmath",
+                "permission",
+            )
+        return self._ig_user_id
+
     # --- reads -----------------------------------------------------------------------------------------
     def me(self) -> Account:
+        if self.facebook:
+            d = self._get(self._account(), {"fields": "id,username,followers_count,media_count"})
+            return Account(
+                id=str(d.get("id")),
+                username=d.get("username", ""),
+                account_type="BUSINESS",
+                followers_count=d.get("followers_count"),
+                media_count=d.get("media_count"),
+            )
         d = self._get("me", {"fields": "user_id,username,account_type,followers_count,media_count"})
         return Account(
             id=str(d.get("user_id") or d.get("id")),
@@ -127,14 +177,14 @@ class InstagramChannel:
     def profile_extras(self) -> dict:
         """The bio and the bio link, if this API version returns them ({} if not)."""
         try:
-            return self._get("me", {"fields": "biography,website"})
+            return self._get(self._account(), {"fields": "biography,website"})
         except ChannelError as e:
             if e.kind == "bad_request":
                 return {}
             raise
 
     def recent_media(self, limit: int) -> list[Media]:
-        d = self._get("me/media", {"fields": MEDIA_FIELDS, "limit": max(1, min(limit, 50))})
+        d = self._get(f"{self._account()}/media", {"fields": MEDIA_FIELDS, "limit": max(1, min(limit, 50))})
         return [
             Media(
                 id=m["id"],
@@ -172,7 +222,7 @@ class InstagramChannel:
         """The newest DM threads and their latest messages. Needs instagram_business_manage_messages with
         Advanced Access (App Review) to see people who have no role on our app."""
         fields = "id,updated_time,messages.limit(10){id,created_time,from,to,message}"
-        d = self._get("me/conversations", {"platform": "instagram", "fields": fields, "limit": limit})
+        d = self._get(f"{self._account()}/conversations", {"platform": "instagram", "fields": fields, "limit": limit})
         out: list[DirectMessage] = []
         for conv in d.get("data", []):
             for m in (conv.get("messages") or {}).get("data", []):
@@ -196,7 +246,7 @@ class InstagramChannel:
         """A reply inside Meta's 24-hour window after the person's last message."""
         d = self._call(
             "POST",
-            f"{self._base}/me/messages",
+            f"{self._base}/{self._account()}/messages",
             json_body={"recipient": {"id": recipient_id}, "message": {"text": text}},
         )
         return str(d.get("message_id") or d.get("id"))
@@ -211,7 +261,8 @@ class InstagramChannel:
         self._call("POST", f"{self._base}/{comment_id}", {"hide": "true" if hide else "false"})
 
     def refresh_token(self) -> tuple[str, int]:
-        """A long-lived token lasts 60 days; refreshing (once it's 24 hours old) gives a new 60 days."""
+        """A long-lived token lasts 60 days; refreshing (once it's 24 hours old) gives a new 60 days.
+        (A Facebook-side system-user token never expires and isn't refreshed: the CLI checks first.)"""
         d = self._call(
             "GET",
             f"{self._host}/refresh_access_token",

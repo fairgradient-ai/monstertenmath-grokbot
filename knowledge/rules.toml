@@ -4,6 +4,8 @@
 #
 # Each rule: id, pattern (a Python regex, matched case-insensitively), why (shown when a reply breaks it).
 # phase = "building" | "open" limits a rule to one phase; categories limits it to some kinds of reply.
+# pricing = "standard" | "founding" limits a rule to when the founding price is off or in force. It is in force
+# only from launch day, while the owner has it on (run.sh pricing founding, after gate step 3).
 
 max_hashtags = 0          # captions already use all 5; replies carry none (growth plan 6.2 and 12.17)
 max_length = 600          # Instagram allows 2,200; a reply that long reads like an ad
@@ -26,6 +28,13 @@ why = "The check is \"the check\", never a test, quiz, screening or diagnosis (s
 id = "no-pressure"
 pattern = '''\bstreaks?\b|fall(ing)? behind|count ?down|\b\d+\s+(days?|nights?|sleeps?)\s+(to go|left|until)\b|hurry|last chance|don't miss'''
 why = "No streaks, no guilt, no countdowns (section 6)."
+
+# The founding price is said once, plainly (the owner's rule, 19 Nov 2026: never a countdown). Never how many
+# places are left, and no scarcity talk. "The first 500 families who sign up" is the plain fact, and passes.
+[[banned]]
+id = "no-scarcity"
+pattern = '''\b(spots?|places?|seats?)\s+(are\s+)?(still\s+)?(left|remaining)\b|\bonly\s+\d+\s+(left|spots?|places?|seats?|families)\b|\b\d+\s+(families\s+|spots?\s+|places?\s+|seats?\s+)?(are\s+)?(left|remaining|to go)\b|filling (up|fast)|while (it|they|spots|places|stocks?) lasts?|before (it'?s|they'?re) gone|\bsell(s|ing)? out\b|\bsold out\b|almost (gone|full)|limited[- ](time|spots?|places?|seats?)|act (now|fast)'''
+why = "The founding price is said once, plainly: never how many places are left, never \"filling fast\" or \"before it's gone\" (no countdowns)."
 
 [[banned]]
 id = "retired-name"
@@ -83,19 +92,45 @@ phase = "open"
 pattern = '''being built|not open yet|isn'?t open yet'''
 why = "From launch day, nothing says \"being built\" or \"not open yet\" (section 6)."
 
-# Trial terms whole, or not at all (README section 0 and 6): a reply that mentions the free week or a price
-# carries every one of these.
+# The founding price, while it isn't in force (before launch, after the first 500, or if the site doesn't show
+# it): the bot never names it. A question about it goes to the owner, who knows if the person is a founding family.
+[[banned]]
+id = "founding-off"
+pricing = "standard"
+pattern = '''founding|\$59\.99|\$9\.99'''
+why = "The founding price isn't on (before launch, closed, or not on the site's ticket): only the owner answers about it."
+
+# Trial terms whole, or not at all (README section 0 and 6): a reply that mentions the free week, a price or the
+# founding price carries every one of these, plus the terms of the price in force ([trial.standard] or
+# [trial.founding]).
 [trial]
-trigger = '''free week|free trial|7[- ]day|seven[- ]day|7 days free|\$\s?\d'''
+trigger = '''free week|free trial|7[- ]day|seven[- ]day|7 days free|founding (price|famil)|\$\s?\d'''
 required = [
   { id = "card", pattern = '''\bcard\b''', why = "the card is added at signup" },
   { id = "nothing-charged", pattern = '''nothing (is )?charged''', why = "nothing is charged that day" },
   { id = "day-5", pattern = '''day 5''', why = "the day-5 reminder" },
   { id = "cancel", pattern = '''cancel in 2 taps''', why = "cancel in 2 taps" },
+]
+# Any dollar amount must be one of these (packages/shared/src/business.ts, PRICES, checked 17 Nov 2026), or of
+# the founding prices while they're in force.
+prices = ["$79.99", "$12.99", "$0"]
+
+# Standard pricing: the price after the free week.
+[trial.standard]
+required = [
   { id = "price", pattern = '''\$79\.99 a year''', why = "the price after: $79.99 a year (or $12.99 a month)" },
 ]
-# Any dollar amount must be one of these (packages/shared/src/business.ts, PRICES, checked 17 Nov 2026).
-prices = ["$79.99", "$12.99", "$0"]
+
+# The founding price (the owner's decision, 19 Nov 2026): $59.99 a year or $9.99 a month for the first 500
+# families who sign up, theirs for good, even if they cancel and come back. Its terms come whole, or not at all.
+# A reply may still say what later families pay ($79.99 or $12.99).
+[trial.founding]
+prices = ["$59.99", "$9.99"]
+required = [
+  { id = "price", pattern = '''\$59\.99 a year''', why = "the founding price after: $59.99 a year (or $9.99 a month)" },
+  { id = "first-500", pattern = '''first 500 families''', why = "it's for the first 500 families who sign up" },
+  { id = "for-good", pattern = '''for good''', why = "it's theirs for good, even if they cancel and come back" },
+]
 
 # Links: only these, and only from launch day. A caption link isn't clickable anyway (section 0).
 [links]

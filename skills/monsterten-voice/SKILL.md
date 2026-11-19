@@ -3,7 +3,7 @@ name: monsterten-voice
 description: How to write a reply or a Collab email as @monstertenmath. Use whenever you write a reply to an Instagram comment or DM for Monster Ten, a personal line for a creator email, or the owner asks you to word something for the account. Covers the voice, what we may and may never say, the two phases (being built / open), and examples. The engine checks every draft against these rules.
 license: Proprietary
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
   category: social
 ---
 
@@ -34,12 +34,17 @@ phrasing; where they corrected you, don't repeat what they took out.
 - **Promise outcomes**: no "your child will…", "learn math in…", "results", "proven", "smarter", "ahead".
   Describe what we do: "10 minutes a night, every word scripted for you."
 - **Call the check** a test, quiz, screening, assessment or diagnosis.
-- **Pressure**: no streaks, no guilt ("don't let them fall behind"), no countdowns, no "hurry".
+- **Pressure**: no streaks, no guilt ("don't let them fall behind"), no countdowns, no "hurry". Never how many
+  founding places are left, and no "filling fast", "only N left", "before it's gone" or "limited spots".
 - **Hashtags** in replies (captions already use all 5). **Tag** no one but the person you're answering.
 - **Name or tag a rival**, or compare us to another app.
 - **Half the trial terms.** Mention the free week or a price only with all of it: a card at signup, nothing
   charged that day, the day-5 reminder, cancel in 2 taps, and $79.99 a year or $12.99 a month after. Or
   leave price out and let the owner answer.
+- **Half the founding terms.** While the founding price is on (`run.sh status` says "pricing founding" and
+  the phase is open), the price after the free week is $59.99 a year or $9.99 a month, and a reply that names
+  it also says it's for the first 500 families who sign up and theirs for good, even if they cancel and come
+  back. Before launch, or once it's closed, never name it: questions about it go to the owner.
 - **Ask for a child's photo or video.** Any child shown needs a signed release.
 - **Claim an AI-made piece is filmed or real**, or say a Reel's lines are lesson 14's "word for word".
 - **Make up facts** about the product, its price, the stores or dates. If you don't know, say less, or leave
@@ -55,6 +60,7 @@ phrasing; where they corrected you, don't repeat what they took out.
 | No link, no "link in bio", "sign up", "download", "available now" | The only link is monstertenmath.com/insta; "link in bio" is fine   |
 | Never a launch date or a weekday                                  | Never "being built" or "not open yet"                              |
 | No store names                                                    | "App Store" / "Google Play" / "download" only for a store we're in |
+| Never the founding price                                          | The founding price only while it's on, with its terms whole        |
 
 ## Examples
 

@@ -6,7 +6,7 @@ outreach email each add a step (sections 12–14) once their access is ready. No
 
 | Path                                | What                                                                     |
 | ----------------------------------- | ------------------------------------------------------------------------ |
-| `/workspace/monstertenmath-grokbot` | The release checkout (`v0.3.0`). Never edited on the computer.           |
+| `/workspace/monstertenmath-grokbot` | The checkout of `main`. Never edited on the computer.                     |
 | `/workspace/monsterten-desk`        | The desk: `config.toml`, `state/`, `secrets/`, `logs/`. Kept on updates. |
 
 ## 1. What you need
@@ -35,6 +35,21 @@ Meta moves these screens around; the names below are from its 2025–26 docs. Th
 5. Leave the app in **Development** mode for now. Our own account, with a role on our own app, is covered by
    Standard Access for comments: no App Review. DMs need Advanced Access (section 12).
 
+**If the dashboard shows "API setup with Unified login" instead** (Meta's newer screens), use that:
+
+1. **1. Configure your app** → **Create new configuration**. Accept the permissions it proposes
+   (`instagram_basic`, `instagram_manage_comments`, `instagram_manage_messages`; untick the ads ones if it
+   lets you). Choose @monstertenmath as the Instagram account.
+2. **Redirect URL**: `https://monstertenmath.com/` → **Save** (the bot doesn't use the login link).
+3. Add @monstertenmath as an **Instagram Tester** if asked (Roles → Add people → *Instagram Tester*, not
+   Administrator) and accept the invite as above.
+4. **2. Generate access tokens** → **Add account** → **Generate token**.
+
+That token is a system-user token: it starts with `EAA` and never expires. The bot recognises it and uses
+Facebook's API address for it; nothing to set. Only if `doctor` says the token doesn't name its account, put the
+number the dashboard shows next to @monstertenmath in `[instagram] ig_user_id`. The same token also serves
+creator scouting (section 13): no second token.
+
 Keep the token out of chat, email and files. It goes on the card in the next step, and only there.
 
 ## 3. Create the Grok Bot
@@ -51,7 +66,7 @@ Keep the token out of chat, email and files. It goes on the card in the next ste
 
    ```text
    Set yourself up with the monsterten-social-bootstrap skill and SETUP.md from fairgradient-ai/monstertenmath-grokbot
-   at v0.3.0. Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
+   (main). Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
    rehearsal, post nothing, and finish with the setup receipt.
    ```
 
@@ -62,7 +77,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.3.0 · mode rehearsal · phase building
+SETUP DONE · release v0.4.0 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -94,9 +109,17 @@ After the launch-day gate passes (pack, section 0), in this order:
 3. Set the stores the app is really in (gate step 4) in `/workspace/monsterten-desk/config.toml`, for example
    `stores = ["app_store"]`. Ask the Bot to show you the file first, then approve the edit. Until it's set, "iPhone
    or Android?" comes to you instead of getting an answer.
+4. If the site's ticket showed the founding price at gate step 3 ($59.99 a year or $9.99 a month), tell the Bot
+   **"founding price on"** and tap the card: `run.sh pricing founding --owner-tapped`. The price answers then
+   give it with its terms whole (the first 500 families who sign up, theirs for good, even if they cancel and
+   come back). If the site shows only $79.99 / $12.99, skip this: the Bot stays on the standard price.
 
 If launch slips, nothing changes: the phase stays `building`. If you flipped it too early, say "back to
 building".
+
+**When the first 500 families are in** (or the site stops showing the founding price), tell the Bot **"founding
+price closed"** and tap the card (`run.sh pricing standard --owner-tapped`). The answers go back to $79.99 or
+$12.99, and any question about the founding price comes to you: only you know who is a founding family.
 
 ## 8. Go live
 
@@ -120,12 +143,12 @@ Drafting needs the Grok Bot, or the later xAI API mode (DESIGN.md, section 11).
 
 ## 10. Updates
 
-Changes to replies, rules or pieces go by pull request into `main`, then a new release tag. To move the Bot to
-a new release:
+Changes to replies, rules or pieces go by pull request into `main`; the Bot runs whatever `main` held when it
+last installed. To update, say **"update yourself"**:
 
-1. Ask the Bot to clone the new tag beside the old one (`/workspace/monstertenmath-grokbot-v0.1.1`), run its
+1. The Bot clones `main` beside the old checkout (`/workspace/monstertenmath-grokbot-next`), runs its
    `install.sh` and `doctor --full`.
-2. On a PASS, swap the folders (your tap). The desk, its config, state and token are untouched.
+2. On a PASS, it swaps the folders (your tap). The desk, its config, state and token are untouched.
 
 When the social repo's schedule changes, run `python3 scripts/sync_social.py ../monstertenmath_social` on a
 laptop with both repos: it lists pieces to add or fix in `knowledge/pieces.toml`.
@@ -166,7 +189,8 @@ questions without any app. Use the pack's replies for them.
 ## 13. Creator scouting
 
 The scout reads public business and creator profiles (Business Discovery) and the top posts under the plan's
-hashtags. Both are on Meta's **Facebook Login** side, so it needs a second token.
+hashtags. Both are on Meta's **Facebook Login** side. If your `IG_ACCESS_TOKEN` is a Unified login token
+(`EAA…`, section 2), it already covers this: skip to step 3. Otherwise it needs a second token.
 
 1. A **Facebook Page** linked to @monstertenmath (Instagram → Settings → Accounts Center, or the Page's
    settings → Linked accounts). An empty Page is fine.

@@ -20,7 +20,7 @@ from .brief import Brief, ago, ids_from
 from .channels.email import SmtpEmail
 from .channels.facebook import FacebookGraph
 from .channels.fake import FakeEmail, FakeGraph, FakeInstagram
-from .channels.instagram import InstagramChannel
+from .channels.instagram import InstagramChannel, host_for, is_facebook_token
 from .config import load_config
 from .desk import Desk
 from .engine import Engine, short
@@ -46,7 +46,11 @@ def channel_factory(desk: Desk, cfg):
     if spec.startswith("fake:"):
         return lambda token: FakeInstagram.from_file(Path(spec[5:]), desk.state / "fake-outbox.json")
     return lambda token: InstagramChannel(
-        token or "", host=cfg.graph_host, version=cfg.graph_version, timeout=cfg.timeout_seconds
+        token or "",
+        host=host_for(token, cfg.graph_host),
+        version=cfg.graph_version,
+        timeout=cfg.timeout_seconds,
+        ig_user_id=cfg.ig_user_id,
     )
 
 
@@ -54,9 +58,12 @@ def graph_factory(cfg):
     spec = os.environ.get("MT_GRAPH", "facebook")
     if spec.startswith("fake:"):
         return FakeGraph(json.loads(Path(spec[5:]).read_text()))
+    token = os.environ.get("FB_ACCESS_TOKEN", "").strip()
+    if not token and is_facebook_token(os.environ.get("IG_ACCESS_TOKEN")):
+        token = os.environ["IG_ACCESS_TOKEN"].strip()  # a Unified Login token serves the scout too
     return FacebookGraph(
-        os.environ.get("FB_ACCESS_TOKEN", "").strip(),
-        ig_user_id=cfg.scout_ig_user_id,
+        token,
+        ig_user_id=cfg.scout_ig_user_id or cfg.ig_user_id,
         host=cfg.scout_graph_host,
         version=cfg.scout_graph_version,
         timeout=cfg.timeout_seconds,
@@ -127,13 +134,16 @@ def build_parser() -> argparse.ArgumentParser:
     h = sub.add_parser("hide", help="hide comments on Instagram (needs the owner's tap)")
     h.add_argument("items", nargs="+")
     h.add_argument("--owner-tapped", action="store_true")
-    sub.add_parser("status", help="mode, phase, token, last sweep, what's waiting")
+    sub.add_parser("status", help="mode, phase, pricing, token, last sweep, what's waiting")
     sub.add_parser("stats", help="followers against the pace line, and the newest posts")
     dr = sub.add_parser("doctor", help="check the install, the config, the token and Instagram")
     dr.add_argument("--full", action="store_true", help="also run whole sweeps against the fake Instagram")
     ph = sub.add_parser("phase", help="show or change the phase (building/open)")
     ph.add_argument("value", nargs="?", choices=["show", "building", "open"], default="show")
     ph.add_argument("--owner-tapped", action="store_true")
+    pr = sub.add_parser("pricing", help="show or change the pricing (standard/founding)")
+    pr.add_argument("value", nargs="?", choices=["show", "standard", "founding"], default="show")
+    pr.add_argument("--owner-tapped", action="store_true")
     for name in ("go-live", "rehearse"):
         m = sub.add_parser(name, help=f"switch to {'live' if name == 'go-live' else 'rehearsal'} mode")
         m.add_argument("--owner-tapped", action="store_true")
@@ -330,10 +340,25 @@ def _run(args, desk: Desk) -> int:
             f"PHASE: {args.value}."
             + (
                 " Replies now point to the free check (link in bio)."
+                + (
+                    ' If the site\'s ticket shows the founding price, say "founding price on".'
+                    if desk.pricing() == "standard"
+                    else " Price answers give the founding price."
+                )
                 if args.value == "open"
                 else ' Replies say "being built" again and give no link.'
             )
         )
+        return 0
+
+    if args.cmd == "pricing":
+        if args.value == "show":
+            print(f"PRICING: {desk.pricing()}." + pricing_note(desk.pricing(), desk.phase()))
+            return 0
+        if not args.owner_tapped:
+            raise Refused(f"REFUSED: changing the pricing to {args.value} needs your tap (--owner-tapped).")
+        desk.set_pricing(args.value, now())
+        print(f"PRICING: {args.value}." + pricing_note(args.value, desk.phase()))
         return 0
 
     if args.cmd in ("go-live", "rehearse"):
@@ -352,6 +377,11 @@ def _run(args, desk: Desk) -> int:
         return 0
 
     if args.cmd == "token":
+        if is_facebook_token(token):
+            print(
+                f"TOKEN: from the {source}, a Facebook-side system-user token. It doesn't expire: nothing to refresh."
+            )
+            return 0
         if args.action == "status":
             exp = expiry(ledger)
             print(
@@ -367,6 +397,17 @@ def _run(args, desk: Desk) -> int:
         return 0
 
     raise Refused(f"unknown command {args.cmd}")
+
+
+def pricing_note(pricing: str, phase: str) -> str:
+    if pricing == "standard":
+        return " Price answers give $79.99 a year or $12.99 a month, and never name the founding price."
+    if phase == "open":
+        return (
+            " Price answers give the founding price, $59.99 a year or $9.99 a month for the first 500 families,"
+            " with its terms whole."
+        )
+    return " The founding price starts with the open phase; until then the answers stay as they are."
 
 
 def reply_report(engine: Engine, item, violations, outcome: str) -> list[str]:
@@ -548,7 +589,7 @@ def status_lines(engine: Engine, source: str) -> list[str]:
     from .ledger import day_ago
 
     lines = [
-        f"STATUS · mode {desk.mode()} · phase {desk.phase()}",
+        f"STATUS · mode {desk.mode()} · phase {desk.phase()} · pricing {desk.pricing()}",
         (f"Token: from the {source}" + (f", good until about {exp.date()}" if exp else ", expiry unknown"))
         if source != "none"
         else "Token: none. The owner adds IG_ACCESS_TOKEN on the secret card (SETUP.md, section 3).",
