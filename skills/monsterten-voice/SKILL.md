@@ -3,7 +3,7 @@ name: monsterten-voice
 description: How to write a reply or a Collab email as @monstertenmath. Use whenever you write a reply to an Instagram comment or DM for Monster Ten, a personal line for a creator email, or the owner asks you to word something for the account. Covers the voice, what we may and may never say, the two phases (being built / open), and examples. The engine checks every draft against these rules.
 license: Proprietary
 metadata:
-  version: "0.4.1"
+  version: "0.4.2"
   category: social
 ---
 
