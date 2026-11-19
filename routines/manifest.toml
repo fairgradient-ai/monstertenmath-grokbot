@@ -72,3 +72,27 @@ slot = "10:05"
 days = ["mon", "thu"]
 prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh scout and post its output verbatim. Then follow the monsterten-social-operations skill, section "After a scout": look at the top candidates, mark each shortlist or reject, and draft a Collab email for each shortlisted creator with an email. Post the list of drafts and ask the owner to approve them. Send nothing."""
 posts = "New creators, scored by the growth plan's criteria, and Collab emails waiting for one tap."
+
+[[routine]]
+id = "brief-morning"
+required = false
+slot = "08:40"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Never comment on any account yourself."
+posts = "Fresh creator posts from overnight and early morning, each with a comment ready to post."
+
+[[routine]]
+id = "brief-midday"
+required = false
+slot = "13:10"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Never comment on any account yourself."
+posts = "The midday batch: posts from the late morning."
+
+[[routine]]
+id = "brief-evening"
+required = false
+slot = "19:10"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Never comment on any account yourself."
+posts = "The evening batch, before our own 8:30 pm post."

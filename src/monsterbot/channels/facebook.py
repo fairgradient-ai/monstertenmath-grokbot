@@ -19,7 +19,7 @@ from ..errors import ChannelError
 from ..models import Profile
 from .instagram import InstagramChannel
 
-POST_FIELDS = "caption,like_count,comments_count,timestamp,permalink,media_type"
+POST_FIELDS = "id,caption,like_count,comments_count,timestamp,permalink,media_type"
 
 
 class FacebookGraph:

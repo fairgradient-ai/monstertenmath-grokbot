@@ -39,7 +39,8 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
     if not body:
         return [Violation("empty", "The reply is empty.")]
 
-    max_length = 3000 if ctx.category == "email" else int(rules.get("max_length", 600))
+    outbound = ctx.category == "outbound"  # a comment on someone else's post (the brief)
+    max_length = 3000 if ctx.category == "email" else 300 if outbound else int(rules.get("max_length", 600))
     if len(body) > max_length:
         out.append(Violation("too-long", f"Keep replies under {max_length} characters (this is {len(body)})."))
 
@@ -98,7 +99,7 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
     links = rules.get("links", {})
     if links:
         link_text = scrubbed
-        allowed_now = list(links.get("allowed_open", [])) if ctx.phase == "open" else []
+        allowed_now = list(links.get("allowed_open", [])) if ctx.phase == "open" and not outbound else []
         if email:
             allowed_now += links.get("allowed_email", [])
         for allowed in allowed_now:

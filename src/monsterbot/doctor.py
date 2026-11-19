@@ -177,6 +177,13 @@ def _check_v02(c: Checks, cfg: Config) -> None:
             c.fail("scout is on but there's no FB_ACCESS_TOKEN on the card (SETUP.md 13)")
     else:
         c.ok("scout: off (SETUP.md 13)")
+    if cfg.scout_enabled:
+        c.ok(
+            f"brief: on, up to {cfg.brief_per_run} posts a brief and {cfg.brief_per_day} a day"
+            + (f", emailed to {cfg.brief_email_to}" if cfg.brief_email_to else "")
+        )
+    else:
+        c.ok("brief: off until the scout is set up (SETUP.md 13)")
     if cfg.outreach_enabled:
         missing = [
             k

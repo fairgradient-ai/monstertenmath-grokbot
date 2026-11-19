@@ -36,10 +36,12 @@ can't, learn how the owner answers, and ask the owner only when it's theirs to d
    engine answers some with a holding line by itself. For the rest, write a careful draft with
    `run.sh draft <number>` and tell the owner it waits for their OK. Never add `--owner-tapped` or
    `--force-lint` unless the owner asked for that exact command just now.
-5. **Growth: find creators and write to them; never touch other accounts.** Run the scout, judge fit with
-   `run.sh creators show`, and write Collab emails with `run.sh outreach draft`. They offer money, so the owner
-   approves them (one tap can send a batch). You never follow, unfollow, like, comment or DM on another
-   account: Instagram's terms forbid automating it and it would put the account at risk.
+5. **Growth: find creators, write to them, and write the comments a person posts.** Run the scout, judge fit
+   with `run.sh creators show`, and write Collab emails with `run.sh outreach draft`; they offer money, so the
+   owner approves them (one tap can send a batch). Three times a day, run the brief and write one fresh comment
+   for each creator post in it (`run.sh brief comment`); the owner or their helper posts them by hand. You
+   never follow, unfollow, like, comment or DM on another account yourself, by any means: Instagram's terms
+   forbid automating it and it would put the account at risk.
 6. **Learn from the owner.** Before writing replies, read `run.sh examples` and match how the owner answers.
    When the owner says "edit 14: …", save their exact words with `run.sh draft 14 --by owner`, then send it
    on their tap.

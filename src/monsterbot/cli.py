@@ -16,6 +16,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from . import __version__, doctor
+from .brief import Brief, ago, ids_from
 from .channels.email import SmtpEmail
 from .channels.facebook import FacebookGraph
 from .channels.fake import FakeEmail, FakeGraph, FakeInstagram
@@ -154,6 +155,10 @@ def build_parser() -> argparse.ArgumentParser:
     ou.add_argument("--first-name")
     ou.add_argument("--text")
     ou.add_argument("--owner-tapped", action="store_true")
+    br = sub.add_parser("brief", help="fresh creator posts with a comment for each, for a person to post")
+    br.add_argument("action", nargs="?", choices=["new", "comment", "show", "done", "skip", "email"], default="new")
+    br.add_argument("items", nargs="*")
+    br.add_argument("--text")
     sub.add_parser("version")
     return p
 
@@ -251,6 +256,9 @@ def _run(args, desk: Desk) -> int:
 
     if args.cmd == "creators":
         return creators_command(args, ledger, now())
+
+    if args.cmd == "brief":
+        return brief_command(args, cfg, kn, ledger, desk, now())
 
     if args.cmd == "outreach":
         out = Outreach(cfg, kn, ledger, desk.phase(), desk.mode(), now())
@@ -425,6 +433,97 @@ def creators_command(args, ledger: Ledger, now) -> int:
     return 0
 
 
+def brief_command(args, cfg, kn, ledger: Ledger, desk: Desk, now) -> int:
+    if args.action in ("new", "email") and not cfg.scout_enabled:
+        raise Refused("REFUSED: the brief reads creators' posts, so it needs the scout set up (SETUP.md, 13).")
+    b = Brief(cfg, kn, ledger, graph_factory(cfg) if args.action == "new" else None, desk.phase(), now)
+    if args.action == "new":
+        with desk.lock(wait_seconds=120):
+            ids, notes = b.build()
+        rows = [b.row(i) for i in ids]
+        head = f"BRIEF · {len(rows)} fresh posts to comment on · {now.astimezone(cfg.tz).strftime('%a %d %b %H:%M %Z')}"
+        out = [head]
+        for r in rows:
+            out.append(
+                f"  [B{r['id']}] @{r['creator']} · {ago(now, datetime.fromisoformat(r['posted_at']))} · "
+                f'"{short(r["caption"], 140)}"'
+            )
+            out.append(f"        {r['permalink']}")
+        out.extend(f"Note: {n}" for n in notes)
+        if rows:
+            out.append(
+                "Next: write one comment for each with run.sh brief comment <number> "
+                '(voice skill, "Comments on creators\' posts"), then run.sh brief show.'
+            )
+        print("\n".join(out))
+        return 0
+    if args.action == "comment":
+        if len(args.items) != 1:
+            raise Refused("REFUSED: one at a time: brief comment B12.")
+        text = args.text if args.text is not None else sys.stdin.read()
+        n = ids_from(args.items)[0]
+        violations = b.comment(n, text)
+        r = b.row(n)
+        if violations:
+            print(
+                "\n".join(
+                    [
+                        f"HELD [B{n}]: the comment fails the check:",
+                        f'  "{r["comment"]}"',
+                        *[f"  ✗ {v}" for v in violations],
+                    ]
+                )
+            )
+            return 1
+        print(f'READY [B{n}] for @{r["creator"]}: "{r["comment"]}"')
+        return 0
+    if args.action in ("done", "skip"):
+        print("\n".join(b.mark(ids_from(args.items), "posted" if args.action == "done" else "skipped")))
+        return 0
+    lines = brief_list(b, now)
+    if args.action == "show":
+        print("\n".join(lines))
+        return 0
+    # email: the ready list to the helper's address in config.toml
+    if not cfg.brief_email_to:
+        raise Refused("REFUSED: set [brief] email_to in config.toml to email the brief.")
+    if not b.ready():
+        print("NOTHING TO EMAIL: no comment is ready.")
+        return 1
+    part = (
+        "morning"
+        if now.astimezone(cfg.tz).hour < 12
+        else "afternoon"
+        if now.astimezone(cfg.tz).hour < 17
+        else "evening"
+    )
+    email_factory(cfg, desk).send(
+        cfg.brief_email_to, f"Monster Ten: comments to post ({part})", "\n".join(lines) + "\n"
+    )
+    print(f"EMAILED the brief ({len(b.ready())} comments) to {cfg.brief_email_to}.")
+    return 0
+
+
+def brief_list(b: Brief, now) -> list[str]:
+    ready, waiting = b.ready(), b.waiting()
+    if not ready:
+        tail = f" {len(waiting)} still need a comment." if waiting else ""
+        return [f"COMMENTS TO POST · none ready.{tail}"]
+    out = [
+        f"COMMENTS TO POST · {len(ready)} · from @monstertenmath, by hand, one every minute or two",
+        'Open each link, paste the comment, post. Then say "done" with the numbers (or "skip").',
+        "",
+    ]
+    for r in ready:
+        out.append(f"[B{r['id']}] @{r['creator']} · {ago(now, datetime.fromisoformat(r['posted_at']))}")
+        out.append(f"  {r['permalink']}")
+        out.append(f"  {r['comment']}")
+        out.append("")
+    if waiting:
+        out.append(f"{len(waiting)} more still need a comment.")
+    return out
+
+
 def outreach_list(ledger: Ledger) -> list[str]:
     rows = ledger.creators(statuses=("drafted", "contacted", "booked", "declined"), limit=100)
     if not rows:
@@ -468,6 +567,12 @@ def status_lines(engine: Engine, source: str) -> list[str]:
         f"{len(ledger.creators(statuses=('contacted',), limit=999))} contacted, "
         f"{len(ledger.creators(statuses=('booked',), limit=999))} booked",
     ]
+    counts = Brief(engine.cfg, engine.kn, ledger, None, desk.phase(), engine.now()).stats()
+    if counts:
+        lines.append(
+            f"Brief, last 24 h: {sum(counts.values())} posts · {counts.get('ready', 0)} comments ready to post · "
+            f"{counts.get('posted', 0)} posted · {counts.get('proposed', 0)} need a comment"
+        )
     return lines
 
 

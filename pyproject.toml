@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "monsterbot"
-version = "0.2.0"
+version = "0.3.0"
 description = "Monster Ten's social media bot: comments, DMs and creator outreach for @monstertenmath under the brand's rules, run by a Grok Bot."
 requires-python = ">=3.11"
 # No runtime dependencies on purpose: the Grok Bot computer keeps /workspace but not installed

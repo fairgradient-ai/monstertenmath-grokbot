@@ -15,7 +15,8 @@ Auto-review rules. The model writes and judges; the code decides what may be pos
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **The bot, by itself** (live mode) | Answers every comment and DM: the pack's own answers where it has one (guesses, "Is this AI?", price, link, ages, praise), and a reply the Grok Bot writes for everything else, posted once it passes the brand check. Posts each new post's first comment. Answers billing and business messages with a holding line ("email us"). Finds and scores creators. Drafts Collab emails. |
 | **The bot asks, you tap once**     | Replies about a child's health or development, legal, rivals and complaints (the bot drafts, you say "send 13" or "edit 13: …"). Collab emails, because they offer money ("send all outreach" sends a batch). Hiding a comment. Going live, and the launch-day phase.                                                                                                                |
-| **Nobody: not allowed**            | Following, liking, commenting or DMing on _other_ accounts. Instagram's terms forbid automating it, the official API can't do it, and driving a logged-in browser to fake it gets new accounts action-blocked or disabled. Section 3 says what replaces it.                                                                                                                          |
+| **Nobody: not allowed**            | The bot itself following, liking, commenting or DMing on _other_ accounts. Instagram's terms forbid automating it, the official API can't do it, and driving a logged-in browser to fake it gets new accounts action-blocked or disabled. Section 3 says what replaces it. |
+| **A person, from the brief**       | Comments on creators' posts. Three times a day the bot picks fresh posts from the shortlisted creators and writes a comment for each; you or a helper posts them by hand from the list (section 9a). |
 | **Never**                          | Posting anything that fails the 30-second check; naming a rival; a link or "link in bio" before launch; half the trial terms; claiming an AI-made Reel is filmed; writing to a creator who said no.                                                                                                                                                                                  |
 
 ## 2. How it fits together
@@ -63,7 +64,7 @@ What does the job instead, all within the rules:
 | Commenting on creators' posts  | Finds the creators those comments were aimed at, scores them, writes them a Collab email you approve with one tap. A creator's Reel reaches their whole audience, with their trust. |
 | Following parents and teachers | Answers every parent who comments or DMs within the hour, so the people already interested stay and share.                                                                          |
 | Hunting for accounts by hand   | Reads the top posts under the plan's hashtags, the accounts tagged in them, and our own commenters who run creator accounts.                                                        |
-| You doing outbound at all      | If you still want comments on creators' posts, that's a person's job (you or someone you hire), not the bot's.                                                                      |
+| Writing comments on creators' posts | Writes them for you three times a day (the brief, section 9a). A person posts them, so the account stays safe; finding the posts and writing the comments is the bot's job. |
 
 ## 4. What pickletime-grokbot taught, and what changed
 
@@ -163,6 +164,20 @@ phrasing. When the same kind of question keeps getting the same answer, it's wor
 - **Send**: on your tap, at most 10 a day, through your own mailbox (SMTP with an app password). Replies come
   back to your inbox; tell the bot "@name booked" or "@name said no".
 
+## 9a. The brief: comments a person posts
+
+Three times a day (08:40, 13:10, 19:10 Eastern) the bot:
+
+1. reads the newest posts of the shortlisted creators (and new ones scoring 60+) with Business Discovery;
+2. keeps posts from the last 24 hours (early comments travel furthest), one per creator a day, never one it has
+   briefed before, never a giveaway or a post naming a rival, at most 8 a brief and 30 a day (growth plan 6.3);
+3. writes one comment for each, held to 6.3's rules in code: one or two sentences about their post, never the
+   app, a link, a price, "follow us", a hashtag or an @mention, and never a comment it has used before;
+4. posts the list in chat (and emails it to a helper if `[brief] email_to` is set): a link and a comment each.
+
+A person opens each link, pastes, posts, and says "done 12 13". The brief only reads and writes a list; it never
+touches Instagram as the account.
+
 ## 10. State and failure
 
 - **The desk** (`/workspace/monsterten-desk`): `config.toml`, `state/` (mode, phase, `monsterbot.db`,
@@ -183,13 +198,14 @@ phrasing. When the same kind of question keeps getting the same answer, it's wor
 | `sweep-evening`    | 21:30            | The rest of the first hour                                                   |
 | `stats-nightly`    | 22:05 (optional) | Followers against the pace line                                              |
 | `scout-weekly`     | Mon, Thu 10:05   | New creators, shortlisted, emails drafted for one tap (once scout is set up) |
+| `brief-morning`, `brief-midday`, `brief-evening` | 08:40, 13:10, 19:10 | Fresh creator posts with a comment for each, for a person to post |
 | `health`           | Sun 18:05        | `doctor`, then a fresh 60 days on the token                                  |
 
 ## 12. Testing
 
-123 offline tests: the rules, the sorting, whole sweeps against a fake Instagram (comments and DMs, rehearsal
+132 offline tests: the rules, the sorting, whole sweeps against a fake Instagram (comments and DMs, rehearsal
 and live, both phases), written replies, holding lines, learning, double-reply and timeout cases, scoring and
-the scout against a fake Graph, outreach against a fake mailbox, the HTTP clients' requests and errors, the
+the scout and the brief against a fake Graph, outreach against a fake mailbox, the HTTP clients' requests and errors, the
 CLI as the Grok Bot calls it, and checks that the routines, Auto-review rules, persona and skills agree with
 the engine. CI runs them on Python 3.11 and 3.13, then installs into a temporary desk and runs `doctor --full`.
 
@@ -199,10 +215,11 @@ the engine. CI runs them on Python 3.11 and 3.13, then installs into a temporary
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | 0.1     | Comments on our posts, canned replies, first comments, the check in code, stats                                                              | A Meta app and token                             |
 | **0.2** | **Written replies post themselves; holding lines; DMs; learning from the owner; creator scout; Collab emails on one tap**                    | App Review for DMs and hashtags; an app password |
-| 0.3     | Reading creators' email replies (IMAP) and drafting the answer; follow-ups after 5 days, once; the creator brief and parent release attached | The same mailbox                                 |
-| 0.4     | Replies where we're @mentioned on other people's posts (allowed by the API), and tagged-media thank-yous                                     | Facebook Login token                             |
-| 0.5     | Per-post insights and the growth plan's nightly money rules for the ads, through the Marketing API, with a tap above a spend line            | `ads_management`                                 |
-| 0.6     | A second channel through the same `Channel` interface: Facebook Page first (same Meta app, the parents' age group), then Threads or YouTube  | A channel module                                 |
+| **0.3** | **The brief, three times a day: fresh posts from shortlisted creators, a comment written for each, posted by a person** | The scout's token |
+| 0.4     | Reading creators' email replies (IMAP) and drafting the answer; follow-ups after 5 days, once; the creator brief and parent release attached | The same mailbox                                 |
+| 0.5     | Replies where we're @mentioned on other people's posts (allowed by the API), and tagged-media thank-yous                                     | Facebook Login token                             |
+| 0.6     | Per-post insights and the growth plan's nightly money rules for the ads, through the Marketing API, with a tap above a spend line            | `ads_management`                                 |
+| 0.7     | A second channel through the same `Channel` interface: Facebook Page first (same Meta app, the parents' age group), then Threads or YouTube  | A channel module                                 |
 
 ## 14. Assumptions and open questions
 

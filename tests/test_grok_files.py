@@ -32,7 +32,7 @@ def test_routines_call_only_safe_commands():
         commands = re.findall(re.escape(RUN) + r" (\S+)", r["prompt"])
         assert commands, r["id"]
         for cmd in commands:
-            assert cmd in {"sweep", "stats", "doctor", "token", "scout"}, (r["id"], cmd)
+            assert cmd in {"sweep", "stats", "doctor", "token", "scout", "brief"}, (r["id"], cmd)
         assert "--owner-tapped" not in r["prompt"] and "send" not in commands
         assert "outreach send" not in r["prompt"]
 
