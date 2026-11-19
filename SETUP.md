@@ -45,10 +45,12 @@ Meta moves these screens around; the names below are from its 2025–26 docs. Th
    Administrator) and accept the invite as above.
 4. **2. Generate access tokens** → **Add account** → **Generate token**.
 
-That token is a system-user token: it starts with `EAA` and never expires. The bot recognises it and uses
-Facebook's API address for it; nothing to set. Only if `doctor` says the token doesn't name its account, put the
-number the dashboard shows next to @monstertenmath in `[instagram] ig_user_id`. The same token also serves
-creator scouting (section 13): no second token.
+That token is a system-user token: it starts with `EAA` and never expires. The bot recognises it, uses
+Facebook's API address for it, and finds @monstertenmath from the token itself (through its Facebook Page, or
+the Instagram account the token's permissions were given); nothing to set. Only if `doctor` says the token can't
+see an Instagram account, put the digits the dashboard shows next to @monstertenmath (a number like
+`17841400000000000`) in `[instagram] ig_user_id`: the number itself, not the page's link, whose numbers are the
+app's and the business's. The same token also serves creator scouting (section 13): no second token.
 
 Keep the token out of chat, email and files. It goes on the card in the next step, and only there.
 
@@ -77,7 +79,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.4.0 · mode rehearsal · phase building
+SETUP DONE · release v0.4.1 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -160,6 +162,8 @@ laptop with both repos: it lists pieces to add or fix in `knowledge/pieces.toml`
 | `FAILED: the Instagram token is expired…` | Make a new token (section 2, step 4) and replace the card                                       |
 | `FAILED: missing permission`              | Re-generate the token with both permissions ticked                                              |
 | `FAILED: the token is for @…`             | The card holds another account's token                                                          |
+| `… can't see an Instagram account`        | Generate the token again with @monstertenmath chosen (section 2) and replace the card           |
+| `ig_user_id must be digits only`          | A link or a name went into config.toml: set `ig_user_id = ""` and the bot finds the account     |
 | `FAILED: no Python 3.11 or newer`         | `bash /workspace/monstertenmath-grokbot/scripts/install.sh`                                     |
 | `unknown timezone … no time zone data`    | The computer lacks tzdata: install it, or ask the Bot to                                        |
 | `STOPPED: Instagram's rate limit`         | Nothing; the next sweep carries on                                                              |

@@ -81,7 +81,7 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 | `src/monsterbot/`             | The engine: Python 3.11+, standard library only                           |
 | `scripts/`                    | `run.sh` (the only entry point), `install.sh`, `env.sh`, `sync_social.py` |
 | `config/config.template.toml` | The desk's config: account, caps, DMs, scout, outreach, pace line         |
-| `tests/`                      | 166 offline tests against a fake Instagram, Graph and mailbox             |
+| `tests/`                      | 175 offline tests against a fake Instagram, Graph and mailbox             |
 
 ## Development
 
