@@ -11,8 +11,9 @@ username = "monstertenmath"
 timezone = "America/New_York"       # the plan's times are Eastern
 
 [instagram]
-graph_host = "https://graph.instagram.com"
+graph_host = "auto"                 # auto: Instagram Login tokens use graph.instagram.com, "EAA…" tokens graph.facebook.com
 graph_version = "v24.0"             # check the current version in Meta's changelog when you update
+ig_user_id = ""                     # only if doctor asks: the number Meta's dashboard shows next to @monstertenmath
 media_lookback = 12                 # how many of the newest posts each sweep reads
 timeout_seconds = 30
 

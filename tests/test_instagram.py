@@ -123,3 +123,44 @@ def test_no_token_no_client():
     with pytest.raises(ChannelError) as e:
         InstagramChannel("")
     assert e.value.kind == "token"
+
+
+# --- Facebook-side tokens (the dashboard's "API setup with Unified login") -------------------------------
+from monsterbot.channels.instagram import FACEBOOK_HOST, INSTAGRAM_HOST, host_for, is_facebook_token  # noqa: E402
+
+
+def test_the_token_picks_the_api_address():
+    assert is_facebook_token("EAAGm0PX4ZCpsBA...") and not is_facebook_token("IGAAx...")
+    assert host_for("EAAG...") == FACEBOOK_HOST
+    assert host_for("IGAA...") == INSTAGRAM_HOST
+    assert host_for("EAAG...", "https://example.test") == "https://example.test"
+
+
+def fb(opener, ig_user_id="17841400000000000"):
+    return InstagramChannel("EAAsecret", host=FACEBOOK_HOST, opener=opener, ig_user_id=ig_user_id)
+
+
+def test_facebook_token_uses_our_instagram_id():
+    op = Opener({"id": "17841400000000000", "username": "monstertenmath", "followers_count": 312}, {"data": []})
+    ch = fb(op)
+    me = ch.me()
+    ch.recent_media(5)
+    assert me.username == "monstertenmath" and me.account_type == "BUSINESS"
+    assert op.requests[0].full_url.startswith("https://graph.facebook.com/v24.0/17841400000000000?")
+    assert op.requests[1].full_url.startswith("https://graph.facebook.com/v24.0/17841400000000000/media?")
+    assert "EAAsecret" not in op.requests[0].full_url
+
+
+def test_facebook_token_finds_the_account_through_its_page():
+    op = Opener(
+        {"data": [{"id": "page1", "instagram_business_account": {"id": "1784", "username": "monstertenmath"}}]},
+        {"id": "1784", "username": "monstertenmath"},
+    )
+    assert fb(op, ig_user_id="").me().id == "1784"
+    assert "/me/accounts?" in op.requests[0].full_url
+
+
+def test_facebook_token_without_an_account_says_what_to_set():
+    with pytest.raises(ChannelError) as e:
+        fb(Opener({"data": []}), ig_user_id="").me()
+    assert "ig_user_id" in str(e.value)

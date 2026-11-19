@@ -11,6 +11,7 @@ from pathlib import Path
 
 from . import __version__, policy
 from .channels.fake import FakeInstagram
+from .channels.instagram import is_facebook_token
 from .config import Config, load_config
 from .desk import Desk
 from .engine import Engine
@@ -117,7 +118,9 @@ def run(desk: Desk, full: bool, channel_factory) -> tuple[list[str], int]:
                 c.ok(f"token from the {source}")
             exp = expiry(ledger)
             now = datetime.now(UTC)
-            if exp is None:
+            if is_facebook_token(token):
+                c.ok("a Facebook-side system-user token (Unified login): it doesn't expire")
+            elif exp is None:
                 c.warn("token expiry unknown until the first refresh (the weekly health routine does it)")
             elif exp - now < timedelta(days=10):
                 c.warn(f'token expires {exp.date()}: say "refresh the token" (or make a new one, SETUP.md 2)')
@@ -171,7 +174,11 @@ def _check_v02(c: Checks, cfg: Config) -> None:
     c.ok(f"written replies post by themselves: {'yes' if cfg.autosend_written else 'no (they wait for you)'}")
     c.ok("DMs: " + ("on" if cfg.dms_enabled else "off (needs Meta's Advanced Access, SETUP.md 12)"))
     if cfg.scout_enabled:
-        if os.environ.get("FB_ACCESS_TOKEN") or os.environ.get("MT_GRAPH", "").startswith("fake:"):
+        if (
+            os.environ.get("FB_ACCESS_TOKEN")
+            or is_facebook_token(os.environ.get("IG_ACCESS_TOKEN"))
+            or os.environ.get("MT_GRAPH", "").startswith("fake:")
+        ):
             c.ok("scout: on, FB_ACCESS_TOKEN on the card")
         else:
             c.fail("scout is on but there's no FB_ACCESS_TOKEN on the card (SETUP.md 13)")

@@ -3,7 +3,7 @@ name: monsterten-social-operations
 description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "0.3.0"
+  version: "0.3.1"
   category: social
 ---
 
@@ -42,6 +42,7 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 | "go live"                                       | `run.sh go-live --owner-tapped`                        | **their tap** |
 | "stop posting", "rehearsal"                     | `run.sh rehearse --owner-tapped`                       | **their tap** |
 | "refresh the token"                             | `run.sh token refresh`                                 | automatic     |
+| "update yourself"                               | SETUP.md section 10 (clone `main`, test, swap)         | swap: tap     |
 | "check yourself", "doctor"                      | `run.sh doctor`                                        | automatic     |
 
 "We're open" also has a twin in the social repo: the owner tells Claude Code "we're open" there too, which

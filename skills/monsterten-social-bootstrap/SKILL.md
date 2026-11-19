@@ -3,7 +3,7 @@ name: monsterten-social-bootstrap
 description: First-time setup of the Monster Ten social bot on the Grok Bot computer. Use when the owner says "set up", "install", "start", or follows the Start prompt in README.md. Clones the pinned release, installs, checks Instagram access through the secret card, and ends with a receipt. Posts nothing.
 license: Proprietary
 metadata:
-  version: "0.3.0"
+  version: "0.3.1"
   category: social
 ---
 
@@ -15,10 +15,10 @@ stop them and point to the card.
 
 Follow SETUP.md in the checkout. In order:
 
-1. **Clone the release** (the owner's GitHub access on the computer, or a read-only deploy key):
+1. **Clone `main`** (the owner's GitHub access on the computer, or a read-only GITHUB_TOKEN on the card):
 
    ```bash
-   git clone --branch v0.3.0 --depth 1 https://github.com/fairgradient-ai/monstertenmath-grokbot.git /workspace/monstertenmath-grokbot
+   git clone --depth 1 https://github.com/fairgradient-ai/monstertenmath-grokbot.git /workspace/monstertenmath-grokbot
    ```
 
    If /workspace/monstertenmath-grokbot already exists, don't touch it: tell the owner and use SETUP.md,
@@ -40,7 +40,7 @@ Follow SETUP.md in the checkout. In order:
 6. **Receipt.** End with exactly these lines, filled in:
 
    ```text
-   SETUP DONE · release v0.3.0 · mode rehearsal · phase building
+   SETUP DONE · release v0.3.1 · mode rehearsal · phase building
    Instagram: @monstertenmath · reads comments: yes · token: secret card
    Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
    Later: DMs (SETUP.md 12), creator scouting (13) and outreach email (14), each when its access is ready.
