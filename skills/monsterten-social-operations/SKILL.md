@@ -3,7 +3,7 @@ name: monsterten-social-operations
 description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "0.4.1"
+  version: "0.4.2"
   category: social
 ---
 

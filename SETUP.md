@@ -79,7 +79,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.4.1 · mode rehearsal · phase building
+SETUP DONE · release v0.4.2 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
