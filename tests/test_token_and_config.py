@@ -60,3 +60,24 @@ def test_config_rejects_unknown_keys_and_bad_values():
     ):
         with pytest.raises(ConfigError):
             parse_config(bad)
+
+
+DASHBOARD_LINK = (
+    "https://developers.facebook.com/apps/2709766512793216/use_cases/customize/Unified-Login-API-Setup/"
+    "?business_id=4768245130126459&use_case_enum=INSTAGRAM_BUSINESS#"
+)
+
+
+@pytest.mark.parametrize("section", ["instagram", "scout"])
+def test_an_account_id_is_digits_never_a_link(section):
+    with pytest.raises(ConfigError) as e:
+        parse_config({section: {"ig_user_id": DASHBOARD_LINK}})
+    msg = str(e.value)
+    assert f"{section}.ig_user_id must be digits only" in msg and "not a link" in msg
+    assert "2709766512793216" not in msg  # nothing is guessed out of the link
+    with pytest.raises(ConfigError) as e:
+        parse_config({section: {"ig_user_id": "@monstertenmath"}})
+    assert "'@monstertenmath'" in str(e.value)
+    cfg = parse_config({section: {"ig_user_id": " 17841400000000000 "}})
+    assert (cfg.ig_user_id if section == "instagram" else cfg.scout_ig_user_id) == "17841400000000000"
+    assert parse_config({section: {"ig_user_id": ""}}).ig_user_id == ""

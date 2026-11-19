@@ -13,7 +13,7 @@ timezone = "America/New_York"       # the plan's times are Eastern
 [instagram]
 graph_host = "auto"                 # auto: Instagram Login tokens use graph.instagram.com, "EAA…" tokens graph.facebook.com
 graph_version = "v24.0"             # check the current version in Meta's changelog when you update
-ig_user_id = ""                     # only if doctor asks: the number Meta's dashboard shows next to @monstertenmath
+ig_user_id = ""                     # blank: found from the token. Only if doctor asks: the digits Meta shows next to @monstertenmath, never a link
 media_lookback = 12                 # how many of the newest posts each sweep reads
 timeout_seconds = 30
 
@@ -32,7 +32,7 @@ window_hours = 23                   # Meta allows replies within 24 hours of the
 
 [scout]
 enabled = false                     # true once FB_ACCESS_TOKEN is on the card (SETUP.md, 13)
-ig_user_id = ""                     # blank: found from the token's Facebook Page
+ig_user_id = ""                     # blank: found from the token (its Facebook Page or its permissions)
 graph_host = "https://graph.facebook.com"
 graph_version = "v24.0"
 hashtags = ["kindergartenmath", "preschoolactivities", "prekathome", "numbersense", "tenframe",

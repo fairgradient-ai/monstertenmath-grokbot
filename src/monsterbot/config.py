@@ -5,6 +5,7 @@ Unknown keys fail the load, so a typo can't silently fall back to a default.
 
 from __future__ import annotations
 
+import re
 import tomllib
 from dataclasses import dataclass, field, fields
 from pathlib import Path
@@ -39,7 +40,7 @@ class Config:
     # [instagram]
     graph_host: str = "auto"  # auto: chosen from the token (channels/instagram.py, host_for)
     graph_version: str = "v24.0"
-    ig_user_id: str = ""  # only for a Facebook-side token that doesn't name its account
+    ig_user_id: str = ""  # digits; blank: a Facebook-side token's account is found from the token
     media_lookback: int = 12
     timeout_seconds: int = 30
     # [engage]
@@ -179,6 +180,10 @@ def parse_config(data: dict) -> Config:
         elif isinstance(default, str) and not isinstance(value, str):
             raise ConfigError(f"{name} must be text")
 
+    for name, key in (("ig_user_id", "instagram.ig_user_id"), ("scout_ig_user_id", "scout.ig_user_id")):
+        if name in values:
+            values[name] = _account_id(key, values[name])
+
     cfg = Config(**values)
     try:
         cfg.tz  # noqa: B018 - validates the name
@@ -188,6 +193,19 @@ def parse_config(data: dict) -> Config:
             "install the tzdata package)"
         ) from e
     return cfg
+
+
+def _account_id(key: str, value: str) -> str:
+    """An Instagram account id is digits only. A dashboard link holds other ids (the app's, the business's), so
+    nothing is taken out of one: the load fails and says what belongs here."""
+    value = value.strip()
+    if value and not re.fullmatch(r"[0-9]+", value):
+        shown = "a link" if "://" in value or "/" in value else repr(value)
+        raise ConfigError(
+            f"{key} must be digits only, the number Meta shows next to the Instagram account (like "
+            f'17841400000000000), not {shown}. Leave it "" and doctor finds the account from the token'
+        )
+    return value
 
 
 def load_config(path: Path) -> Config:

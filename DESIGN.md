@@ -91,7 +91,10 @@ What does the job instead, all within the rules:
 
 - **Two kinds of token.** An Instagram Login token (`IG…`, graph.instagram.com, 60 days, refreshed every Sunday)
   or the dashboard's newer "Unified login" system-user token (`EAA…`, graph.facebook.com, never expires, and it
-  also serves the scout). The bot tells them apart by their first letters.
+  also serves the scout). The bot tells them apart by their first letters. On the Facebook side it finds our
+  account from the token: through its Facebook Page, or else `debug_token`, whose granular scopes name the
+  Instagram account a system user was given. Nobody copies an id out of the dashboard, and `ig_user_id`, when
+  set, must be digits (a pasted link fails the config load).
 - **Polling, not webhooks.** Webhooks need a public server and an app in Live mode, and the Grok Bot computer
   sleeps when nobody's connected. A sweep makes about 15 calls; 5 sweeps a day are far inside Meta's limits. A
   rate-limit answer stops the sweep at once.
@@ -215,7 +218,7 @@ touches Instagram as the account.
 
 ## 12. Testing
 
-166 offline tests: the rules, the sorting, whole sweeps against a fake Instagram (comments and DMs, rehearsal
+175 offline tests: the rules, the sorting, whole sweeps against a fake Instagram (comments and DMs, rehearsal
 and live, both phases, with and without the founding price), written replies, holding lines, learning, double-reply and timeout cases, scoring and
 the scout and the brief against a fake Graph, outreach against a fake mailbox, the HTTP clients' requests and errors, the
 CLI as the Grok Bot calls it, and checks that the routines, Auto-review rules, persona and skills agree with

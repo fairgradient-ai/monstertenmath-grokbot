@@ -51,6 +51,7 @@ def channel_factory(desk: Desk, cfg):
         version=cfg.graph_version,
         timeout=cfg.timeout_seconds,
         ig_user_id=cfg.ig_user_id,
+        username=cfg.username,
     )
 
 
@@ -64,6 +65,7 @@ def graph_factory(cfg):
     return FacebookGraph(
         token,
         ig_user_id=cfg.scout_ig_user_id or cfg.ig_user_id,
+        username=cfg.username,
         host=cfg.scout_graph_host,
         version=cfg.scout_graph_version,
         timeout=cfg.timeout_seconds,
