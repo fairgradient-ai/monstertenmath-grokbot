@@ -28,6 +28,7 @@ class FacebookGraph:
         token: str,
         *,
         ig_user_id: str = "",
+        username: str = "",
         host: str = "https://graph.facebook.com",
         version: str = "v24.0",
         timeout: int = 30,
@@ -35,20 +36,15 @@ class FacebookGraph:
     ):
         if not token:
             raise ChannelError("no Facebook token: add FB_ACCESS_TOKEN on the secret card (SETUP.md, 13)", "token")
-        # The same HTTP, error handling and header-only token as the Instagram client.
-        self._http = InstagramChannel(token, host=host, version=version, timeout=timeout, opener=opener)
+        # The same HTTP, error handling, header-only token and account lookup as the Instagram client.
+        self._http = InstagramChannel(
+            token, host=host, version=version, timeout=timeout, opener=opener, username=username
+        )
         self._ig_user_id = ig_user_id
 
     def ig_user_id(self) -> str:
         if not self._ig_user_id:
-            d = self._http._get("me/accounts", {"fields": "instagram_business_account{id,username}"})
-            for page in d.get("data", []):
-                acct = page.get("instagram_business_account")
-                if acct:
-                    self._ig_user_id = str(acct["id"])
-                    break
-            if not self._ig_user_id:
-                raise ChannelError("no Instagram business account on this token's Facebook Pages", "permission")
+            self._ig_user_id = self._http.find_account()
         return self._ig_user_id
 
     def business_discovery(self, username: str) -> Profile | None:

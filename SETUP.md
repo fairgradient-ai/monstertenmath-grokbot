@@ -6,7 +6,7 @@ outreach email each add a step (sections 12–14) once their access is ready. No
 
 | Path                                | What                                                                     |
 | ----------------------------------- | ------------------------------------------------------------------------ |
-| `/workspace/monstertenmath-grokbot` | The release checkout (`v0.4.0`). Never edited on the computer.           |
+| `/workspace/monstertenmath-grokbot` | The checkout of `main`. Never edited on the computer.                     |
 | `/workspace/monsterten-desk`        | The desk: `config.toml`, `state/`, `secrets/`, `logs/`. Kept on updates. |
 
 ## 1. What you need
@@ -35,6 +35,23 @@ Meta moves these screens around; the names below are from its 2025–26 docs. Th
 5. Leave the app in **Development** mode for now. Our own account, with a role on our own app, is covered by
    Standard Access for comments: no App Review. DMs need Advanced Access (section 12).
 
+**If the dashboard shows "API setup with Unified login" instead** (Meta's newer screens), use that:
+
+1. **1. Configure your app** → **Create new configuration**. Accept the permissions it proposes
+   (`instagram_basic`, `instagram_manage_comments`, `instagram_manage_messages`; untick the ads ones if it
+   lets you). Choose @monstertenmath as the Instagram account.
+2. **Redirect URL**: `https://monstertenmath.com/` → **Save** (the bot doesn't use the login link).
+3. Add @monstertenmath as an **Instagram Tester** if asked (Roles → Add people → *Instagram Tester*, not
+   Administrator) and accept the invite as above.
+4. **2. Generate access tokens** → **Add account** → **Generate token**.
+
+That token is a system-user token: it starts with `EAA` and never expires. The bot recognises it, uses
+Facebook's API address for it, and finds @monstertenmath from the token itself (through its Facebook Page, or
+the Instagram account the token's permissions were given); nothing to set. Only if `doctor` says the token can't
+see an Instagram account, put the digits the dashboard shows next to @monstertenmath (a number like
+`17841400000000000`) in `[instagram] ig_user_id`: the number itself, not the page's link, whose numbers are the
+app's and the business's. The same token also serves creator scouting (section 13): no second token.
+
 Keep the token out of chat, email and files. It goes on the card in the next step, and only there.
 
 ## 3. Create the Grok Bot
@@ -51,7 +68,7 @@ Keep the token out of chat, email and files. It goes on the card in the next ste
 
    ```text
    Set yourself up with the monsterten-social-bootstrap skill and SETUP.md from fairgradient-ai/monstertenmath-grokbot
-   at v0.4.0. Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
+   (main). Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
    rehearsal, post nothing, and finish with the setup receipt.
    ```
 
@@ -62,7 +79,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.4.0 · mode rehearsal · phase building
+SETUP DONE · release v0.4.1 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -128,12 +145,12 @@ Drafting needs the Grok Bot, or the later xAI API mode (DESIGN.md, section 11).
 
 ## 10. Updates
 
-Changes to replies, rules or pieces go by pull request into `main`, then a new release tag. To move the Bot to
-a new release:
+Changes to replies, rules or pieces go by pull request into `main`; the Bot runs whatever `main` held when it
+last installed. To update, say **"update yourself"**:
 
-1. Ask the Bot to clone the new tag beside the old one (`/workspace/monstertenmath-grokbot-v0.1.1`), run its
+1. The Bot clones `main` beside the old checkout (`/workspace/monstertenmath-grokbot-next`), runs its
    `install.sh` and `doctor --full`.
-2. On a PASS, swap the folders (your tap). The desk, its config, state and token are untouched.
+2. On a PASS, it swaps the folders (your tap). The desk, its config, state and token are untouched.
 
 When the social repo's schedule changes, run `python3 scripts/sync_social.py ../monstertenmath_social` on a
 laptop with both repos: it lists pieces to add or fix in `knowledge/pieces.toml`.
@@ -145,6 +162,8 @@ laptop with both repos: it lists pieces to add or fix in `knowledge/pieces.toml`
 | `FAILED: the Instagram token is expired…` | Make a new token (section 2, step 4) and replace the card                                       |
 | `FAILED: missing permission`              | Re-generate the token with both permissions ticked                                              |
 | `FAILED: the token is for @…`             | The card holds another account's token                                                          |
+| `… can't see an Instagram account`        | Generate the token again with @monstertenmath chosen (section 2) and replace the card           |
+| `ig_user_id must be digits only`          | A link or a name went into config.toml: set `ig_user_id = ""` and the bot finds the account     |
 | `FAILED: no Python 3.11 or newer`         | `bash /workspace/monstertenmath-grokbot/scripts/install.sh`                                     |
 | `unknown timezone … no time zone data`    | The computer lacks tzdata: install it, or ask the Bot to                                        |
 | `STOPPED: Instagram's rate limit`         | Nothing; the next sweep carries on                                                              |
@@ -174,7 +193,8 @@ questions without any app. Use the pack's replies for them.
 ## 13. Creator scouting
 
 The scout reads public business and creator profiles (Business Discovery) and the top posts under the plan's
-hashtags. Both are on Meta's **Facebook Login** side, so it needs a second token.
+hashtags. Both are on Meta's **Facebook Login** side. If your `IG_ACCESS_TOKEN` is a Unified login token
+(`EAA…`, section 2), it already covers this: skip to step 3. Otherwise it needs a second token.
 
 1. A **Facebook Page** linked to @monstertenmath (Instagram → Settings → Accounts Center, or the Page's
    settings → Linked accounts). An empty Page is fine.
