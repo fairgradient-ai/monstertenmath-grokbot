@@ -49,5 +49,9 @@ can't, learn how the owner answers, and ask the owner only when it's theirs to d
 8. **Secrets live only on the secret card** (`IG_ACCESS_TOKEN`, `FB_ACCESS_TOKEN`, `SMTP_USER`,
    `SMTP_PASSWORD`). If the owner pastes one in chat, stop them and point them to the card. Never print,
    echo or log one.
-9. **Phase and mode change only on the owner's tap.** "We're open" means `run.sh phase open --owner-tapped`,
-   once the launch-day gate has passed. "Go live" means `run.sh go-live --owner-tapped`.
+9. **Phase, pricing and mode change only on the owner's tap.** "We're open" means
+   `run.sh phase open --owner-tapped`, once the launch-day gate has passed; then ask whether the site's ticket
+   showed the founding price ($59.99 a year or $9.99 a month, gate step 3). "Founding price on" means
+   `run.sh pricing founding --owner-tapped`, only once it has; "founding price closed" (the first 500 families
+   are in, or the site stopped showing it) means `run.sh pricing standard --owner-tapped`. "Go live" means
+   `run.sh go-live --owner-tapped`.

@@ -14,7 +14,7 @@ Auto-review rules. The model writes and judges; the code decides what may be pos
 | Who                                | What                                                                                                                                                                                                                                                                                                                                                                                 |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **The bot, by itself** (live mode) | Answers every comment and DM: the pack's own answers where it has one (guesses, "Is this AI?", price, link, ages, praise), and a reply the Grok Bot writes for everything else, posted once it passes the brand check. Posts each new post's first comment. Answers billing and business messages with a holding line ("email us"). Finds and scores creators. Drafts Collab emails. |
-| **The bot asks, you tap once**     | Replies about a child's health or development, legal, rivals and complaints (the bot drafts, you say "send 13" or "edit 13: …"). Collab emails, because they offer money ("send all outreach" sends a batch). Hiding a comment. Going live, and the launch-day phase.                                                                                                                |
+| **The bot asks, you tap once**     | Replies about a child's health or development, legal, rivals and complaints (the bot drafts, you say "send 13" or "edit 13: …"). Collab emails, because they offer money ("send all outreach" sends a batch). Hiding a comment. Going live, the launch-day phase, and turning the founding price on or off.                                                                                                                |
 | **Nobody: not allowed**            | The bot itself following, liking, commenting or DMing on _other_ accounts. Instagram's terms forbid automating it, the official API can't do it, and driving a logged-in browser to fake it gets new accounts action-blocked or disabled. Section 3 says what replaces it. |
 | **A person, from the brief**       | Comments on creators' posts. Three times a day the bot picks fresh posts from the shortlisted creators and writes a comment for each; you or a helper posts them by hand from the list (section 9a). |
 | **Never**                          | Posting anything that fails the 30-second check; naming a rival; a link or "link in bio" before launch; half the trial terms; claiming an AI-made Reel is filmed; writing to a creator who said no.                                                                                                                                                                                  |
@@ -37,8 +37,8 @@ Auto-review rules. The model writes and judges; the code decides what may be pos
 
 - **The engine** (`src/monsterbot/`) is plain Python 3.11+ with no packages, because the Grok Bot computer keeps
   `/workspace` but not installed packages. Commands: `sweep`, `reply`, `draft`, `send`, `inbox`, `discard`,
-  `hide`, `examples`, `scout`, `creators`, `outreach`, `stats`, `status`, `doctor`, `phase`, `go-live`,
-  `rehearse`, `token`.
+  `hide`, `examples`, `scout`, `creators`, `outreach`, `stats`, `status`, `doctor`, `phase`, `pricing`,
+  `go-live`, `rehearse`, `token`.
 - **The knowledge** (`knowledge/*.toml`) is the pack turned into data: the rules from section 6, the replies
   from section 7 and growth plan 6.2, one entry per piece in `schedule.json`, the holding lines, and the Collab
   email from growth plan 6.5. Changes go by pull request, like the pack.
@@ -71,7 +71,7 @@ What does the job instead, all within the rules:
 | Kept                                                                            | Changed, and why                                                                                                                                                                         |
 | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | One entry point (`run.sh`), output posted verbatim, a verdict on the first line | The model writes here (replies, email lines), so the brand check runs in code on every word before it posts, and anything sensitive stops at the owner.                                  |
-| Rehearsal by default; risky commands need the owner's tap (Ask-first cards)     | The gate is in the code too: `send`, `hide`, `outreach send`, `phase`, `go-live` refuse without `--owner-tapped`. A routine never runs one, because an unattended approval card expires. |
+| Rehearsal by default; risky commands need the owner's tap (Ask-first cards)     | The gate is in the code too: `send`, `hide`, `outreach send`, `phase`, `pricing`, `go-live` refuse without `--owner-tapped`. A routine never runs one, because an unattended approval card expires. |
 | Install under `/workspace`; secrets only from the card; doctor with a fake site | The JSON ledger became SQLite with transactions and a lock, so a routine and a "sweep now" can't both answer one comment (pickletime's JSON ledger could race there).                    |
 | Idempotency per target; an unconfirmed outcome is recorded, not retried blind   | A reply that times out is "unverified": the next sweep looks for it on Instagram before anything is retried.                                                                             |
 | Routines fire early because they start 10–37 minutes late                       | Nothing is time-critical: each sweep picks up everything since the last. Sweeps sit around posting times so the first hour is covered.                                                   |
@@ -130,6 +130,15 @@ holding line and every Collab email:
   the Monster's retired name; no rival named or tagged; no hashtags; no @mention but the person answered.
 - Trial terms whole or not at all, and any dollar amount must be a real price. (A Collab email's fee is not a
   product price, so emails are checked as category "email".)
+- **The founding price** (the owner's decision, 19 Nov 2026: $59.99 a year or $9.99 a month for the first 500
+  families who sign up, theirs for good, even if they cancel and come back) is a desk switch, `pricing`, that
+  the owner turns on after seeing it on the site's ticket and off when the 500 are in. It counts only in the open
+  phase. While it's in force, a price mention needs $59.99 a year, "first 500 families" and "for good" besides
+  the trial terms; `open_founding` texts replace `open` ones. While it isn't, the bot never names it, and a
+  question about it goes to the owner (they know who is a founding family). "If I cancel, do I keep the founding
+  price?" answers ahead of the billing escalation, unless it's about a charge. Standard is the default: quoting a
+  price the site doesn't show would be worse than leaving out a discount. Always: never how many places are
+  left, no "filling fast" or "before it's gone".
 - **Building phase:** no link, "link in bio", "sign up", "download" or launch day. **Open phase:** no "being
   built"; the only link is monstertenmath.com/insta; a store is named only once the app is in it.
 - AI honesty; never ask for a child's photo; a price that lost its `$` to the shell is caught.
@@ -180,7 +189,7 @@ touches Instagram as the account.
 
 ## 10. State and failure
 
-- **The desk** (`/workspace/monsterten-desk`): `config.toml`, `state/` (mode, phase, `monsterbot.db`,
+- **The desk** (`/workspace/monsterten-desk`): `config.toml`, `state/` (mode, phase, pricing, `monsterbot.db`,
   `changes.log`), `secrets/instagram.env` (the refreshed token, 0600). The checkout is never written to.
 - **The ledger** (SQLite): every comment and DM seen and what happened to it, every action, the examples, the
   creators and the hashtag budget. A reply goes out at most once: `sending` is set inside a transaction before
@@ -203,8 +212,8 @@ touches Instagram as the account.
 
 ## 12. Testing
 
-132 offline tests: the rules, the sorting, whole sweeps against a fake Instagram (comments and DMs, rehearsal
-and live, both phases), written replies, holding lines, learning, double-reply and timeout cases, scoring and
+161 offline tests: the rules, the sorting, whole sweeps against a fake Instagram (comments and DMs, rehearsal
+and live, both phases, with and without the founding price), written replies, holding lines, learning, double-reply and timeout cases, scoring and
 the scout and the brief against a fake Graph, outreach against a fake mailbox, the HTTP clients' requests and errors, the
 CLI as the Grok Bot calls it, and checks that the routines, Auto-review rules, persona and skills agree with
 the engine. CI runs them on Python 3.11 and 3.13, then installs into a temporary desk and runs `doctor --full`.

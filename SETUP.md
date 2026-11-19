@@ -6,7 +6,7 @@ outreach email each add a step (sections 12–14) once their access is ready. No
 
 | Path                                | What                                                                     |
 | ----------------------------------- | ------------------------------------------------------------------------ |
-| `/workspace/monstertenmath-grokbot` | The release checkout (`v0.3.0`). Never edited on the computer.           |
+| `/workspace/monstertenmath-grokbot` | The release checkout (`v0.4.0`). Never edited on the computer.           |
 | `/workspace/monsterten-desk`        | The desk: `config.toml`, `state/`, `secrets/`, `logs/`. Kept on updates. |
 
 ## 1. What you need
@@ -51,7 +51,7 @@ Keep the token out of chat, email and files. It goes on the card in the next ste
 
    ```text
    Set yourself up with the monsterten-social-bootstrap skill and SETUP.md from fairgradient-ai/monstertenmath-grokbot
-   at v0.3.0. Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
+   at v0.4.0. Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
    rehearsal, post nothing, and finish with the setup receipt.
    ```
 
@@ -62,7 +62,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.3.0 · mode rehearsal · phase building
+SETUP DONE · release v0.4.0 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -94,9 +94,17 @@ After the launch-day gate passes (pack, section 0), in this order:
 3. Set the stores the app is really in (gate step 4) in `/workspace/monsterten-desk/config.toml`, for example
    `stores = ["app_store"]`. Ask the Bot to show you the file first, then approve the edit. Until it's set, "iPhone
    or Android?" comes to you instead of getting an answer.
+4. If the site's ticket showed the founding price at gate step 3 ($59.99 a year or $9.99 a month), tell the Bot
+   **"founding price on"** and tap the card: `run.sh pricing founding --owner-tapped`. The price answers then
+   give it with its terms whole (the first 500 families who sign up, theirs for good, even if they cancel and
+   come back). If the site shows only $79.99 / $12.99, skip this: the Bot stays on the standard price.
 
 If launch slips, nothing changes: the phase stays `building`. If you flipped it too early, say "back to
 building".
+
+**When the first 500 families are in** (or the site stops showing the founding price), tell the Bot **"founding
+price closed"** and tap the card (`run.sh pricing standard --owner-tapped`). The answers go back to $79.99 or
+$12.99, and any question about the founding price comes to you: only you know who is a founding family.
 
 ## 8. Go live
 

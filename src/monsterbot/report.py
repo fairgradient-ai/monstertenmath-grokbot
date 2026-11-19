@@ -18,7 +18,7 @@ def _line(engine: Engine, item: Item, extra: str = "") -> str:
 
 
 def sweep_report(engine: Engine, res: SweepResult) -> list[str]:
-    mode, phase = engine.desk.mode(), engine.desk.phase()
+    mode, phase = engine.desk.mode(), engine.desk.phase_label()
     when = engine.local(engine.now())
     head = f"SWEEP · {mode.upper()} · {phase} · {when}"
     fresh = [engine.ledger.get(i) for i in res.fresh]
@@ -94,7 +94,7 @@ def inbox_report(engine: Engine) -> list[str]:
             owner.append(i)
         else:
             needs.append(i)
-    out = [f"INBOX · {len(items)} waiting · {engine.desk.mode()} · {engine.desk.phase()}"]
+    out = [f"INBOX · {len(items)} waiting · {engine.desk.mode()} · {engine.desk.phase_label()}"]
     if ready:
         out.append('Drafts waiting for your OK (say "send 14", "send all", "edit 14: ..." or "skip 14"):')
         for i in ready:

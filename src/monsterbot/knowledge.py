@@ -49,16 +49,25 @@ class Faq:
     pattern: re.Pattern[str]
     building: str | None = None
     open: str | None = None
+    open_founding: str | None = None  # from launch day while the founding price is on; else `open`
     open_by_stores: dict[str, str] = field(default_factory=dict)
     question_only: bool = False
     pieces: tuple[str, ...] = ()
     needs_voice: bool = False
     notify: str | None = None
+    # Escalation reasons this question may answer ahead of ("If I cancel, do I keep the founding price?" is a
+    # founding question, not a billing problem), unless `unless` matches too.
+    ahead_of_escalation: tuple[str, ...] = ()
+    unless: re.Pattern[str] | None = None
 
-    def text_for(self, phase: str, stores: tuple[str, ...]) -> str | None:
-        if phase == "open" and self.open_by_stores:
+    def text_for(self, phase: str, stores: tuple[str, ...], pricing: str = "standard") -> str | None:
+        if phase != "open":
+            return self.building
+        if self.open_by_stores:
             return self.open_by_stores.get("+".join(sorted(stores))) if stores else None
-        return self.open if phase == "open" else self.building
+        if pricing == "founding" and self.open_founding:
+            return self.open_founding
+        return self.open
 
 
 @dataclass(frozen=True)
@@ -92,7 +101,10 @@ class Knowledge:
         return next((p for p in self.pieces if p.key == key), None) if key else None
 
     def canned_texts(self) -> list[tuple[str, str, str, str | None]]:
-        """Every text the bot may post without asking: (where, text, phase or "both", category)."""
+        """Every text the bot may post without asking: (where, text, when, category).
+
+        when: "both" (any phase and pricing), "building", "open" (open, either pricing), "open-standard" or
+        "open-founding" (open, that pricing only), or "open:<stores>" (open, those stores, either pricing)."""
         out: list[tuple[str, str, str, str | None]] = []
         for p in self.pieces:
             if p.first_comment:
@@ -106,7 +118,9 @@ class Knowledge:
             if f.building:
                 out.append((f"faq {f.id} building", f.building, "building", "faq"))
             if f.open:
-                out.append((f"faq {f.id} open", f.open, "open", "faq"))
+                out.append((f"faq {f.id} open", f.open, "open-standard" if f.open_founding else "open", "faq"))
+            if f.open_founding:
+                out.append((f"faq {f.id} open_founding", f.open_founding, "open-founding", "faq"))
             for stores, text in f.open_by_stores.items():
                 out.append((f"faq {f.id} open[{stores}]", text, f"open:{stores}", "faq"))
         for reason, text in self.holding.items():
@@ -187,11 +201,14 @@ def load_knowledge(directory: Path | None = None) -> Knowledge:
                 pattern=_compile(raw["pattern"], f"replies.toml faq {raw['id']}"),
                 building=raw.get("building"),
                 open=raw.get("open"),
+                open_founding=raw.get("open_founding"),
                 open_by_stores=dict(raw.get("open_by_stores", {})),
                 question_only=bool(raw.get("question_only", False)),
                 pieces=tuple(raw.get("pieces", ())),
                 needs_voice=raw["id"] == "robotic-voice" or bool(raw.get("needs_voice", False)),
                 notify=raw.get("notify"),
+                ahead_of_escalation=tuple(raw.get("ahead_of_escalation", ())),
+                unless=_compile(raw["unless"], f"replies.toml faq {raw['id']} unless") if raw.get("unless") else None,
             )
         )
 

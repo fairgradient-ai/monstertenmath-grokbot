@@ -50,19 +50,30 @@ def pinned_release(checkout: Path) -> str | None:
     return None
 
 
+def _contexts(when: str, category: str) -> list[policy.Context]:
+    """The phases and pricings a canned text can be used in (Knowledge.canned_texts)."""
+    standard = policy.Context("open", category)
+    founding = policy.Context("open", category, pricing="founding")
+    if when == "both":
+        return [policy.Context("building", category), standard, founding]
+    if when.startswith("open:"):
+        stores = tuple(when[5:].split("+"))
+        return [
+            policy.Context("open", category, stores=stores),
+            policy.Context("open", category, stores=stores, pricing="founding"),
+        ]
+    return {"open": [standard, founding], "open-standard": [standard], "open-founding": [founding]}.get(
+        when, [policy.Context(when, category)]
+    )
+
+
 def lint_knowledge(kn: Knowledge) -> list[str]:
-    """Every canned text must pass the check in each phase it can be used in."""
+    """Every canned text must pass the check in each phase and pricing it can be used in."""
     problems = []
-    for where, text, phase, category in kn.canned_texts():
-        if phase == "both":
-            contexts = [policy.Context("building", category or "draft"), policy.Context("open", category or "draft")]
-        elif phase.startswith("open:"):
-            contexts = [policy.Context("open", category or "draft", stores=tuple(phase[5:].split("+")))]
-        else:
-            contexts = [policy.Context(phase, category or "draft")]
-        for ctx in contexts:
+    for where, text, when, category in kn.canned_texts():
+        for ctx in _contexts(when, category or "draft"):
             for v in policy.check(text, ctx, kn.rules):
-                problems.append(f"{where} ({ctx.phase}): {v}")
+                problems.append(f"{where} ({ctx.phase}{', founding price' if ctx.founding else ''}): {v}")
     return problems
 
 
@@ -103,7 +114,7 @@ def run(desk: Desk, full: bool, channel_factory) -> tuple[list[str], int]:
     try:
         desk.ensure()
         ledger = Ledger(desk.db_path)
-        c.ok(f"desk {desk.root} · mode {desk.mode()} · phase {desk.phase()}")
+        c.ok(f"desk {desk.root} · mode {desk.mode()} · phase {desk.phase()} · pricing {desk.pricing()}")
     except OSError as e:
         c.fail(f"desk {desk.root} isn't writable: {e}")
         return _finish(c)
@@ -208,15 +219,18 @@ def _check_v02(c: Checks, cfg: Config) -> None:
 
 
 def _full(c: Checks) -> None:
-    """A whole sweep against the fake Instagram, in both modes and both phases, in a throwaway desk."""
+    """A whole sweep against the fake Instagram, in both modes, both phases and with the founding price, in a
+    throwaway desk."""
     fixture = resources.files("monsterbot").joinpath("fixtures/fake_instagram.json")
     with tempfile.TemporaryDirectory() as tmp, resources.as_file(fixture) as fx:
-        for phase in ("building", "open"):
+        for phase, pricing in (("building", "standard"), ("open", "standard"), ("open", "founding")):
             for mode in ("rehearsal", "live"):
-                desk = Desk(Path(tmp) / f"{phase}-{mode}")
+                desk = Desk(Path(tmp) / f"{phase}-{pricing}-{mode}")
                 desk.ensure()
                 desk.set_mode(mode, FIXTURE_NOW)
                 desk.set_phase(phase, FIXTURE_NOW)
+                desk.set_pricing(pricing, FIXTURE_NOW)
+                label = desk.phase_label()
                 fake = FakeInstagram.from_file(fx)
                 ledger = Ledger(desk.db_path)
                 engine = Engine(Config(dms_enabled=True), desk, load_knowledge(), fake, ledger, now=lambda: FIXTURE_NOW)
@@ -225,12 +239,12 @@ def _full(c: Checks) -> None:
                 posted = len(fake.posted)
                 expect_posted = (len(planned) + len(res.first_comments)) if mode == "live" else 0
                 if not planned:
-                    c.fail(f"fake sweep ({phase}, {mode}): no canned replies planned")
+                    c.fail(f"fake sweep ({label}, {mode}): no canned replies planned")
                 elif posted != expect_posted:
-                    c.fail(f"fake sweep ({phase}, {mode}): posted {posted}, expected {expect_posted}")
+                    c.fail(f"fake sweep ({label}, {mode}): posted {posted}, expected {expect_posted}")
                 else:
                     c.ok(
-                        f"fake sweep ({phase}, {mode}): {len(planned)} replies, "
+                        f"fake sweep ({label}, {mode}): {len(planned)} replies, "
                         f"{len(res.first_comments)} first comments, {posted} posted"
                     )
                 ledger.close()

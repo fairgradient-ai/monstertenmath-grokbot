@@ -127,13 +127,16 @@ def build_parser() -> argparse.ArgumentParser:
     h = sub.add_parser("hide", help="hide comments on Instagram (needs the owner's tap)")
     h.add_argument("items", nargs="+")
     h.add_argument("--owner-tapped", action="store_true")
-    sub.add_parser("status", help="mode, phase, token, last sweep, what's waiting")
+    sub.add_parser("status", help="mode, phase, pricing, token, last sweep, what's waiting")
     sub.add_parser("stats", help="followers against the pace line, and the newest posts")
     dr = sub.add_parser("doctor", help="check the install, the config, the token and Instagram")
     dr.add_argument("--full", action="store_true", help="also run whole sweeps against the fake Instagram")
     ph = sub.add_parser("phase", help="show or change the phase (building/open)")
     ph.add_argument("value", nargs="?", choices=["show", "building", "open"], default="show")
     ph.add_argument("--owner-tapped", action="store_true")
+    pr = sub.add_parser("pricing", help="show or change the pricing (standard/founding)")
+    pr.add_argument("value", nargs="?", choices=["show", "standard", "founding"], default="show")
+    pr.add_argument("--owner-tapped", action="store_true")
     for name in ("go-live", "rehearse"):
         m = sub.add_parser(name, help=f"switch to {'live' if name == 'go-live' else 'rehearsal'} mode")
         m.add_argument("--owner-tapped", action="store_true")
@@ -330,10 +333,25 @@ def _run(args, desk: Desk) -> int:
             f"PHASE: {args.value}."
             + (
                 " Replies now point to the free check (link in bio)."
+                + (
+                    ' If the site\'s ticket shows the founding price, say "founding price on".'
+                    if desk.pricing() == "standard"
+                    else " Price answers give the founding price."
+                )
                 if args.value == "open"
                 else ' Replies say "being built" again and give no link.'
             )
         )
+        return 0
+
+    if args.cmd == "pricing":
+        if args.value == "show":
+            print(f"PRICING: {desk.pricing()}." + pricing_note(desk.pricing(), desk.phase()))
+            return 0
+        if not args.owner_tapped:
+            raise Refused(f"REFUSED: changing the pricing to {args.value} needs your tap (--owner-tapped).")
+        desk.set_pricing(args.value, now())
+        print(f"PRICING: {args.value}." + pricing_note(args.value, desk.phase()))
         return 0
 
     if args.cmd in ("go-live", "rehearse"):
@@ -367,6 +385,17 @@ def _run(args, desk: Desk) -> int:
         return 0
 
     raise Refused(f"unknown command {args.cmd}")
+
+
+def pricing_note(pricing: str, phase: str) -> str:
+    if pricing == "standard":
+        return " Price answers give $79.99 a year or $12.99 a month, and never name the founding price."
+    if phase == "open":
+        return (
+            " Price answers give the founding price, $59.99 a year or $9.99 a month for the first 500 families,"
+            " with its terms whole."
+        )
+    return " The founding price starts with the open phase; until then the answers stay as they are."
 
 
 def reply_report(engine: Engine, item, violations, outcome: str) -> list[str]:
@@ -548,7 +577,7 @@ def status_lines(engine: Engine, source: str) -> list[str]:
     from .ledger import day_ago
 
     lines = [
-        f"STATUS · mode {desk.mode()} · phase {desk.phase()}",
+        f"STATUS · mode {desk.mode()} · phase {desk.phase()} · pricing {desk.pricing()}",
         (f"Token: from the {source}" + (f", good until about {exp.date()}" if exp else ", expiry unknown"))
         if source != "none"
         else "Token: none. The owner adds IG_ACCESS_TOKEN on the secret card (SETUP.md, section 3).",

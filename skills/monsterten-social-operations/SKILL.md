@@ -3,7 +3,7 @@ name: monsterten-social-operations
 description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
   category: social
 ---
 
@@ -39,6 +39,9 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 | "followers", "stats", "how are we doing?"       | `run.sh stats`                                         | automatic     |
 | "we're open" (after the launch-day gate passed) | `run.sh phase open --owner-tapped`                     | **their tap** |
 | "back to building" (launch slipped)             | `run.sh phase building --owner-tapped`                 | **their tap** |
+| "founding price on" (site's ticket shows it)    | `run.sh pricing founding --owner-tapped`               | **their tap** |
+| "founding price closed" (500 in, or off site)   | `run.sh pricing standard --owner-tapped`               | **their tap** |
+| "which price?"                                  | `run.sh pricing show`                                  | automatic     |
 | "go live"                                       | `run.sh go-live --owner-tapped`                        | **their tap** |
 | "stop posting", "rehearsal"                     | `run.sh rehearse --owner-tapped`                       | **their tap** |
 | "refresh the token"                             | `run.sh token refresh`                                 | automatic     |
@@ -46,6 +49,15 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 
 "We're open" also has a twin in the social repo: the owner tells Claude Code "we're open" there too, which
 runs `gate.py open` and unlocks the after-launch posts in Buffer. Remind them if they mention only one.
+
+**The founding price.** Right after "we're open", ask: "Did the site's ticket show the founding price,
+$59.99 a year or $9.99 a month (gate step 3)?" Only on a yes, and on their tap, run `run.sh pricing founding`.
+Then the price answers give it with its terms whole: the first 500 families who sign up, theirs for good, even
+if they cancel and come back. When the owner says the first 500 are in (or the site stopped showing it), run
+`run.sh pricing standard` on their tap: the answers go back to $79.99 or $12.99, and a question about the
+founding price comes to them, since only they know who is a founding family. You never know how many places
+are left, so never say, guess or hint at a number, and never write "filling fast", "only N left" or "before
+it's gone": the engine holds any reply that does.
 
 When the owner gives a store at launch ("it's on the App Store"), tell them to set `stores` in
 /workspace/monsterten-desk/config.toml (SETUP.md, section 7). Don't edit it yourself.

@@ -76,6 +76,7 @@ class Engine:
             category=category,
             author=item.author if item else None,
             stores=self.cfg.stores,
+            pricing=self.desk.pricing(),
         )
 
     def label(self, item: Item) -> str:
@@ -169,6 +170,7 @@ class Engine:
                 stores=self.cfg.stores,
                 thanks=self.cfg.thanks,
                 line_index=rotation,
+                pricing=self.desk.pricing(),
             )
             item_id = self.ledger.upsert_seen(
                 self.channel.name,
@@ -262,6 +264,7 @@ class Engine:
                 stores=self.cfg.stores,
                 thanks=self.cfg.thanks,
                 line_index=rotation,
+                pricing=self.desk.pricing(),
             )
             if v.category in ("praise", "played"):
                 rotation += 1
@@ -388,7 +391,8 @@ class Engine:
             return  # posted once and since deleted: the owner's call, never repost
         if now - m.timestamp > timedelta(hours=self.cfg.first_comment_max_age_hours):
             return
-        violations = policy.check(piece.first_comment or "", policy.Context(phase, "first_comment"), self.kn.rules)
+        ctx = policy.Context(phase, "first_comment", pricing=self.desk.pricing())
+        violations = policy.check(piece.first_comment or "", ctx, self.kn.rules)
         if violations:
             res.problems.append(f"{piece.label}: the first comment fails the check: {violations[0]}")
             return

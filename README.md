@@ -15,7 +15,7 @@ Built from the launch pack in [fairgradient-ai/monstertenmath_social](https://gi
 | ----------------------------------------- | ----------------------------------------------------------------------- |
 | "3!" on Reel #3                           | Replies "Yes! 7 and 3 make 10." by itself                               |
 | "Is this AI?"                             | Replies with that Reel's own AI line, by itself                         |
-| "How much?", "Where's the link?"          | The pack's answer for today's phase (being built / open), by itself     |
+| "How much?", "Where's the link?"          | The pack's answer for today's phase and price (founding or standard)    |
 | "Love this!"                              | A thank-you, by itself                                                  |
 | "Does it work for a 3 year old?"          | Writes a reply in the brand voice and posts it once it passes the check |
 | A DM: "How much is it?"                   | The same answers, in the DM thread (once Meta grants DM access)         |
@@ -49,6 +49,8 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 | "examples"                 | What the bot has learned from your replies                | no        |
 | "stats"                    | Followers against the pace line, and the newest posts     | no        |
 | "we're open"               | Switches the answers to the launch phase (after the gate) | **yes**   |
+| "founding price on"        | Price answers give the founding price, its terms whole    | **yes**   |
+| "founding price closed"    | Back to $79.99 / $12.99; founding questions come to you   | **yes**   |
 | "go live" / "stop posting" | Replies post by themselves / nothing posts                | **yes**   |
 
 ## What protects you
@@ -56,6 +58,9 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 - **Rehearsal first.** It starts by posting nothing and showing what it would say.
 - **The check in code.** Outcome promises, "test" or "screening", countdowns, hashtags, rivals, links before
   launch, half the trial terms, a store the app isn't in: any of these and nothing is posted.
+- **The founding price only while it's on.** It stays off until you've seen it on the site's ticket and said
+  "founding price on". Then every mention carries its terms (the first 500 families, theirs for good), and no
+  reply ever says how many places are left. Once you say it's closed, the bot never names it again.
 - **Your tap where it matters.** Sensitive replies, Collab emails (they offer money), hiding, the phase and the
   mode go through Grok's Ask-first cards ([`routines/autoreview.txt`](routines/autoreview.txt)), and the
   engine refuses them without it.
@@ -76,7 +81,7 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 | `src/monsterbot/`             | The engine: Python 3.11+, standard library only                           |
 | `scripts/`                    | `run.sh` (the only entry point), `install.sh`, `env.sh`, `sync_social.py` |
 | `config/config.template.toml` | The desk's config: account, caps, DMs, scout, outreach, pace line         |
-| `tests/`                      | 132 offline tests against a fake Instagram, Graph and mailbox             |
+| `tests/`                      | 161 offline tests against a fake Instagram, Graph and mailbox             |
 
 ## Development
 

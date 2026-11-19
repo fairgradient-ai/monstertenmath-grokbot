@@ -31,6 +31,12 @@ class Context:
     category: str = "draft"
     author: str | None = None  # the person we're answering; the only account a reply may @mention
     stores: tuple[str, ...] = ()
+    pricing: str = "standard"  # standard | founding (the desk's choice; founding counts only once open)
+
+    @property
+    def founding(self) -> bool:
+        """The founding price is in force only from launch day, and only while the owner has it on."""
+        return self.phase == "open" and self.pricing == "founding"
 
 
 def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
@@ -63,8 +69,11 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
         if re.search(re.escape(rival), body, FLAGS):
             out.append(Violation("rival", "Never name a rival account.", rival))
 
+    pricing = "founding" if ctx.founding else "standard"
     for rule in rules.get("banned", []):
         if rule.get("phase") and rule["phase"] != ctx.phase:
+            continue
+        if rule.get("pricing") and rule["pricing"] != pricing:
             continue
         if rule.get("categories") and ctx.category not in rule["categories"]:
             continue
@@ -80,8 +89,11 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
     trigger = trial.get("trigger", "")
     if email:
         trigger = trigger.replace(r"|\$\s?\d", "")
+    # The price after the free week, and its terms, depend on the pricing: [trial.standard] or [trial.founding].
+    by_pricing = trial.get(pricing, {})
     if trial and re.search(trigger, body, FLAGS):
-        missing = [req["why"] for req in trial["required"] if not re.search(req["pattern"], body, FLAGS)]
+        required = list(trial.get("required", [])) + list(by_pricing.get("required", []))
+        missing = [req["why"] for req in required if not re.search(req["pattern"], body, FLAGS)]
         if missing:
             out.append(
                 Violation(
@@ -89,12 +101,11 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
                     "Trial terms whole, or not at all. Missing: " + "; ".join(missing) + ".",
                 )
             )
-    prices = {p.replace(" ", "") for p in trial.get("prices", [])}
+    real = list(trial.get("prices", [])) + list(by_pricing.get("prices", []))
+    prices = {p.replace(" ", "") for p in real}
     for price in [] if email else PRICE.findall(body):
         if price.replace(" ", "").replace(",", "") not in prices:
-            out.append(
-                Violation("price", "That price isn't one of the real prices ($79.99 a year, $12.99 a month).", price)
-            )
+            out.append(Violation("price", f"That price isn't one of the real prices now ({', '.join(real)}).", price))
 
     links = rules.get("links", {})
     if links:
