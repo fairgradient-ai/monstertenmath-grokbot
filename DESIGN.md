@@ -117,6 +117,18 @@ What does the job instead, all within the rules:
 | 8     | Praise / "we played" | "Love this!", "my daughter shouted 3!"   | A thank-you or a question back, taking turns so no line repeats on a post                                                                           |
 | 9     | Anything else        | "Does this work for a 3 year old?"       | The Grok Bot writes a reply; it posts by itself if it passes the check                                                                              |
 
+Two known questions answer ahead of the billing escalation (`ahead_of_escalation` in `replies.toml`), because
+a word like "cancel" doesn't make them a complaint:
+
+- the founding price ("If I cancel, do I keep the founding price?"), while it's on;
+- how cancelling works ("Can I cancel anytime?", "Is it easy to cancel?"), with the trial terms whole.
+
+Each has an `unless` pattern that keeps a real billing problem with the owner, through the holding line: a
+charge, a bill or a refund; "my subscription" or "my account"; a cancel that already happened ("I cancelled
+but…"); "can't cancel" or "please cancel". So does "How do I cancel?": it's likely a member, and only the owner
+can tell them where they are. The first of these questions whose pattern matches decides. If it has no canned
+text right now (a founding question while the founding price is off), the escalation stands.
+
 DMs go through the same sorting, one item per thread (the person's latest unanswered messages together). A
 newer message replaces the older item; a thread the owner answered in the app needs nothing.
 

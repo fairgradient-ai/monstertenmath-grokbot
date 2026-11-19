@@ -206,7 +206,11 @@ def _ahead_of_escalation(
     pricing: str,
 ) -> Verdict | None:
     """A question an faq may answer although it also matches an escalation (faq.ahead_of_escalation): only
-    when every escalation it matches is one of those, `unless` doesn't match, and there's a canned text now."""
+    when every escalation it matches is one of those, `unless` doesn't match, and there's a canned text now.
+
+    The first such faq whose pattern matches decides, as in the faq list itself. If it has no canned text now,
+    the escalation stands: "If I cancel, do I keep the founding price?" goes to the owner while the founding
+    price is off, rather than getting the more general cancel reply."""
     for faq in kn.faqs:
         if not faq.ahead_of_escalation or not set(reasons) <= set(faq.ahead_of_escalation):
             continue
@@ -215,8 +219,9 @@ def _ahead_of_escalation(
         if faq.unless is not None and faq.unless.search(text):
             continue
         reply = faq.text_for(phase, stores, pricing)
-        if reply is not None:
-            return Verdict(f"faq:{faq.id}", "auto", reply, faq.id, notify=faq.notify)
+        if reply is None:
+            return None
+        return Verdict(f"faq:{faq.id}", "auto", reply, faq.id, notify=faq.notify)
     return None
 
 
