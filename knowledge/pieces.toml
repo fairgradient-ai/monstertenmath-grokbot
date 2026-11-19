@@ -1,0 +1,170 @@
+# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 19 Nov 2026).
+#
+# A post on Instagram is matched to a piece by the start of its caption (`caption_start`, compared with
+# spaces collapsed), the same way the social repo's tools/v2/buffer/schedule.py finds a post in Buffer.
+# A post that matches no piece still gets its comments answered, but without a guess key or an AI line.
+# scripts/sync_social.py compares this file with a checkout of the social repo and lists what changed.
+#
+#   voice          "ai" (an AI voice), "owner" (re-cut to your voice) or "none" (no voice)
+#   first_comment  posted by the bot once the post is live (live mode only). Pin it by hand: the API can't pin.
+#   play_along     how to answer a guess. Never "No" (growth plan 6.2).
+#   ai_reply       the answer to "Is this AI?" for this piece (growth plan 6.2, which replaces README section 7's).
+# Text with source = "bot" was written for the bot and isn't in the pack: read it before going live.
+
+[[piece]]
+key = "#1"
+name = "Hello"
+type = "post"
+ai = false
+voice = "none"
+caption_start = "Hello. We're Monster Ten."
+
+[[piece]]
+key = "#2"
+name = "One night"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "What one night of Monster Ten looks like"
+
+[[piece]]
+key = "#3"
+name = "Play along"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Play along with your 4- or 5-year-old"
+first_comment = "How many is he hiding? Type your child's answer here."
+ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, the hand on the cup too, and the voice and music are AI-made. That's why it has the AI label. The game is lesson 14's, Monster's Cave, and it works with 10 real crackers and a cup tonight."
+[piece.play_along]
+answer = 3
+right = "Yes! 7 and 3 make 10."
+wrong = "Let's check! Count up from 7: 8, 9, 10. He took 3."
+
+[[piece]]
+key = "#14"
+name = "Sneaky Monster"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Watch closely: ten crackers, one very sneaky Monster"
+first_comment = "Did you catch how many he took? Type the number."
+ai_reply = "The Monster is drawn from our app's own art and animated frame by frame. The voice and music are AI-made, which is why it has the AI label. The game is lesson 14's: 10 crackers and a cup."
+[piece.play_along]
+# The Reel hides the same 3 of 10 as #3, so #3's lines fit.
+answer = 3
+right = "Yes! 7 and 3 make 10."
+wrong = "Let's check! Count up from 7: 8, 9, 10. He took 3."
+
+[[piece]]
+key = "#4"
+name = "Try it tonight"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: Monster's Cave"
+first_comment = "Send this to a parent who has crackers in the cupboard."
+ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, the hand on the cup too, and the voice and music are AI-made. That's why it has the AI label. The game is lesson 14's, Monster's Cave, and it works with 10 real crackers and a cup tonight."
+
+[[piece]]
+key = "#15"
+name = "Flash dots"
+type = "reel"
+ai = true
+voice = "none"
+caption_start = "Flash dots: the dots show for one second"
+first_comment = "What did you see each time? Type all four numbers."
+ai_reply = "The Monster and the dot cards are drawn from our app's own art and animated. There's no voice. The music is AI-made, which is why it has the AI label. It's the 1-minute warm-up from lesson 14."
+[piece.play_along]
+sequence = [4, 5, 3, 6]
+right = "Yes! 4, 5, 3 and 6. Which one was the trickiest?"   # source = "bot"
+wrong = "The cards were 4, 5, 3 and 6. Which one was the trickiest?"
+
+[[piece]]
+key = "#7"
+name = "We're open"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "We're open. Monster Ten is math for"
+
+[[piece]]
+key = "#8"
+name = "Lesson 14 in the app"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 14, Monster's Cave, in the Monster Ten app"
+ai_reply = "The screens are a real recording of our app. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
+
+[[piece]]
+key = "#13"
+name = "The free check"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Where does your 4- to 6-year-old start?"
+ai_reply = "The screens are a real recording of our website. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
+
+[[piece]]
+key = "#5"
+name = "Meet the Monster"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Meet the Monster. Teal, two yellow horns"
+
+[[piece]]
+key = "#6"
+name = "Sleepy fingers"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "No crackers? No problem. Sleepy fingers"
+first_comment = "How many fingers are awake? Type your child's answer here."   # source = "bot"
+ai_reply = "The pictures are AI-made stills of a grown-up's hands, and the voice and music are AI-made too. That's why it has the AI label. The game is lesson 13's, Sleepy fingers."
+[piece.play_along]
+# source = "bot": the Reel leaves the second answer (7 awake, 3 asleep) unsaid for the comments.
+answer = 7
+right = "Yes! 7 awake and 3 asleep. 7 and 3 make 10."
+wrong = "Let's check! Hold up 10 fingers and put 3 to sleep. Count the ones still awake together: 7. 7 and 3 make 10."
+
+[[piece]]
+key = "#9"
+name = "Why a ten-frame?"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Why is there a little grid behind our Monster?"
+
+[[piece]]
+key = "#10"
+name = "Fuel the rocket"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "After the lesson at the table, your child"
+ai_reply = "The screens are a real recording of our app. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
+
+[[piece]]
+key = "#11"
+name = "Every word scripted"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Not a \"math person\"? You don't need to be."
+
+[[piece]]
+key = "#12"
+name = "Round 2"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Round 2: how many did the Monster take"
+first_comment = "How many did he take this time? Type your child's answer here."   # source = "bot"
+ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, the hand on the cup too, and the voice and music are AI-made. That's why it has the AI label. The game is lesson 14's, Monster's Cave, and it works with 10 real crackers and a cup tonight."
+[piece.play_along]
+# source = "bot", in #3's pattern: Round 2 hides 4, so 6 are left.
+answer = 4
+right = "Yes! 6 and 4 make 10."
+wrong = "Let's check! Count up from 6: 7, 8, 9, 10. He took 4."

@@ -1,0 +1,41 @@
+{
+ "_note": "A fake @monstertenmath for tests and doctor --full. 'Now' is 2026-11-20T02:00:00Z (9 pm Eastern on Day 1).",
+ "account": {"id": "17841400000000000", "username": "monstertenmath", "account_type": "BUSINESS",
+             "followers_count": 312, "biography": "Math for 4–6 year olds, played together.", "website": ""},
+ "media": [
+  {"id": "m14", "timestamp": "2026-11-20T01:00:00+0000", "like_count": 3,
+   "caption": "Watch closely: ten crackers, one very sneaky Monster. How many did he take?",
+   "comments": []},
+  {"id": "m3", "timestamp": "2026-11-20T01:30:00+0000", "like_count": 41,
+   "caption": "Play along with your 4- or 5-year-old: how many did the Monster take? Shout it out before the cup lifts.",
+   "comments": [
+    {"id": "c1", "text": "3!", "username": "jane_parent", "timestamp": "2026-11-20T01:35:00+0000"},
+    {"id": "c2", "text": "7", "username": "sam.mom", "timestamp": "2026-11-20T01:36:00+0000"},
+    {"id": "c3", "text": "Is this AI?", "username": "curious_cat", "timestamp": "2026-11-20T01:40:00+0000"},
+    {"id": "c4", "text": "How much will it cost?", "username": "priced_out", "timestamp": "2026-11-20T01:41:00+0000"},
+    {"id": "c5", "text": "Love this!", "username": "fan_one", "timestamp": "2026-11-20T01:42:00+0000"},
+    {"id": "c6", "text": "@bestfriend look at this", "username": "tagger", "timestamp": "2026-11-20T01:43:00+0000"},
+    {"id": "c7", "text": "Promote it on @growfast_now for 10k followers", "username": "spammy", "timestamp": "2026-11-20T01:44:00+0000"},
+    {"id": "c8", "text": "I tried to cancel and got charged twice", "username": "unhappy", "timestamp": "2026-11-20T01:45:00+0000"},
+    {"id": "c9", "text": "Does this work for a 3 year old?", "username": "mo_asks", "timestamp": "2026-11-20T01:46:00+0000",
+     "replies": [
+      {"id": "c9r1", "text": "Following for the answer!", "username": "other_parent", "timestamp": "2026-11-20T01:48:00+0000"}
+     ]},
+    {"id": "c10", "text": "My daughter shouted 3 before the cup lifted!", "username": "dad_of_two", "timestamp": "2026-11-20T01:47:00+0000"},
+    {"id": "c11", "text": "3", "username": "jane_parent", "timestamp": "2026-11-20T01:50:00+0000"},
+    {"id": "c12", "text": "So fun", "username": "fan_two", "timestamp": "2026-11-20T01:51:00+0000"}
+   ]},
+  {"id": "m1", "timestamp": "2026-11-19T17:30:00+0000", "like_count": 58,
+   "caption": "Hello. We're Monster Ten.\n\nMath for 4–6 year olds, played together.",
+   "comments": [
+    {"id": "d0", "text": "Welcome to Instagram!", "username": "monstertenmath", "timestamp": "2026-11-19T17:40:00+0000"},
+    {"id": "d1", "text": "Where's the link?", "username": "link_seeker", "timestamp": "2026-11-19T18:00:00+0000"},
+    {"id": "d2", "text": "When can we try it?", "username": "eager_mom", "timestamp": "2026-11-19T18:05:00+0000"}
+   ]},
+  {"id": "mx", "timestamp": "2026-11-19T15:00:00+0000", "like_count": 7,
+   "caption": "A behind-the-scenes post the bot has no piece for.",
+   "comments": [
+    {"id": "e1", "text": "😍😍", "username": "fan_three", "timestamp": "2026-11-19T15:30:00+0000"}
+   ]}
+ ]
+}

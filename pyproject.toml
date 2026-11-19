@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "monsterbot"
+version = "0.1.0"
+description = "Monster Ten's social media bot: answers comments on @monstertenmath under the brand's rules, run by a Grok Bot."
+requires-python = ">=3.11"
+# No runtime dependencies on purpose: the Grok Bot computer keeps /workspace but not installed
+# packages, so the engine runs on the Python standard library alone (tomllib, sqlite3, urllib).
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "ruff>=0.8"]
+
+[project.scripts]
+monsterbot = "monsterbot.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/monsterbot"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

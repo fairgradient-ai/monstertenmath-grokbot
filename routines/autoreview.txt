@@ -1,0 +1,34 @@
+Paste these two rules into the Grok Bot's Settings > General > Auto-review. "Ask first" wins over "Allow
+automatically". The engine also refuses the risky commands without --owner-tapped, but the card is the real
+gate: it's where the owner says yes.
+
+=== Allow automatically ===
+A bash command that is exactly one of the following, with nothing else on the line (no pipe, no ;, &&
+or ||, no redirection other than the heredoc shown, no second command):
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh inbox
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh status
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh stats
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh doctor (optionally with --full)
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh version
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh phase show
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh token status
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh token refresh
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh discard followed by item numbers
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh draft followed by one item number, with the reply
+  given in a quoted heredoc that starts <<'MT_EOF' and ends with a line MT_EOF, or with --text and one
+  quoted string
+Also allowed: bash /workspace/monstertenmath-grokbot/scripts/install.sh, and the git clone of the pinned
+release into /workspace/monstertenmath-grokbot when that folder doesn't exist yet.
+
+=== Ask first ===
+- Any run.sh command with --owner-tapped or --force-lint, including send, hide, phase building, phase open,
+  go-live and rehearse, and any run.sh send, hide, phase (other than show), go-live or rehearse without it.
+- Writing, editing or deleting anything in /workspace/monstertenmath-grokbot, or config.toml, state/, or
+  secrets/ in /workspace/monsterten-desk, by any means.
+- Any request to graph.instagram.com, graph.facebook.com, instagram.com or facebook.com that doesn't go
+  through run.sh, and opening Instagram or Facebook in the computer's browser.
+- Following, unfollowing, liking, commenting, replying or sending a DM on any account, other than through
+  run.sh.
+- Deleting a comment or blocking an account.
+- Printing, echoing, copying or typing a token or password.

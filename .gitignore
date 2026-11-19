@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+dist/
+.DS_Store
+# a local desk for trying the bot on a laptop; the real one is /workspace/monsterten-desk
+desk/
+.env

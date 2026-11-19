@@ -1,0 +1,33 @@
+# Monster Ten social bot: the live copy is /workspace/monsterten-desk/config.toml (install.sh copies this
+# file there once, then never touches it). No secrets here: the Instagram token is the IG_ACCESS_TOKEN
+# secret card. Unknown keys fail the load.
+
+# After launch: the stores the app is really in (launch-day gate, step 4). It decides the "iPhone or
+# Android?" reply and whether a reply may say "download". Leave empty before launch.
+stores = []            # [] | ["app_store"] | ["google_play"] | ["app_store", "google_play"]
+
+[account]
+username = "monstertenmath"
+timezone = "America/New_York"       # the plan's times are Eastern
+
+[instagram]
+graph_host = "https://graph.instagram.com"
+graph_version = "v24.0"             # check the current version in Meta's changelog when you update
+media_lookback = 12                 # how many of the newest posts each sweep reads
+timeout_seconds = 30
+
+[engage]
+auto_reply_max_age_hours = 72       # older comments get the canned reply as a draft for you to send
+max_auto_replies_per_sweep = 20
+max_auto_replies_per_day = 60       # cautious for a new account (growth plan 6.3 keeps comments to 30 a day)
+first_comments = true               # post a piece's first comment when it's live; you pin it by hand
+first_comment_max_age_hours = 24
+thanks = true                       # a thank-you line for short praise
+
+# The growth plan's pace line (section 1): `run.sh stats` compares the follower count with it.
+[pace_line]
+"2026-11-19" = 40
+"2026-11-20" = 300
+"2026-11-21" = 500
+"2026-11-22" = 750
+"2026-11-23" = 1000

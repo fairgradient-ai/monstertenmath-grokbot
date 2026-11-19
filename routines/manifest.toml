@@ -1,0 +1,65 @@
+# Routines for the Monster Ten Social Bot. Times are the bot's timezone (America/New_York).
+#
+# Grok routines have been reported to start 10-37 minutes late (pickletime-grokbot's README), and missed runs
+# aren't replayed. Nothing here needs to start on time: a sweep picks up everything since the last one.
+# No routine posts a written reply or changes the mode or phase: those need the owner's tap, and an approval
+# card in an unattended run expires. Sweeps post only canned replies and first comments, and only in live mode.
+#
+# Create each routine paused, read it back, run it once, then unpause (SETUP.md, section 6).
+schema_version = 1
+
+[[routine]]
+id = "sweep-morning"
+required = true
+slot = "08:05"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep and post its output verbatim. Then follow the monsterten-social-operations skill, section "After a sweep": draft a reply for each item under "Needs a written reply" and post the list of drafts. Send nothing."""
+posts = "Overnight comments: canned replies (live), drafts for the rest, anything for you."
+
+[[routine]]
+id = "sweep-midday"
+required = true
+slot = "12:50"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep and post its output verbatim. Then follow the monsterten-social-operations skill, section "After a sweep": draft a reply for each item under "Needs a written reply" and post the list of drafts. Send nothing."""
+posts = "The same, and the first comment on a post that went out at 12:30."
+
+[[routine]]
+id = "sweep-afternoon"
+required = true
+slot = "17:50"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep and post its output verbatim. Then follow the monsterten-social-operations skill, section "After a sweep": draft a reply for each item under "Needs a written reply" and post the list of drafts. Send nothing."""
+posts = "The same, and the first comment on a post that went out at 17:30."
+
+[[routine]]
+id = "sweep-first-hour"
+required = true
+slot = "20:45"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep and post its output verbatim. Then follow the monsterten-social-operations skill, section "After a sweep": draft a reply for each item under "Needs a written reply" and post the list of drafts. Send nothing."""
+posts = "The first hour after the 8:30 pm post (growth plan 6.2): its first comment and the first guesses."
+
+[[routine]]
+id = "sweep-evening"
+required = true
+slot = "21:30"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep and post its output verbatim. Then follow the monsterten-social-operations skill, section "After a sweep": draft a reply for each item under "Needs a written reply" and post the list of drafts. Send nothing."""
+posts = "The rest of the first hour."
+
+[[routine]]
+id = "stats-nightly"
+required = false
+slot = "22:05"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh stats and post its output verbatim."
+posts = "Followers against the growth plan's pace line, for the 10 pm nightly check (growth plan section 8)."
+
+[[routine]]
+id = "health"
+required = true
+slot = "18:05"
+days = ["sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh doctor and post its output verbatim. Then run bash /workspace/monstertenmath-grokbot/scripts/run.sh token refresh and post its output verbatim."
+posts = "A weekly check, and a fresh 60 days on the Instagram token."

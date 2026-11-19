@@ -1,0 +1,171 @@
+# What the bot may say without asking you, and how it sorts a comment.
+#
+# Sources (monstertenmath_social): instagram/README.md section 7 ("Replies to the comments you'll get") and
+# instagram/growth-plan.md section 6.2. Text marked `source = "bot"` was written for the bot in the same
+# voice and isn't in the pack: read it once before going live.
+#
+# A comment is sorted in this order, and the first match wins:
+#   own comment > spam > escalate > tag only > "is this AI?" > guess (pieces.toml) > faq > praise > played > draft
+# Only spam, escalate and draft wait for you. Everything else gets a canned reply, and only in live mode.
+# Patterns are Python regexes, matched case-insensitively.
+
+# ---------------------------------------------------------------------------------------------------
+# Spam: never answered. Listed for you to hide, delete or block (growth plan 6.2: "Delete it and block").
+[spam]
+pattern = '''promot(e|ion|ing) (it|this|your)|send (us |me )?a? ?dm|dm (us|me) (for|to)|check (out )?(my|our) (page|profile|bio)|brand ambassador|ambassadors? wanted|crypto|bitcoin|forex|invest(ing|ment)? (opportunity|returns)|free followers|grow your (page|account|audience)|followers? (boost|growth)|https?://|www\.'''
+
+# ---------------------------------------------------------------------------------------------------
+# Escalate: never answered by the bot. You decide, because these touch money, a child, the law, a
+# partnership or a rival.
+[[escalate]]
+reason = "billing"
+pattern = '''\b(refund\w*|charged|charge me|cancel\w*|unsubscribe|billing|scam\w*|rip ?off)\b'''
+
+[[escalate]]
+reason = "child-or-health"
+pattern = '''\b(autis\w*|adhd|dyscalculia|dyslexi\w*|special needs|speech delay|developmental\w*|delayed|therap\w*|diagnos\w*|struggl\w*|behind (in|at|with) math|falling behind)\b'''
+
+[[escalate]]
+reason = "safety-or-legal"
+pattern = '''\b(lawyer|lawsuit|legal|copyright|plagiar\w*|privacy|my data|delete my|report(ed|ing)? (you|this)|creep\w*|inappropriate|pedo\w*|predator)\b'''
+
+[[escalate]]
+reason = "business"
+pattern = '''\b(collab\w*|partnership|partner with|brand deal|sponsor\w*|ugc|your rates|media kit|press|journalist|reporter|interview|podcast|wholesale|bulk|school district|teacher discount|classroom (license|licence|pricing)|homeschool co-?op)\b'''
+
+[[escalate]]
+reason = "complaint"
+pattern = '''\b(disappoint\w*|worst|useless|waste of|hate (this|it)|annoying|misleading|fake ad|false advertising)\b'''
+
+[[escalate]]
+reason = "rival"
+pattern = '''\b(funexpected|khan academy|prodigy|abc ?mouse|duolingo|beestar|ixl|splash ?learn|todo math|moose math)\b'''
+
+# ---------------------------------------------------------------------------------------------------
+# A comment that tags friends, with at most a few words and no question, is people talking to each other:
+# no reply. (A comment that tags @monstertenmath is never this.)
+[tag_only]
+pattern = '''^\s*(@[\w.]+[\s,!.]*)+[^?@]{0,40}$'''
+
+# ---------------------------------------------------------------------------------------------------
+# "Is this AI?", "Is this real?", "Is that voice AI?": answered with the line for that piece only
+# (pieces.toml, ai_reply). A piece without one sends the comment to you.
+[ai_question]
+pattern = '''\bai\b|a\.i\.|is (this|it|that) (real|fake)|real (video|footage|person|kitchen|hands?)|computer[- ]generated|\bgenerated\b|\bcgi\b|deep ?fake'''
+
+# ---------------------------------------------------------------------------------------------------
+# Questions the pack has an answer for. `building` is the Days 1-4 reply, `open` the reply from launch
+# day (after the gate). A phase without text sends the comment to you. question_only = true needs a
+# "?" or a question word, so "love the price" doesn't get the price reply.
+
+[[faq]]
+id = "when"
+question_only = true
+pattern = '''when (can|will|do|does) (we|i|you|it)|when('s| is) it (out|coming|launching|ready|available)|release date|how long until|coming soon\?|is it out'''
+building = "Very soon. Follow along and you'll see it here first."
+open = "Now! Start with the free 2-minute check at the link in bio. You play it together, and it finds the square your child starts on."
+
+[[faq]]
+id = "price"
+question_only = true
+pattern = '''how much|\bprice\b|\bpricing\b|\bcost\b|\bcosts\b|is it free|is this free|subscription\b|monthly fee|one[- ]time'''
+building = "At launch: a 7-day free trial. You add a card at signup and nothing is charged that day. We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
+open = "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
+
+[[faq]]
+id = "card-for-check"
+question_only = true
+pattern = '''(need|ask|asks|require|requires|want|wants|take|takes) (for )?(a |my )?(credit |debit )?card'''
+open = "No. The check is free and asks for no card. If you then start the free week, you add a card at signup and nothing is charged that day. We remind you on day 5, you can cancel in 2 taps, and after the 7 days it's $79.99 a year or $12.99 a month."
+
+[[faq]]
+id = "link"
+question_only = true
+pattern = '''where('s| is) (the |your )?(link|website|site|app)|what('s| is) the (link|website|site)|link\?|website\?|no link|can'?t find (the |your )?link'''
+building = "There isn't one yet. Follow along and you'll see it here first."
+open = "Tap the link in our bio, monstertenmath.com/insta. It opens the free 2-minute check."
+
+[[faq]]
+id = "ages"
+question_only = true
+pattern = '''what ages?\b|which ages?\b|age range|ages\?|how old (does|should|do)|what age (is|does)'''
+building = "4 to 6. The lessons start at counting and go up to adding and subtracting within 20."
+open = "4 to 6. The lessons start at counting and go up to adding and subtracting within 20."
+
+[[faq]]
+id = "bad-at-math"
+pattern = '''(i'?m|i am) (so |really )?(bad|terrible|awful|hopeless|not good|no good) (at|with) math|not a math person|i hate math|math (scares|terrifies) me'''
+building = "That's who the scripts are for. Every word is written out. You read, your child plays."
+open = "That's who the scripts are for. Every word is written out. You read, your child plays."
+
+[[faq]]
+id = "platform"
+question_only = true
+pattern = '''iphone|android|\bios\b|app store|google play|play store'''
+building = "Both are planned. We'll say here which comes first."
+# From launch day the reply depends on the stores the app is really in (config.toml: stores, gate step 4).
+# With no store set, the comment goes to you.
+[faq.open_by_stores]
+"app_store+google_play" = "Both: it's on the App Store and Google Play."
+"app_store" = "iPhone first: it's on the App Store now. We'll post here when Android is out."
+"google_play" = "Android first: it's on Google Play now. We'll post here when iPhone is out."
+
+[[faq]]
+id = "check-a-test"
+question_only = true
+pattern = '''is (it|the check|this|that) a (test|quiz|screening|assessment|exam)'''
+building = "It's a 2-minute check you play together. It finds the square your child starts on. There are no wrong answers."
+open = "It's a 2-minute check you play together. It finds the square your child starts on. There are no wrong answers. It's free, at the link in bio."
+
+[[faq]]
+id = "car"
+pieces = ["#6"]
+pattern = '''\bcar\b|driving|road trip'''
+building = "It needs you face to face with both hands up, so it's one for the table, the bath or a waiting room. Never while driving."
+open = "It needs you face to face with both hands up, so it's one for the table, the bath or a waiting room. Never while driving."
+
+[[faq]]
+id = "screen-time"
+pattern = '''screen ?time|more screens?|screens? for (4|four|little|young)|another app for kids'''
+building = "Half the night is 5 minutes with real crackers at the table, with you. Your child's time alone on the phone is a 3-minute game, then a sticker, and the night's done."
+open = "Half the night is 5 minutes with real crackers at the table, with you. Your child's time alone on the phone is a 3-minute game, then a sticker, and the night's done."
+
+[[faq]]
+id = "free-apps"
+pattern = '''free apps?|why (would i |should i )?pay|why pay'''
+building = "Apps your child plays alone are great practice. This is 10 minutes you play together, with every word scripted for you."
+open = "Apps your child plays alone are great practice. This is 10 minutes you play together, with every word scripted for you."
+
+[[faq]]
+id = "robotic-voice"
+pattern = '''robotic|sounds? like a robot|voice is (weird|creepy|off|fake)'''
+building = "Fair! It's an AI voice, which is why it has the AI label. Thanks for telling us."
+open = "Fair! It's an AI voice, which is why it has the AI label. Thanks for telling us."
+# Also tell the owner: growth plan section 8 has the re-cut for comments like this.
+notify = "A voice complaint: the growth plan's section 8 has the re-cut for this."
+
+# ---------------------------------------------------------------------------------------------------
+# Short praise with no question: a thank-you, never the same line twice in a row on one post.
+[praise]
+source = "bot"
+max_length = 90
+pattern = '''^\W*(love|loved|loving|lovely|so cute|cute|adorable|amazing|awesome|great|brilliant|genius|clever|fun|so fun|this is (so )?(great|amazing|good|genius|brilliant|fun|cute|smart)|wow|yes+|thank|thanks|perfect|beautiful|so good|nice|bravo|yay|obsessed|saving this|saved)\b'''
+lines = [
+  "Thank you! That means a lot.",
+  "Thank you so much!",
+  "So glad you like it!",
+  "Thank you! The Monster says hi.",
+  "That made our day. Thank you!",
+  "Thank you for watching!",
+]
+
+# A parent telling us they played: a reply that asks something back earns a second comment (6.2).
+[played]
+source = "bot"
+max_length = 160
+pattern = '''\b(my|our) (\w+[- ]?(year|yr)[- ]?olds?|son|daughter|kid|kids|child|little one|boy|girl|toddler|preschooler|kindergartener)\b.*\b(love[sd]?|got it|guessed|shouted|said|played|tried|counted|giggled|laughed)\b|\bwe (tried|played|did) (it|this)\b'''
+lines = [
+  "Love that! Who shouted first, you or them?",
+  "That's the best part. Did they want to be the Monster next?",
+  "Yes! Did they want to play again?",
+]
