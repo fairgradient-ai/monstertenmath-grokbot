@@ -24,7 +24,9 @@ Built from the launch pack in [fairgradient-ai/monstertenmath_social](https://gi
 | "Promote it on @…"                        | Lists it as spam; "hide 16" hides it                                    |
 
 It also posts each new post's first comment for you to pin, compares followers with the pace line, finds and
-scores creators by the growth plan's criteria, and drafts Collab emails you send with one tap.
+scores creators by the growth plan's criteria, drafts Collab emails you send with one tap, and three times a
+day sends a **brief**: fresh posts from those creators, each with a comment written for it, for you or a helper
+to post.
 
 It never follows, likes, comments or DMs on _other_ accounts: Instagram's terms forbid automating that, and it
 gets new accounts blocked. [`DESIGN.md`](DESIGN.md), section 3, says what does that job instead. Every reply
@@ -42,6 +44,8 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 | "hide 16"                  | Hides a comment                                           | **yes**   |
 | "find creators"            | Scouts, scores, shortlists, drafts Collab emails          | no        |
 | "send all outreach"        | Emails the drafted Collab offers                          | **yes**   |
+| "brief"                    | Fresh creator posts, each with a comment ready to post    | no        |
+| "done 12 13"               | Marks brief comments as posted                            | no        |
 | "examples"                 | What the bot has learned from your replies                | no        |
 | "stats"                    | Followers against the pace line, and the newest posts     | no        |
 | "we're open"               | Switches the answers to the launch phase (after the gate) | **yes**   |
@@ -72,7 +76,7 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 | `src/monsterbot/`             | The engine: Python 3.11+, standard library only                           |
 | `scripts/`                    | `run.sh` (the only entry point), `install.sh`, `env.sh`, `sync_social.py` |
 | `config/config.template.toml` | The desk's config: account, caps, DMs, scout, outreach, pace line         |
-| `tests/`                      | 123 offline tests against a fake Instagram, Graph and mailbox             |
+| `tests/`                      | 132 offline tests against a fake Instagram, Graph and mailbox             |
 
 ## Development
 

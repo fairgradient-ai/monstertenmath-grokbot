@@ -47,6 +47,13 @@ id = "mangled-price"
 pattern = '''(?<![$\d.])\d{1,3}\.\d\d\b'''
 why = "A price without its $ sign: the shell may have eaten it. Save drafts with the quoted heredoc (operations skill)."
 
+# --- Comments on other people's posts (the brief; growth plan 6.3) -------------------------------------
+[[banned]]
+id = "outbound-no-promo"
+categories = ["outbound"]
+pattern = '''monster ?ten|monstertenmath|our app|the app\b|download|link in|follow (us|me|along)|check (us|our page) out|check out (our|my)|\bdm\b|sign ?up|free (week|trial)|\$\s?\d|\bprice'''
+why = "A comment on someone else's post never mentions the app, a link, a price or \"follow us\" (growth plan 6.3)."
+
 [[banned]]
 id = "never-no"
 pattern = '''^\s*(@\w+\s+)?no\b'''
@@ -65,8 +72,9 @@ id = "building-no-date"
 phase = "building"
 pattern = '''\blaunch(es|ing)?\s+(on|this|next|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b|opens?\s+(on|this|next)\b|\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b'''
 why = "Before launch, never announce the launch day (section 6)."
-# A Collab email names the days a creator posts; that isn't announcing the launch.
-skip_categories = ["email"]
+# A Collab email names the days a creator posts, and a comment on a creator's post may say "Monday"; neither
+# announces the launch.
+skip_categories = ["email", "outbound"]
 
 # --- From launch day, once the gate has passed ---------------------------------------------------------
 [[banned]]

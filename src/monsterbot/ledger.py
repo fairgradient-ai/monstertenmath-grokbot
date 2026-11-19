@@ -106,6 +106,18 @@ CREATE TABLE IF NOT EXISTS creators (
   updated_at TEXT
 );
 CREATE TABLE IF NOT EXISTS hashtag_queries (tag TEXT NOT NULL, ts TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS brief_posts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  permalink TEXT NOT NULL UNIQUE,
+  creator TEXT NOT NULL,
+  caption TEXT,
+  posted_at TEXT,
+  created_at TEXT NOT NULL,
+  comment TEXT,
+  violations TEXT,
+  status TEXT NOT NULL DEFAULT 'proposed',
+  done_at TEXT
+);
 """
 
 # Columns added after v0.1.0; added in place to an older database.

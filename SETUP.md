@@ -6,7 +6,7 @@ outreach email each add a step (sections 12–14) once their access is ready. No
 
 | Path                                | What                                                                     |
 | ----------------------------------- | ------------------------------------------------------------------------ |
-| `/workspace/monstertenmath-grokbot` | The release checkout (`v0.2.0`). Never edited on the computer.           |
+| `/workspace/monstertenmath-grokbot` | The release checkout (`v0.3.0`). Never edited on the computer.           |
 | `/workspace/monsterten-desk`        | The desk: `config.toml`, `state/`, `secrets/`, `logs/`. Kept on updates. |
 
 ## 1. What you need
@@ -51,7 +51,7 @@ Keep the token out of chat, email and files. It goes on the card in the next ste
 
    ```text
    Set yourself up with the monsterten-social-bootstrap skill and SETUP.md from fairgradient-ai/monstertenmath-grokbot
-   at v0.2.0. Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
+   at v0.3.0. Install under /workspace, take the Instagram token only from the IG_ACCESS_TOKEN card, stay in
    rehearsal, post nothing, and finish with the setup receipt.
    ```
 
@@ -62,7 +62,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.2.0 · mode rehearsal · phase building
+SETUP DONE · release v0.3.0 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -191,8 +191,21 @@ Collab emails go from your own mailbox, on your tap.
 4. After a scout, the Bot drafts emails; say **"send all outreach"** and tap. At most 10 a day. Replies land in
    your inbox; tell the Bot "@name booked" or "@name said no".
 
-## 15. Day to day
+## 15. The brief (three times a day)
+
+Once the scout is set up (section 13), the brief needs nothing more. At 08:40, 13:10 and 19:10 the Bot picks
+fresh posts (from the last day) from your shortlisted creators, writes a comment for each, and posts the list
+in chat: a link and a comment per line. Open each link, paste the comment, post it from @monstertenmath, then
+say "done" with the numbers.
+
+- Turn on the three `brief-…` routines (section 6).
+- To send each brief to a helper too, set `[brief] email_to` in the desk's config.toml (it uses the outreach
+  email login, section 14).
+- At most 8 posts a brief and 30 a day, the growth plan's cautious limit for a new account (6.3). Post them a
+  minute or two apart, not all at once.
+
+## 16. Day to day
 
 The phrases ("send 14", "edit 14: …", "skip 14", "hide 16", "inbox", "find creators", "send all outreach",
-"examples", "stats") are in the operations skill:
+"brief", "done 12 13", "examples", "stats") are in the operations skill:
 [`skills/monsterten-social-operations/SKILL.md`](skills/monsterten-social-operations/SKILL.md).

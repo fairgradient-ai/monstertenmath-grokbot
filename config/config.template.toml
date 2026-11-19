@@ -53,6 +53,14 @@ smtp_port = 587
 max_per_day = 10
 fee_usd = 200                       # the growth plan's flat Collab fee (6.5)
 
+[brief]                             # fresh creator posts with a comment each, for a person to post (3 a day)
+per_run = 8
+per_day = 30                        # growth plan 6.3: at most 30 comments a day for a new account
+max_age_hours = 24                  # only posts from the last day: early comments travel furthest
+min_score = 60                      # creators not yet shortlisted need at least this score
+lookups = 25                        # creator profiles read per brief
+email_to = ""                       # optional: also email each brief to you or a helper
+
 # The growth plan's pace line (section 1): `run.sh stats` compares the follower count with it.
 [pace_line]
 "2026-11-19" = 40

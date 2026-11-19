@@ -25,6 +25,9 @@ or ||, no redirection other than the heredoc shown, no second command):
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh creators, creators show <username>, or
   creators mark <username> <status> (optionally --note and one quoted string)
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh outreach list
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh brief, brief show, brief email, brief done or brief skip
+  followed by brief numbers, or brief comment followed by one brief number with the comment in the quoted
+  heredoc or --text as above. (The brief only reads posts and writes a list; a person posts the comments.)
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh outreach draft <username> (optionally
   --first-name <name>), with the personal line in the quoted heredoc or --text as above
 Also allowed: bash /workspace/monstertenmath-grokbot/scripts/install.sh, and the git clone of the pinned

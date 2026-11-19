@@ -3,7 +3,7 @@ name: monsterten-social-operations
 description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   category: social
 ---
 
@@ -31,6 +31,10 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 | "send outreach to @name"                        | `run.sh outreach send name --owner-tapped`             | **their tap** |
 | "@name said no", "@name booked"                 | `run.sh creators mark name declined` / `booked`        | automatic     |
 | "examples", "what have you learned?"            | `run.sh examples`                                      | automatic     |
+| "brief", "what should I comment on?"            | `run.sh brief`, then "The brief" below                 | automatic     |
+| "show the comments"                             | `run.sh brief show`                                    | automatic     |
+| "done 12 13", "posted 12-15"                    | `run.sh brief done 12 13 14 15`                        | automatic     |
+| "skip B14"                                      | `run.sh brief skip 14`                                 | automatic     |
 | "status"                                        | `run.sh status`                                        | automatic     |
 | "followers", "stats", "how are we doing?"       | `run.sh stats`                                         | automatic     |
 | "we're open" (after the launch-day gate passed) | `run.sh phase open --owner-tapped`                     | **their tap** |
@@ -101,6 +105,27 @@ parents and teachers whose recent posts show 4–6 year olds learning at home, 5
 When a creator replies by email, the owner forwards or tells you; mark them `booked` or `declined`. A creator
 marked `declined` or `rejected` is never written to again.
 
+## The brief (three times a day)
+
+The brief picks fresh posts (from the last day) from the shortlisted creators, one per creator a day, at most
+30 a day. You write a comment for each; a person posts them from @monstertenmath by hand.
+
+1. Post `run.sh brief`'s output verbatim. If it says no posts, post that and stop.
+2. For each `[B<n>]`, read its caption and write one fresh comment (voice skill, "Comments on creators'
+   posts"), then save it:
+
+   ```bash
+   bash /workspace/monstertenmath-grokbot/scripts/run.sh brief comment 12 <<'MT_EOF'
+   7 is a full row and 2 more, so you can see it without counting one by one. Love this.
+   MT_EOF
+   ```
+
+   `HELD`: fix every ✗ (usually a mention of the app, a link, or a comment used before) and save it again once.
+3. Post `run.sh brief show` verbatim: it's the list the person posts from. If `[brief] email_to` is set, run
+   `run.sh brief email` too.
+4. When the owner says "done 12 13" (posted) or "skip 14", run `brief done` or `brief skip` with the numbers.
+5. Never open Instagram to post them yourself.
+
 ## The first comment on a new post
 
 In live mode the sweep posts a piece's first comment by itself (pieces.toml, `first_comment`), once, when the
@@ -126,7 +151,8 @@ post is less than a day old and has no comment from us yet. The API can't pin, s
 ## Never
 
 - Run `send`, `hide`, `outreach send`, `phase`, `go-live` or `rehearse` without the owner's tap on that command.
-- Follow, unfollow, like, comment or DM on another account, by any means.
+- Follow, unfollow, like, comment or DM on another account, by any means (the brief's comments are posted by a
+  person).
 - Answer a child's health, legal, rival or complaint message on your own.
 - Edit files in /workspace/monstertenmath-grokbot, or config.toml, knowledge or state in the desk.
 - Show, echo or store a token or password anywhere but the card.

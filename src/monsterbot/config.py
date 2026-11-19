@@ -72,6 +72,13 @@ class Config:
     outreach_max_per_day: int = 10
     outreach_fee_usd: int = 200
     outreach_postal_address: str = ""
+    # [brief]
+    brief_per_run: int = 8
+    brief_per_day: int = 30
+    brief_max_age_hours: int = 24
+    brief_min_score: int = 60
+    brief_lookups: int = 25
+    brief_email_to: str = ""
     # top level
     stores: tuple[str, ...] = ()
     pace_line: dict[str, int] = field(default_factory=dict)
@@ -120,6 +127,14 @@ SECTIONS: dict[str, dict[str, str]] = {
         "fee_usd": "outreach_fee_usd",
         "postal_address": "outreach_postal_address",
     },
+}
+SECTIONS["brief"] = {
+    "per_run": "brief_per_run",
+    "per_day": "brief_per_day",
+    "max_age_hours": "brief_max_age_hours",
+    "min_score": "brief_min_score",
+    "lookups": "brief_lookups",
+    "email_to": "brief_email_to",
 }
 TOP_LEVEL = ("stores", "pace_line")
 
