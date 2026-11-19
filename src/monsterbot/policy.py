@@ -39,7 +39,7 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
     if not body:
         return [Violation("empty", "The reply is empty.")]
 
-    max_length = int(rules.get("max_length", 600))
+    max_length = 3000 if ctx.category == "email" else int(rules.get("max_length", 600))
     if len(body) > max_length:
         out.append(Violation("too-long", f"Keep replies under {max_length} characters (this is {len(body)})."))
 
@@ -67,13 +67,19 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
             continue
         if rule.get("categories") and ctx.category not in rule["categories"]:
             continue
+        if ctx.category in rule.get("skip_categories", ()):
+            continue
         pattern = rule.get("_re") or re.compile(rule["pattern"], FLAGS)
         m = pattern.search(body)
         if m:
             out.append(Violation(rule["id"], rule["why"], m.group(0).strip()))
 
     trial = rules.get("trial", {})
-    if trial and re.search(trial["trigger"], body, FLAGS):
+    email = ctx.category == "email"  # a Collab fee isn't a product price
+    trigger = trial.get("trigger", "")
+    if email:
+        trigger = trigger.replace(r"|\$\s?\d", "")
+    if trial and re.search(trigger, body, FLAGS):
         missing = [req["why"] for req in trial["required"] if not re.search(req["pattern"], body, FLAGS)]
         if missing:
             out.append(
@@ -83,7 +89,7 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
                 )
             )
     prices = {p.replace(" ", "") for p in trial.get("prices", [])}
-    for price in PRICE.findall(body):
+    for price in [] if email else PRICE.findall(body):
         if price.replace(" ", "").replace(",", "") not in prices:
             out.append(
                 Violation("price", "That price isn't one of the real prices ($79.99 a year, $12.99 a month).", price)
@@ -92,9 +98,11 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
     links = rules.get("links", {})
     if links:
         link_text = scrubbed
-        if ctx.phase == "open":
-            for allowed in links.get("allowed_open", []):
-                link_text = re.sub(re.escape(allowed), " ", link_text, flags=FLAGS)
+        allowed_now = list(links.get("allowed_open", [])) if ctx.phase == "open" else []
+        if email:
+            allowed_now += links.get("allowed_email", [])
+        for allowed in allowed_now:
+            link_text = re.sub(re.escape(allowed), " ", link_text, flags=FLAGS)
         m = re.search(links["pattern"], link_text, FLAGS)
         if m:
             why = (

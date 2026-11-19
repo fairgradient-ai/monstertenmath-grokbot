@@ -1,9 +1,9 @@
 ---
 name: monsterten-social-operations
-description: Day-to-day running of the Monster Ten social bot on Instagram. Use for every routine run and for anything the owner says about comments, replies, drafts, the inbox, sending, hiding, spam, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep, and how to read failures.
+description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   category: social
 ---
 
@@ -13,24 +13,32 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 
 ## The owner says → you run
 
-| The owner says                                  | Run                                                 | Approval      |
-| ----------------------------------------------- | --------------------------------------------------- | ------------- |
-| "check the comments", "sweep", "anything new?"  | `run.sh sweep`, then "After a sweep" below          | automatic     |
-| "inbox", "what's waiting?"                      | `run.sh inbox`                                      | automatic     |
-| "send 14", "send 14 and 15"                     | `run.sh send 14 15 --owner-tapped`                  | **their tap** |
-| "send all"                                      | `run.sh send all --owner-tapped` (drafts that pass) | **their tap** |
-| "send 14 anyway" (a draft that fails the check) | `run.sh send 14 --owner-tapped --force-lint`        | **their tap** |
-| "edit 14: <their words>"                        | `run.sh draft 14` with their words (heredoc below)  | automatic     |
-| "skip 14", "no reply to 14"                     | `run.sh discard 14`                                 | automatic     |
-| "hide 16"                                       | `run.sh hide 16 --owner-tapped`                     | **their tap** |
-| "status"                                        | `run.sh status`                                     | automatic     |
-| "followers", "stats", "how are we doing?"       | `run.sh stats`                                      | automatic     |
-| "we're open" (after the launch-day gate passed) | `run.sh phase open --owner-tapped`                  | **their tap** |
-| "back to building" (launch slipped)             | `run.sh phase building --owner-tapped`              | **their tap** |
-| "go live"                                       | `run.sh go-live --owner-tapped`                     | **their tap** |
-| "stop posting", "rehearsal"                     | `run.sh rehearse --owner-tapped`                    | **their tap** |
-| "refresh the token"                             | `run.sh token refresh`                              | automatic     |
-| "check yourself", "doctor"                      | `run.sh doctor`                                     | automatic     |
+| The owner says                                  | Run                                                    | Approval      |
+| ----------------------------------------------- | ------------------------------------------------------ | ------------- |
+| "check the comments", "sweep", "anything new?"  | `run.sh sweep`, then "After a sweep" below             | automatic     |
+| "inbox", "what's waiting?"                      | `run.sh inbox`                                         | automatic     |
+| "send 14", "send 14 and 15", "ok 14"            | `run.sh send 14 15 --owner-tapped`                     | **their tap** |
+| "send all"                                      | `run.sh send all --owner-tapped` (drafts that pass)    | **their tap** |
+| "send 14 anyway" (a draft that fails the check) | `run.sh send 14 --owner-tapped --force-lint`           | **their tap** |
+| "edit 14: <their words>"                        | `run.sh draft 14 --by owner` (heredoc), then `send 14` | send: tap     |
+| "skip 14", "no reply to 14"                     | `run.sh discard 14`                                    | automatic     |
+| "hide 16"                                       | `run.sh hide 16 --owner-tapped`                        | **their tap** |
+| "find creators", "influencers", "scout"         | `run.sh scout`, then "After a scout" below             | automatic     |
+| "look at @name" (a creator to consider)         | `run.sh scout add name`, then `run.sh scout`           | automatic     |
+| "creators", "who did you find?"                 | `run.sh creators`                                      | automatic     |
+| "outreach", "what emails are waiting?"          | `run.sh outreach list`                                 | automatic     |
+| "send all outreach", "send the emails"          | `run.sh outreach send all --owner-tapped`              | **their tap** |
+| "send outreach to @name"                        | `run.sh outreach send name --owner-tapped`             | **their tap** |
+| "@name said no", "@name booked"                 | `run.sh creators mark name declined` / `booked`        | automatic     |
+| "examples", "what have you learned?"            | `run.sh examples`                                      | automatic     |
+| "status"                                        | `run.sh status`                                        | automatic     |
+| "followers", "stats", "how are we doing?"       | `run.sh stats`                                         | automatic     |
+| "we're open" (after the launch-day gate passed) | `run.sh phase open --owner-tapped`                     | **their tap** |
+| "back to building" (launch slipped)             | `run.sh phase building --owner-tapped`                 | **their tap** |
+| "go live"                                       | `run.sh go-live --owner-tapped`                        | **their tap** |
+| "stop posting", "rehearsal"                     | `run.sh rehearse --owner-tapped`                       | **their tap** |
+| "refresh the token"                             | `run.sh token refresh`                                 | automatic     |
+| "check yourself", "doctor"                      | `run.sh doctor`                                        | automatic     |
 
 "We're open" also has a twin in the social repo: the owner tells Claude Code "we're open" there too, which
 runs `gate.py open` and unlocks the after-launch posts in Buffer. Remind them if they mention only one.
@@ -38,27 +46,60 @@ runs `gate.py open` and unlocks the after-launch posts in Buffer. Remind them if
 When the owner gives a store at launch ("it's on the App Store"), tell them to set `stores` in
 /workspace/monsterten-desk/config.toml (SETUP.md, section 7). Don't edit it yourself.
 
+## Writing text into a command
+
+Always pass written text with this quoted heredoc (`<<'MT_EOF'`, quotes included). It keeps `$79.99`,
+apostrophes and quotation marks exactly as written; `--text "..."` would let the shell eat a `$7`.
+
+```bash
+bash /workspace/monstertenmath-grokbot/scripts/run.sh reply 14 <<'MT_EOF'
+Our lessons are made for 4 to 6, but plenty of 3-year-olds love the cracker part with you.
+MT_EOF
+```
+
 ## After a sweep
 
-1. Post the sweep's output verbatim.
-2. For each item under **"Needs a written reply"**, write a reply with the monsterten-voice skill and save it:
+1. Post the sweep's output verbatim. If it says `quiet`, post that one line and stop.
+2. Run `run.sh examples` once, and write the way the owner does.
+3. For each item under **"Needs a written reply"**, write a reply (monsterten-voice skill) and post it with
+   `run.sh reply <number>`. It goes out by itself if it passes the check.
+   - `HELD`: rewrite once to fix every ✗ line and run `reply` again. If it still fails, leave it and say why.
+   - `SAVED … waits for your OK`: it's the owner's (step 4).
+4. For each item under **"For you"** that waits for an OK (not the ones answered with a holding line), write a
+   careful, kind draft with `run.sh draft <number>` (no promises, no advice about a child's health, point to
+   info@monstertenmath.com where it helps). Then tell the owner: "[13] waits for your OK: say send 13, edit
+   13: …, or skip 13."
+5. **Spam**: list it for the owner; "hide 16" hides it.
+6. Never run `send`, `hide` or `outreach send` in a routine: an approval card nobody taps expires.
+7. End with one short summary: what went out, what waits for the owner.
+
+## After a scout
+
+The scout reads public business and creator profiles and scores them by the growth plan (6.3 and 6.5): US
+parents and teachers whose recent posts show 4–6 year olds learning at home, 5,000–200,000 followers (10,000–
+40,000 is the Collab sweet spot), real comments, posting this week, no rival brand.
+
+1. Post the scout's output verbatim.
+2. For each candidate with a score of 60 or more, run `run.sh creators show <name>` and judge fit from the bio
+   and captions: a real parent or teacher of 4–6 year olds, in the US as far as you can tell, a warm tone,
+   nothing unsafe, no rival app.
+   - Fit: `run.sh creators mark <name> shortlist --note "<why, in a few words>"`.
+   - Not a fit: `run.sh creators mark <name> reject --note "<why>"`.
+3. For each shortlisted creator with an email, write one or two sentences about one specific recent post of
+   theirs (true to its caption, warm, no flattery overload), and draft the email:
 
    ```bash
-   bash /workspace/monstertenmath-grokbot/scripts/run.sh draft 14 <<'MT_EOF'
-   Our games start at 4, but plenty of 3-year-olds love the cracker part with you.
+   bash /workspace/monstertenmath-grokbot/scripts/run.sh outreach draft kinder_with_kate <<'MT_EOF'
+   Your ten-frame snack game last week is exactly the kind of play we build for.
    MT_EOF
    ```
 
-   Always save drafts with this quoted heredoc (`<<'MT_EOF'`, quotes included). It keeps `$79.99`,
-   apostrophes and quotation marks exactly as written; `--text "..."` would let the shell eat a `$7`.
+4. Post `run.sh outreach list` and ask: "Say send all outreach to email these (one tap)."
+5. You may also look for creators yourself (your own web and X search) and add promising usernames with
+   `run.sh scout add <names>` before a run. Never follow, like, comment on or DM them.
 
-3. If a draft comes back **FAILS the check**, rewrite it once to fix every ✗ line and save it again. If it
-   still fails, leave it for the owner and say why.
-4. Post a short list: `Drafts ready: [14] @mo_asks · "…"`, then "Say send 14, send all, edit 14: …, or skip 14."
-5. **Send nothing.** In a routine nobody is there to tap, and an approval card left waiting expires.
-6. Items under **"For you"** and **"Spam"**: list them for the owner. Don't draft them unless asked.
-
-If the sweep says `quiet`, post that one line and stop.
+When a creator replies by email, the owner forwards or tells you; mark them `booked` or `declined`. A creator
+marked `declined` or `rejected` is never written to again.
 
 ## The first comment on a new post
 
@@ -71,19 +112,21 @@ post is less than a day old and has no comment from us yet. The API can't pin, s
 | Output starts with                     | What it means                                       | Do this                                                         |
 | -------------------------------------- | --------------------------------------------------- | --------------------------------------------------------------- |
 | `FAILED: the Instagram token…`         | The token expired or was revoked                    | Ask the owner for a new token on the card (SETUP.md, section 2) |
+| `FAILED: no Facebook token`            | Scouting has no FB_ACCESS_TOKEN                     | SETUP.md, section 13                                            |
+| `FAILED: the email login was refused`  | SMTP_USER / SMTP_PASSWORD wrong                     | SETUP.md, section 14                                            |
 | `STOPPED: Instagram's rate limit`      | Meta paused us                                      | Nothing. The next routine carries on. Don't retry by hand.      |
 | `STOPPED: Instagram stopped answering` | Network or Meta trouble                             | Nothing. The next routine carries on.                           |
 | `UNVERIFIED [n]`                       | A post timed out; it may or may not be on Instagram | Nothing. The next sweep checks before anything is retried.      |
-| `FAILED: missing permission`           | The token lacks instagram_business_manage_comments  | Owner makes a token with that permission (SETUP.md, section 2)  |
-| `FAILED: the token is for @…`          | A token for another account                         | Owner fixes the card                                            |
+| `outside Meta's 24-hour DM window`     | The person wrote more than a day ago                | Tell the owner; only they can answer it, in the app             |
+| `FAILED: missing permission`           | The token lacks a permission                        | SETUP.md, sections 2, 12 or 13                                  |
 | `BUSY:`                                | Another command is running                          | Wait a minute, then run it again once                           |
-| `REFUSED:`                             | A command needed the owner's tap, or a bad number   | Read it out; ask the owner                                      |
+| `REFUSED:`                             | A command needed the owner's tap, or a bad name     | Read it out; ask the owner                                      |
 | `DOCTOR: FAIL`                         | Setup is broken                                     | Read out the FAIL lines; SETUP.md, section 11                   |
 
 ## Never
 
-- Run `send`, `hide`, `phase`, `go-live` or `rehearse` without the owner's tap on that exact command.
-- Post, like, follow, comment or DM anywhere except through run.sh, and never on another account.
-- Answer an escalation (money, health, legal, business, rivals, complaints) on your own.
+- Run `send`, `hide`, `outreach send`, `phase`, `go-live` or `rehearse` without the owner's tap on that command.
+- Follow, unfollow, like, comment or DM on another account, by any means.
+- Answer a child's health, legal, rival or complaint message on your own.
 - Edit files in /workspace/monstertenmath-grokbot, or config.toml, knowledge or state in the desk.
-- Show, echo or store the token anywhere but the card.
+- Show, echo or store a token or password anywhere but the card.

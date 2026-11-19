@@ -1,41 +1,532 @@
 {
  "_note": "A fake @monstertenmath for tests and doctor --full. 'Now' is 2026-11-20T02:00:00Z (9 pm Eastern on Day 1).",
- "account": {"id": "17841400000000000", "username": "monstertenmath", "account_type": "BUSINESS",
-             "followers_count": 312, "biography": "Math for 4–6 year olds, played together.", "website": ""},
+ "account": {
+  "id": "17841400000000000",
+  "username": "monstertenmath",
+  "account_type": "BUSINESS",
+  "followers_count": 312,
+  "biography": "Math for 4–6 year olds, played together.",
+  "website": ""
+ },
  "media": [
-  {"id": "m14", "timestamp": "2026-11-20T01:00:00+0000", "like_count": 3,
+  {
+   "id": "m14",
+   "timestamp": "2026-11-20T01:00:00+0000",
+   "like_count": 3,
    "caption": "Watch closely: ten crackers, one very sneaky Monster. How many did he take?",
-   "comments": []},
-  {"id": "m3", "timestamp": "2026-11-20T01:30:00+0000", "like_count": 41,
+   "comments": []
+  },
+  {
+   "id": "m3",
+   "timestamp": "2026-11-20T01:30:00+0000",
+   "like_count": 41,
    "caption": "Play along with your 4- or 5-year-old: how many did the Monster take? Shout it out before the cup lifts.",
    "comments": [
-    {"id": "c1", "text": "3!", "username": "jane_parent", "timestamp": "2026-11-20T01:35:00+0000"},
-    {"id": "c2", "text": "7", "username": "sam.mom", "timestamp": "2026-11-20T01:36:00+0000"},
-    {"id": "c3", "text": "Is this AI?", "username": "curious_cat", "timestamp": "2026-11-20T01:40:00+0000"},
-    {"id": "c4", "text": "How much will it cost?", "username": "priced_out", "timestamp": "2026-11-20T01:41:00+0000"},
-    {"id": "c5", "text": "Love this!", "username": "fan_one", "timestamp": "2026-11-20T01:42:00+0000"},
-    {"id": "c6", "text": "@bestfriend look at this", "username": "tagger", "timestamp": "2026-11-20T01:43:00+0000"},
-    {"id": "c7", "text": "Promote it on @growfast_now for 10k followers", "username": "spammy", "timestamp": "2026-11-20T01:44:00+0000"},
-    {"id": "c8", "text": "I tried to cancel and got charged twice", "username": "unhappy", "timestamp": "2026-11-20T01:45:00+0000"},
-    {"id": "c9", "text": "Does this work for a 3 year old?", "username": "mo_asks", "timestamp": "2026-11-20T01:46:00+0000",
+    {
+     "id": "c1",
+     "text": "3!",
+     "username": "jane_parent",
+     "timestamp": "2026-11-20T01:35:00+0000"
+    },
+    {
+     "id": "c2",
+     "text": "7",
+     "username": "sam.mom",
+     "timestamp": "2026-11-20T01:36:00+0000"
+    },
+    {
+     "id": "c3",
+     "text": "Is this AI?",
+     "username": "curious_cat",
+     "timestamp": "2026-11-20T01:40:00+0000"
+    },
+    {
+     "id": "c4",
+     "text": "How much will it cost?",
+     "username": "priced_out",
+     "timestamp": "2026-11-20T01:41:00+0000"
+    },
+    {
+     "id": "c5",
+     "text": "Love this!",
+     "username": "fan_one",
+     "timestamp": "2026-11-20T01:42:00+0000"
+    },
+    {
+     "id": "c6",
+     "text": "@bestfriend look at this",
+     "username": "tagger",
+     "timestamp": "2026-11-20T01:43:00+0000"
+    },
+    {
+     "id": "c7",
+     "text": "Promote it on @growfast_now for 10k followers",
+     "username": "spammy",
+     "timestamp": "2026-11-20T01:44:00+0000"
+    },
+    {
+     "id": "c8",
+     "text": "I tried to cancel and got charged twice",
+     "username": "unhappy",
+     "timestamp": "2026-11-20T01:45:00+0000"
+    },
+    {
+     "id": "c9",
+     "text": "Does this work for a 3 year old?",
+     "username": "mo_asks",
+     "timestamp": "2026-11-20T01:46:00+0000",
      "replies": [
-      {"id": "c9r1", "text": "Following for the answer!", "username": "other_parent", "timestamp": "2026-11-20T01:48:00+0000"}
-     ]},
-    {"id": "c10", "text": "My daughter shouted 3 before the cup lifted!", "username": "dad_of_two", "timestamp": "2026-11-20T01:47:00+0000"},
-    {"id": "c11", "text": "3", "username": "jane_parent", "timestamp": "2026-11-20T01:50:00+0000"},
-    {"id": "c12", "text": "So fun", "username": "fan_two", "timestamp": "2026-11-20T01:51:00+0000"}
-   ]},
-  {"id": "m1", "timestamp": "2026-11-19T17:30:00+0000", "like_count": 58,
+      {
+       "id": "c9r1",
+       "text": "Following for the answer!",
+       "username": "other_parent",
+       "timestamp": "2026-11-20T01:48:00+0000"
+      }
+     ]
+    },
+    {
+     "id": "c10",
+     "text": "My daughter shouted 3 before the cup lifted!",
+     "username": "dad_of_two",
+     "timestamp": "2026-11-20T01:47:00+0000"
+    },
+    {
+     "id": "c11",
+     "text": "3",
+     "username": "jane_parent",
+     "timestamp": "2026-11-20T01:50:00+0000"
+    },
+    {
+     "id": "c12",
+     "text": "So fun",
+     "username": "fan_two",
+     "timestamp": "2026-11-20T01:51:00+0000"
+    },
+    {
+     "id": "c13",
+     "text": "My son has ADHD, would this help him focus?",
+     "username": "worried_dad",
+     "timestamp": "2026-11-20T01:52:00+0000"
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "timestamp": "2026-11-19T17:30:00+0000",
+   "like_count": 58,
    "caption": "Hello. We're Monster Ten.\n\nMath for 4–6 year olds, played together.",
    "comments": [
-    {"id": "d0", "text": "Welcome to Instagram!", "username": "monstertenmath", "timestamp": "2026-11-19T17:40:00+0000"},
-    {"id": "d1", "text": "Where's the link?", "username": "link_seeker", "timestamp": "2026-11-19T18:00:00+0000"},
-    {"id": "d2", "text": "When can we try it?", "username": "eager_mom", "timestamp": "2026-11-19T18:05:00+0000"}
-   ]},
-  {"id": "mx", "timestamp": "2026-11-19T15:00:00+0000", "like_count": 7,
+    {
+     "id": "d0",
+     "text": "Welcome to Instagram!",
+     "username": "monstertenmath",
+     "timestamp": "2026-11-19T17:40:00+0000"
+    },
+    {
+     "id": "d1",
+     "text": "Where's the link?",
+     "username": "link_seeker",
+     "timestamp": "2026-11-19T18:00:00+0000"
+    },
+    {
+     "id": "d2",
+     "text": "When can we try it?",
+     "username": "eager_mom",
+     "timestamp": "2026-11-19T18:05:00+0000"
+    },
+    {
+     "id": "d3",
+     "text": "Who drew the Monster? He's great",
+     "username": "art_fan",
+     "timestamp": "2026-11-19T18:10:00+0000",
+     "replies": [
+      {
+       "id": "d3r1",
+       "text": "Our team drew him! Thank you, he says hi.",
+       "username": "monstertenmath",
+       "timestamp": "2026-11-19T18:20:00+0000"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mx",
+   "timestamp": "2026-11-19T15:00:00+0000",
+   "like_count": 7,
    "caption": "A behind-the-scenes post the bot has no piece for.",
    "comments": [
-    {"id": "e1", "text": "😍😍", "username": "fan_three", "timestamp": "2026-11-19T15:30:00+0000"}
-   ]}
- ]
+    {
+     "id": "e1",
+     "text": "😍😍",
+     "username": "fan_three",
+     "timestamp": "2026-11-19T15:30:00+0000"
+    }
+   ]
+  }
+ ],
+ "conversations": [
+  {
+   "id": "t1",
+   "messages": [
+    {
+     "id": "dm1",
+     "from": {
+      "id": "u100",
+      "username": "curious_mom"
+     },
+     "text": "Hi! How much will it cost?",
+     "timestamp": "2026-11-20T01:10:00+0000"
+    }
+   ]
+  },
+  {
+   "id": "t2",
+   "messages": [
+    {
+     "id": "dm2",
+     "from": {
+      "id": "u200",
+      "username": "teacher_amy"
+     },
+     "text": "Do you offer a classroom license for my kindergarten class?",
+     "timestamp": "2026-11-20T01:20:00+0000"
+    }
+   ]
+  },
+  {
+   "id": "t3",
+   "messages": [
+    {
+     "id": "dm3",
+     "from": {
+      "id": "u300",
+      "username": "dad_jo"
+     },
+     "text": "Does it work on a Kindle Fire?",
+     "timestamp": "2026-11-20T01:30:00+0000"
+    }
+   ]
+  },
+  {
+   "id": "t4",
+   "messages": [
+    {
+     "id": "dm4",
+     "from": {
+      "id": "u400",
+      "username": "aunt_bea"
+     },
+     "text": "Is the Monster a boy or a girl?",
+     "timestamp": "2026-11-20T00:30:00+0000"
+    },
+    {
+     "id": "dm5",
+     "from": {
+      "id": "17841400000000000",
+      "username": "monstertenmath"
+     },
+     "text": "He's just the Monster! He loves crackers.",
+     "timestamp": "2026-11-20T00:40:00+0000"
+    }
+   ]
+  },
+  {
+   "id": "t5",
+   "messages": [
+    {
+     "id": "dm6",
+     "from": {
+      "id": "u500",
+      "username": "late_larry"
+     },
+     "text": "When can we try it?",
+     "timestamp": "2026-11-18T20:00:00+0000"
+    }
+   ]
+  }
+ ],
+ "creators": {
+  "kinder_with_kate": {
+   "name": "Kate | Kindergarten Teacher",
+   "followers_count": 24000,
+   "media_count": 410,
+   "biography": "Kindergarten teacher & mom of 2. Math games and play-based learning at home. kate.collabs@example.com",
+   "website": "https://example.com/kate",
+   "media": [
+    {
+     "caption": "Ten frame counting game with snacks (1)",
+     "like_count": 900,
+     "comments_count": 60,
+     "timestamp": "2026-11-19T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x0/"
+    },
+    {
+     "caption": "Ten frame counting game with snacks (2)",
+     "like_count": 900,
+     "comments_count": 60,
+     "timestamp": "2026-11-18T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x1/"
+    },
+    {
+     "caption": "Ten frame counting game with snacks (3)",
+     "like_count": 900,
+     "comments_count": 60,
+     "timestamp": "2026-11-17T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x2/"
+    },
+    {
+     "caption": "Ten frame counting game with snacks (4)",
+     "like_count": 900,
+     "comments_count": 60,
+     "timestamp": "2026-11-16T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x3/"
+    },
+    {
+     "caption": "Ten frame counting game with snacks (5)",
+     "like_count": 900,
+     "comments_count": 60,
+     "timestamp": "2026-11-15T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x4/"
+    },
+    {
+     "caption": "Ten frame counting game with snacks (6)",
+     "like_count": 900,
+     "comments_count": 60,
+     "timestamp": "2026-11-14T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x5/"
+    }
+   ]
+  },
+  "prek_play_lab": {
+   "name": "Pre-K Play Lab",
+   "followers_count": 120000,
+   "media_count": 900,
+   "biography": "Preschool activities you can do at home. Collabs: hello@prekplaylab.example",
+   "media": [
+    {
+     "caption": "Easy preschool activities for rainy days (1)",
+     "like_count": 1400,
+     "comments_count": 40,
+     "timestamp": "2026-11-19T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x0/"
+    },
+    {
+     "caption": "Easy preschool activities for rainy days (2)",
+     "like_count": 1400,
+     "comments_count": 40,
+     "timestamp": "2026-11-18T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x1/"
+    },
+    {
+     "caption": "Easy preschool activities for rainy days (3)",
+     "like_count": 1400,
+     "comments_count": 40,
+     "timestamp": "2026-11-17T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x2/"
+    },
+    {
+     "caption": "Easy preschool activities for rainy days (4)",
+     "like_count": 1400,
+     "comments_count": 40,
+     "timestamp": "2026-11-16T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x3/"
+    },
+    {
+     "caption": "Easy preschool activities for rainy days (5)",
+     "like_count": 1400,
+     "comments_count": 40,
+     "timestamp": "2026-11-15T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x4/"
+    },
+    {
+     "caption": "Easy preschool activities for rainy days (6)",
+     "like_count": 1400,
+     "comments_count": 40,
+     "timestamp": "2026-11-14T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x5/"
+    }
+   ]
+  },
+  "big_brand_kids": {
+   "name": "Big Brand Kids",
+   "followers_count": 900000,
+   "media_count": 3000,
+   "biography": "Toys and more. press@bigbrand.example",
+   "media": [
+    {
+     "caption": "New toys this week (1)",
+     "like_count": 2000,
+     "comments_count": 30,
+     "timestamp": "2026-11-19T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x0/"
+    },
+    {
+     "caption": "New toys this week (2)",
+     "like_count": 2000,
+     "comments_count": 30,
+     "timestamp": "2026-11-18T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x1/"
+    },
+    {
+     "caption": "New toys this week (3)",
+     "like_count": 2000,
+     "comments_count": 30,
+     "timestamp": "2026-11-17T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x2/"
+    },
+    {
+     "caption": "New toys this week (4)",
+     "like_count": 2000,
+     "comments_count": 30,
+     "timestamp": "2026-11-16T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x3/"
+    },
+    {
+     "caption": "New toys this week (5)",
+     "like_count": 2000,
+     "comments_count": 30,
+     "timestamp": "2026-11-15T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x4/"
+    },
+    {
+     "caption": "New toys this week (6)",
+     "like_count": 2000,
+     "comments_count": 30,
+     "timestamp": "2026-11-14T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x5/"
+    }
+   ]
+  },
+  "rival_fan_mom": {
+   "name": "Rina",
+   "followers_count": 18000,
+   "media_count": 200,
+   "biography": "Mom of 3. Funexpected ambassador. rina@example.com",
+   "media": [
+    {
+     "caption": "Math time with my kids (1)",
+     "like_count": 700,
+     "comments_count": 50,
+     "timestamp": "2026-11-19T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x0/"
+    },
+    {
+     "caption": "Math time with my kids (2)",
+     "like_count": 700,
+     "comments_count": 50,
+     "timestamp": "2026-11-18T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x1/"
+    },
+    {
+     "caption": "Math time with my kids (3)",
+     "like_count": 700,
+     "comments_count": 50,
+     "timestamp": "2026-11-17T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x2/"
+    },
+    {
+     "caption": "Math time with my kids (4)",
+     "like_count": 700,
+     "comments_count": 50,
+     "timestamp": "2026-11-16T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x3/"
+    },
+    {
+     "caption": "Math time with my kids (5)",
+     "like_count": 700,
+     "comments_count": 50,
+     "timestamp": "2026-11-15T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x4/"
+    },
+    {
+     "caption": "Math time with my kids (6)",
+     "like_count": 700,
+     "comments_count": 50,
+     "timestamp": "2026-11-14T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x5/"
+    }
+   ]
+  },
+  "fan_one": {
+   "name": "Fan One",
+   "followers_count": 800,
+   "media_count": 40,
+   "biography": "Just a mom",
+   "media": [
+    {
+     "caption": "Family weekend (1)",
+     "like_count": 30,
+     "comments_count": 4,
+     "timestamp": "2026-11-19T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x0/"
+    },
+    {
+     "caption": "Family weekend (2)",
+     "like_count": 30,
+     "comments_count": 4,
+     "timestamp": "2026-11-18T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x1/"
+    },
+    {
+     "caption": "Family weekend (3)",
+     "like_count": 30,
+     "comments_count": 4,
+     "timestamp": "2026-11-17T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x2/"
+    }
+   ]
+  },
+  "quiet_creator": {
+   "name": "Quiet",
+   "followers_count": 30000,
+   "media_count": 100,
+   "biography": "Homeschool mama sharing preschool math",
+   "media": [
+    {
+     "caption": "Counting with buttons (1)",
+     "like_count": 20,
+     "comments_count": 1,
+     "timestamp": "2026-10-10T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x0/"
+    },
+    {
+     "caption": "Counting with buttons (2)",
+     "like_count": 20,
+     "comments_count": 1,
+     "timestamp": "2026-10-09T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x1/"
+    },
+    {
+     "caption": "Counting with buttons (3)",
+     "like_count": 20,
+     "comments_count": 1,
+     "timestamp": "2026-10-08T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x2/"
+    },
+    {
+     "caption": "Counting with buttons (4)",
+     "like_count": 20,
+     "comments_count": 1,
+     "timestamp": "2026-10-07T15:00:00+0000",
+     "permalink": "https://www.instagram.com/p/x3/"
+    }
+   ]
+  }
+ },
+ "hashtags": {
+  "kindergartenmath": [
+   {
+    "caption": "Ten frame fun with @kinder_with_kate! #kindergartenmath"
+   },
+   {
+    "caption": "Counting games via @prek_play_lab and @big_brand_kids"
+   }
+  ],
+  "preschoolactivities": [
+   {
+    "caption": "Love this idea from @rival_fan_mom and @quiet_creator"
+   }
+  ]
+ }
 }

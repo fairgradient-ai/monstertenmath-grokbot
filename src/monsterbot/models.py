@@ -37,3 +37,29 @@ class Comment:
     username: str
     timestamp: datetime
     parent_id: str | None = None
+
+
+@dataclass(frozen=True)
+class DirectMessage:
+    """One message in an Instagram DM thread. from_us marks the ones our account sent."""
+
+    id: str
+    thread_id: str
+    sender_id: str
+    sender_username: str
+    text: str
+    timestamp: datetime
+    from_us: bool = False
+
+
+@dataclass(frozen=True)
+class Profile:
+    """A creator's public business or creator profile (Business Discovery)."""
+
+    username: str
+    name: str = ""
+    biography: str = ""
+    website: str = ""
+    followers: int = 0
+    media_count: int = 0
+    posts: tuple[dict, ...] = ()  # recent posts: caption, like_count, comments_count, timestamp, permalink

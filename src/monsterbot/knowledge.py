@@ -79,6 +79,7 @@ class Knowledge:
     faqs: tuple[Faq, ...]
     praise: Lines
     played: Lines
+    holding: dict[str, str] = field(default_factory=dict)
 
     def match_piece(self, caption: str) -> Piece | None:
         cap = _norm(caption)
@@ -108,6 +109,8 @@ class Knowledge:
                 out.append((f"faq {f.id} open", f.open, "open", "faq"))
             for stores, text in f.open_by_stores.items():
                 out.append((f"faq {f.id} open[{stores}]", text, f"open:{stores}", "faq"))
+        for reason, text in self.holding.items():
+            out.append((f"holding {reason}", text, "both", "holding"))
         for name, lines in (("praise", self.praise), ("played", self.played)):
             for i, text in enumerate(lines.lines):
                 out.append((f"{name} line {i + 1}", text, "both", name))
@@ -213,4 +216,5 @@ def load_knowledge(directory: Path | None = None) -> Knowledge:
         faqs=tuple(faqs),
         praise=lines("praise"),
         played=lines("played"),
+        holding={h["reason"]: h["text"] for h in replies.get("holding", [])},
     )

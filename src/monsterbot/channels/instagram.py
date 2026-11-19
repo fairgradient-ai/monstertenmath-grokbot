@@ -19,7 +19,7 @@ from collections.abc import Callable
 from datetime import datetime
 
 from ..errors import ChannelError
-from ..models import Account, Comment, Media
+from ..models import Account, Comment, DirectMessage, Media
 
 COMMENT_FIELDS = "id,text,timestamp,username,parent_id"
 MEDIA_FIELDS = "id,caption,timestamp,permalink,media_type,comments_count,like_count"
@@ -71,13 +71,19 @@ class InstagramChannel:
         self._open = opener or urllib.request.urlopen
 
     # --- HTTP ------------------------------------------------------------------------------------------
-    def _call(self, method: str, url: str, params: dict | None = None, *, auth: bool = True) -> dict:
+    def _call(
+        self, method: str, url: str, params: dict | None = None, *, auth: bool = True, json_body: dict | None = None
+    ) -> dict:
         data = None
         if method == "GET" and params:
             url += ("&" if "?" in url else "?") + urllib.parse.urlencode(params)
         elif params:
             data = urllib.parse.urlencode(params).encode()
+        if json_body is not None:
+            data = json.dumps(json_body).encode()
         req = urllib.request.Request(url, data=data, method=method)
+        if json_body is not None:
+            req.add_header("Content-Type", "application/json")
         if auth:
             req.add_header("Authorization", f"Bearer {self._token}")
         ambiguous = method != "GET"
@@ -162,7 +168,39 @@ class InstagramChannel:
             parent_id=c.get("parent_id") or parent,
         )
 
+    def conversations(self, our_id: str, handle: str, limit: int = 20) -> list[DirectMessage]:
+        """The newest DM threads and their latest messages. Needs instagram_business_manage_messages with
+        Advanced Access (App Review) to see people who have no role on our app."""
+        fields = "id,updated_time,messages.limit(10){id,created_time,from,to,message}"
+        d = self._get("me/conversations", {"platform": "instagram", "fields": fields, "limit": limit})
+        out: list[DirectMessage] = []
+        for conv in d.get("data", []):
+            for m in (conv.get("messages") or {}).get("data", []):
+                frm = m.get("from") or {}
+                sender_id, sender = str(frm.get("id", "")), frm.get("username", "")
+                out.append(
+                    DirectMessage(
+                        id=m["id"],
+                        thread_id=conv["id"],
+                        sender_id=sender_id,
+                        sender_username=sender,
+                        text=m.get("message") or "",
+                        timestamp=parse_time(m["created_time"]),
+                        from_us=sender_id == our_id or sender.lower() == handle.lower(),
+                    )
+                )
+        return out
+
     # --- writes ----------------------------------------------------------------------------------------
+    def send_dm(self, recipient_id: str, text: str) -> str:
+        """A reply inside Meta's 24-hour window after the person's last message."""
+        d = self._call(
+            "POST",
+            f"{self._base}/me/messages",
+            json_body={"recipient": {"id": recipient_id}, "message": {"text": text}},
+        )
+        return str(d.get("message_id") or d.get("id"))
+
     def reply(self, comment_id: str, text: str) -> str:
         return str(self._call("POST", f"{self._base}/{comment_id}/replies", {"message": text})["id"])
 

@@ -6,7 +6,8 @@
 #
 # A comment is sorted in this order, and the first match wins:
 #   own comment > spam > escalate > tag only > "is this AI?" > guess (pieces.toml) > faq > praise > played > draft
-# Only spam, escalate and draft wait for you. Everything else gets a canned reply, and only in live mode.
+# Canned replies post by themselves in live mode. "draft" is written by the Grok Bot and posts by itself when
+# it passes the check. Escalations get a holding line (below) or wait for your OK. Spam waits for you.
 # Patterns are Python regexes, matched case-insensitively.
 
 # ---------------------------------------------------------------------------------------------------
@@ -31,7 +32,7 @@ pattern = '''\b(lawyer|lawsuit|legal|copyright|plagiar\w*|privacy|my data|delete
 
 [[escalate]]
 reason = "business"
-pattern = '''\b(collab\w*|partnership|partner with|brand deal|sponsor\w*|ugc|your rates|media kit|press|journalist|reporter|interview|podcast|wholesale|bulk|school district|teacher discount|classroom (license|licence|pricing)|homeschool co-?op)\b'''
+pattern = '''\b(collab\w*|partnership|partner with|brand deal|sponsor\w*|ugc|your rates|media kit|press|journalist|reporter|interview|podcast|wholesale|bulk|school district|teacher discount|classroom (license|licence|pricing)|use (it|this) (in|for|with) (my|our) (\w+ )?(class|classroom|students|school)|homeschool co-?op)\b'''
 
 [[escalate]]
 reason = "complaint"
@@ -40,6 +41,18 @@ pattern = '''\b(disappoint\w*|worst|useless|waste of|hate (this|it)|annoying|mis
 [[escalate]]
 reason = "rival"
 pattern = '''\b(funexpected|khan academy|prodigy|abc ?mouse|duolingo|beestar|ixl|splash ?learn|todo math|moose math)\b'''
+
+# Holding replies: for some escalations the bot answers at once with a line that moves the conversation
+# to email, and still tells you. Reasons without a holding line wait for your OK on the bot's draft.
+[[holding]]
+reason = "billing"
+source = "bot"
+text = "So sorry about that! Please email us at info@monstertenmath.com and we'll sort it out."
+
+[[holding]]
+reason = "business"
+source = "bot"
+text = "We'd love to hear more! Please email us at info@monstertenmath.com."
 
 # ---------------------------------------------------------------------------------------------------
 # A comment that tags friends, with at most a few words and no question, is people talking to each other:

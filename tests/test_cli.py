@@ -40,7 +40,7 @@ def test_rehearsal_day_one(run):
     assert code == 0
     assert out.startswith("SWEEP · REHEARSAL · building")
     assert "Would reply (rehearsal, nothing posted):" in out
-    assert "For you (I won't answer these):" in out
+    assert "For you:" in out and "holding line" in out
 
 
 def test_draft_from_heredoc_keeps_dollar_signs_and_quotes(run):

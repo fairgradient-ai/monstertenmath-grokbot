@@ -129,6 +129,7 @@ def run(desk: Desk, full: bool, channel_factory) -> tuple[list[str], int]:
                     _check_instagram(c, channel, cfg, desk)
             except ChannelError as e:
                 c.fail(f"Instagram: {e}")
+        _check_v02(c, cfg)
 
     if full:
         _full(c)
@@ -165,6 +166,40 @@ def _check_instagram(c: Checks, channel, cfg: Config, desk: Desk) -> None:
         c.ok("bio link not readable through this API version (skipped)")
 
 
+def _check_v02(c: Checks, cfg: Config) -> None:
+    """DMs, scouting and outreach: off until their access is set up (SETUP.md 12-14)."""
+    c.ok(f"written replies post by themselves: {'yes' if cfg.autosend_written else 'no (they wait for you)'}")
+    c.ok("DMs: " + ("on" if cfg.dms_enabled else "off (needs Meta's Advanced Access, SETUP.md 12)"))
+    if cfg.scout_enabled:
+        if os.environ.get("FB_ACCESS_TOKEN") or os.environ.get("MT_GRAPH", "").startswith("fake:"):
+            c.ok("scout: on, FB_ACCESS_TOKEN on the card")
+        else:
+            c.fail("scout is on but there's no FB_ACCESS_TOKEN on the card (SETUP.md 13)")
+    else:
+        c.ok("scout: off (SETUP.md 13)")
+    if cfg.outreach_enabled:
+        missing = [
+            k
+            for k, v in (
+                ("from_name", cfg.outreach_from_name),
+                ("from_email", cfg.outreach_from_email),
+                ("postal_address", cfg.outreach_postal_address),
+            )
+            if not v
+        ]
+        if missing:
+            c.fail("outreach is on but config.toml lacks outreach." + ", outreach.".join(missing))
+        elif (
+            not (os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASSWORD"))
+            and os.environ.get("MT_EMAIL") != "fake"
+        ):
+            c.fail("outreach is on but SMTP_USER / SMTP_PASSWORD aren't on the card (SETUP.md 14)")
+        else:
+            c.ok(f"outreach: on, from {cfg.outreach_from_email}, at most {cfg.outreach_max_per_day} a day")
+    else:
+        c.ok("outreach: off (SETUP.md 14)")
+
+
 def _full(c: Checks) -> None:
     """A whole sweep against the fake Instagram, in both modes and both phases, in a throwaway desk."""
     fixture = resources.files("monsterbot").joinpath("fixtures/fake_instagram.json")
@@ -177,7 +212,7 @@ def _full(c: Checks) -> None:
                 desk.set_phase(phase, FIXTURE_NOW)
                 fake = FakeInstagram.from_file(fx)
                 ledger = Ledger(desk.db_path)
-                engine = Engine(Config(), desk, load_knowledge(), fake, ledger, now=lambda: FIXTURE_NOW)
+                engine = Engine(Config(dms_enabled=True), desk, load_knowledge(), fake, ledger, now=lambda: FIXTURE_NOW)
                 res = engine.sweep()
                 planned = res.replied if mode == "live" else res.would_reply
                 posted = len(fake.posted)

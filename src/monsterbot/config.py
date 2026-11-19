@@ -14,6 +14,22 @@ from .errors import ConfigError
 
 KNOWN_STORES = ("app_store", "google_play")
 
+# Hashtags from the growth plan's search list (6.3). Hashtag search allows 30 different tags a rolling week.
+DEFAULT_HASHTAGS = (
+    "kindergartenmath",
+    "preschoolactivities",
+    "prekathome",
+    "numbersense",
+    "tenframe",
+    "homeschoolpreschool",
+    "kindergartenteacher",
+    "playbasedlearning",
+    "earlymath",
+    "mathgames",
+    "preschoolmath",
+    "learningthroughplay",
+)
+
 
 @dataclass(frozen=True)
 class Config:
@@ -32,6 +48,30 @@ class Config:
     first_comments: bool = True
     first_comment_max_age_hours: int = 24
     thanks: bool = True
+    autosend_written: bool = True
+    # [dms]
+    dms_enabled: bool = False
+    dm_window_hours: int = 23
+    # [scout]
+    scout_enabled: bool = False
+    scout_ig_user_id: str = ""
+    scout_graph_host: str = "https://graph.facebook.com"
+    scout_graph_version: str = "v24.0"
+    scout_hashtags: tuple[str, ...] = DEFAULT_HASHTAGS
+    scout_hashtags_per_run: int = 4
+    scout_max_lookups: int = 40
+    scout_recheck_days: int = 14
+    scout_followers_min: int = 5000
+    scout_followers_max: int = 200000
+    # [outreach]
+    outreach_enabled: bool = False
+    outreach_from_name: str = ""
+    outreach_from_email: str = ""
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    outreach_max_per_day: int = 10
+    outreach_fee_usd: int = 200
+    outreach_postal_address: str = ""
     # top level
     stores: tuple[str, ...] = ()
     pace_line: dict[str, int] = field(default_factory=dict)
@@ -41,17 +81,45 @@ class Config:
         return ZoneInfo(self.timezone)
 
 
-SECTIONS = {
-    "account": ("username", "timezone"),
-    "instagram": ("graph_host", "graph_version", "media_lookback", "timeout_seconds"),
-    "engage": (
-        "auto_reply_max_age_hours",
-        "max_auto_replies_per_sweep",
-        "max_auto_replies_per_day",
-        "first_comments",
-        "first_comment_max_age_hours",
-        "thanks",
-    ),
+# section -> {key in config.toml: field name}
+SECTIONS: dict[str, dict[str, str]] = {
+    "account": {"username": "username", "timezone": "timezone"},
+    "instagram": {k: k for k in ("graph_host", "graph_version", "media_lookback", "timeout_seconds")},
+    "engage": {
+        k: k
+        for k in (
+            "auto_reply_max_age_hours",
+            "max_auto_replies_per_sweep",
+            "max_auto_replies_per_day",
+            "first_comments",
+            "first_comment_max_age_hours",
+            "thanks",
+            "autosend_written",
+        )
+    },
+    "dms": {"enabled": "dms_enabled", "window_hours": "dm_window_hours"},
+    "scout": {
+        "enabled": "scout_enabled",
+        "ig_user_id": "scout_ig_user_id",
+        "graph_host": "scout_graph_host",
+        "graph_version": "scout_graph_version",
+        "hashtags": "scout_hashtags",
+        "hashtags_per_run": "scout_hashtags_per_run",
+        "max_lookups": "scout_max_lookups",
+        "recheck_days": "scout_recheck_days",
+        "followers_min": "scout_followers_min",
+        "followers_max": "scout_followers_max",
+    },
+    "outreach": {
+        "enabled": "outreach_enabled",
+        "from_name": "outreach_from_name",
+        "from_email": "outreach_from_email",
+        "smtp_host": "smtp_host",
+        "smtp_port": "smtp_port",
+        "max_per_day": "outreach_max_per_day",
+        "fee_usd": "outreach_fee_usd",
+        "postal_address": "outreach_postal_address",
+    },
 }
 TOP_LEVEL = ("stores", "pace_line")
 
@@ -65,7 +133,7 @@ def parse_config(data: dict) -> Config:
             for sub, subval in value.items():
                 if sub not in SECTIONS[key]:
                     raise ConfigError(f"unknown key {key}.{sub} in config.toml")
-                values[sub] = subval
+                values[SECTIONS[key][sub]] = subval
         elif key in TOP_LEVEL:
             values[key] = value
         else:
@@ -78,6 +146,10 @@ def parse_config(data: dict) -> Config:
             if not isinstance(value, list) or any(s not in KNOWN_STORES for s in value):
                 raise ConfigError(f"stores must be a list drawn from {list(KNOWN_STORES)}")
             values[name] = tuple(value)
+        elif name == "scout_hashtags":
+            if not isinstance(value, list) or not all(isinstance(v, str) and v.strip("#") for v in value):
+                raise ConfigError("scout.hashtags must be a list of hashtags")
+            values[name] = tuple(v.strip("#").lower() for v in value)
         elif name == "pace_line":
             if not isinstance(value, dict) or not all(isinstance(v, int) for v in value.values()):
                 raise ConfigError("pace_line maps a date (YYYY-MM-DD) to a follower count")

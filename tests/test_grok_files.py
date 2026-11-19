@@ -32,8 +32,9 @@ def test_routines_call_only_safe_commands():
         commands = re.findall(re.escape(RUN) + r" (\S+)", r["prompt"])
         assert commands, r["id"]
         for cmd in commands:
-            assert cmd in {"sweep", "stats", "doctor", "token"}, (r["id"], cmd)
+            assert cmd in {"sweep", "stats", "doctor", "token", "scout"}, (r["id"], cmd)
         assert "--owner-tapped" not in r["prompt"] and "send" not in commands
+        assert "outreach send" not in r["prompt"]
 
 
 def test_every_command_has_an_auto_review_rule():
@@ -41,7 +42,7 @@ def test_every_command_has_an_auto_review_rule():
     allow, ask = rules.split("=== Ask first ===")
     for cmd in cli_commands():
         assert f"run.sh {cmd}" in rules or (cmd in ask), cmd
-    for risky in ("send", "hide", "go-live", "rehearse", "--owner-tapped", "--force-lint"):
+    for risky in ("send", "hide", "outreach send", "go-live", "rehearse", "--owner-tapped", "--force-lint"):
         assert risky in ask, risky
         assert f"run.sh {risky}" not in allow, risky
 

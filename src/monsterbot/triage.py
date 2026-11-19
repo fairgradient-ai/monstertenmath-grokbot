@@ -62,6 +62,21 @@ class Verdict:
     notify: str | None = None
 
 
+def escalation(kn: Knowledge, reason: str) -> Verdict:
+    """Escalations are the owner's. Some get a holding line at once (it moves the talk to email); the rest wait
+    for the owner's OK on a draft."""
+    holding = kn.holding.get(reason)
+    if holding:
+        return Verdict(
+            "escalate",
+            "auto",
+            holding,
+            reason,
+            notify=f"{reason}: answered with the holding line (email us). Follow up from info@monstertenmath.com.",
+        )
+    return Verdict("escalate", "owner", reason=reason)
+
+
 def numbers_in(text: str) -> list[int]:
     out = []
     for tok in TOKENS.findall(text.lower()):
@@ -130,7 +145,7 @@ def triage(
             return Verdict("spam", "owner", reason="spam")
         for reason, pattern in kn.escalate:
             if pattern.search(text):
-                return Verdict("escalate", "owner", reason=reason)
+                return escalation(kn, reason)
         if is_question or mentions_us:
             return Verdict("thread", "draft", reason=f"a reply under @{parent.username}'s comment")
         return Verdict("thread", "skip", reason="people talking in someone else's thread")
@@ -139,7 +154,7 @@ def triage(
         return Verdict("spam", "owner", reason="spam")
     for reason, pattern in kn.escalate:
         if pattern.search(text):
-            return Verdict("escalate", "owner", reason=reason)
+            return escalation(kn, reason)
     if kn.tag_only.search(text) and not mentions_us:
         return Verdict("tag-only", "skip")
 

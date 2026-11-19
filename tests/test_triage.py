@@ -71,6 +71,8 @@ def test_own_spam_escalate_tags(kn):
     assert (v.category, v.reason) == ("escalate", "billing")
     assert sort(kn, "My son has ADHD, will this work?").reason == "child-or-health"
     assert sort(kn, "We'd love to collab!").reason == "business"
+    assert sort(kn, "Can I use this in my kindergarten class?").reason == "business"
+    assert sort(kn, "Can I use this in my kindergarten class?").tier == "auto"  # the holding line
     assert sort(kn, "We use Prodigy already").reason == "rival"
     assert sort(kn, "@bestie we need this").tier == "skip"
     assert sort(kn, "@bestie @other").tier == "skip"

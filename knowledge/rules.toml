@@ -65,6 +65,8 @@ id = "building-no-date"
 phase = "building"
 pattern = '''\blaunch(es|ing)?\s+(on|this|next|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b|opens?\s+(on|this|next)\b|\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b'''
 why = "Before launch, never announce the launch day (section 6)."
+# A Collab email names the days a creator posts; that isn't announcing the launch.
+skip_categories = ["email"]
 
 # --- From launch day, once the gate has passed ---------------------------------------------------------
 [[banned]]
@@ -93,6 +95,8 @@ pattern = '''https?://\S+|www\.\S+|\b[\w-]+\.(com|net|org|io|app|co|ly|xyz)(/\S*
 allowed_open = ["monstertenmath.com/insta"]
 # The contact address on the profile (README section 1) may be given in either phase.
 allowed_always = ["info@monstertenmath.com"]
+# Collab emails may also point to the profile (growth plan 6.5: "leave the website out until launch").
+allowed_email = ["instagram.com/monstertenmath"]
 
 # "Download", "App Store" or "Google Play" only for a store the app is really in (gate step 4).
 [stores]

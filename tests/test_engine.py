@@ -13,7 +13,7 @@ def test_rehearsal_posts_nothing(make_engine):
     engine, fake = make_engine(mode="rehearsal")
     res = engine.sweep()
     assert fake.posted == [] and fake.hidden == []
-    assert len(res.would_reply) == 10
+    assert len(res.would_reply) == 11  # 10 canned replies and 1 holding line
     assert len(res.first_comments) == 2
 
 
@@ -22,14 +22,14 @@ def test_live_posts_canned_replies_once(make_engine):
     res = engine.sweep()
     replies = [p for p in fake.posted if p["kind"] == "reply"]
     comments = [p for p in fake.posted if p["kind"] == "comment"]
-    assert len(replies) == len(res.replied) == 10
+    assert len(replies) == len(res.replied) == 11
     assert {p["parent"] for p in comments} == {"m3", "m14"}
     by_parent = {p["parent"]: p["text"] for p in replies}
     assert by_parent["c1"] == "Yes! 7 and 3 make 10."
     assert by_parent["c2"].startswith("Let's check!")
     # a second sweep posts nothing new
     engine.sweep()
-    assert len(fake.posted) == 12
+    assert len(fake.posted) == 13
 
 
 def test_rehearsal_then_live_does_the_planned_work(make_engine):
@@ -44,7 +44,9 @@ def test_waiting_items_are_sorted_for_the_owner(make_engine):
     engine, _ = make_engine(mode="live")
     engine.sweep()
     assert item_by_external(engine, "c7").category == "spam"
-    assert item_by_external(engine, "c8").reason == "billing"
+    billing = item_by_external(engine, "c8")
+    assert billing.reason == "billing" and billing.status == "replied"
+    assert "info@monstertenmath.com" in billing.reply_text
     assert item_by_external(engine, "c9").status == "queued"
     assert item_by_external(engine, "c6").status == "skipped"  # friends tagging friends
     assert item_by_external(engine, "c9r1").status == "skipped"  # chat in someone else's thread

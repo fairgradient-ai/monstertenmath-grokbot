@@ -1,8 +1,9 @@
-"""A fake Instagram for tests and `doctor --full`: reads a JSON fixture and keeps what the bot posts.
+"""Fakes of Instagram, Facebook's Graph (scouting) and email, for tests and `doctor --full`.
 
-Fixture: {"account": {...}, "media": [{"id", "caption", "timestamp", "comments": [{"id", "text",
-"username", "timestamp", "replies": [...]}]}]}. With a `state` path, what the bot posts is saved there, so
-separate CLI runs see each other's replies.
+Fixture: {"account": {...}, "media": [{"id", "caption", "timestamp", "comments": [{"id", "text", "username",
+"timestamp", "replies": [...]}]}], "conversations": [{"id", "messages": [{"id", "from": {"id", "username"},
+"text", "timestamp"}]}], "creators": {username: {...}}, "hashtags": {tag: [{"caption", ...}]}}.
+With a `state` path, what the bot posts is saved there, so separate CLI runs see each other's replies.
 """
 
 from __future__ import annotations
@@ -12,7 +13,7 @@ import json
 from pathlib import Path
 
 from ..errors import ChannelError
-from ..models import Account, Comment, Media
+from ..models import Account, Comment, DirectMessage, Media, Profile
 from .instagram import parse_time
 
 
@@ -79,36 +80,65 @@ class FakeInstagram:
             out.append(Comment(c["id"], media_id, c["text"], c["username"], parse_time(c["timestamp"])))
             for r in c.get("replies", []):
                 out.append(
-                    Comment(
-                        r["id"],
-                        media_id,
-                        r["text"],
-                        r["username"],
-                        parse_time(r["timestamp"]),
-                        parent_id=c["id"],
-                    )
+                    Comment(r["id"], media_id, r["text"], r["username"], parse_time(r["timestamp"]), parent_id=c["id"])
                 )
             for p in self.posted:
                 if p["kind"] == "reply" and p["parent"] == c["id"]:
                     out.append(
-                        Comment(
-                            p["id"],
-                            media_id,
-                            p["text"],
-                            me,
-                            parse_time(media["timestamp"]),
-                            parent_id=c["id"],
-                        )
+                        Comment(p["id"], media_id, p["text"], me, parse_time(media["timestamp"]), parent_id=c["id"])
                     )
         for p in self.posted:
             if p["kind"] == "comment" and p["parent"] == media_id:
                 out.append(Comment(p["id"], media_id, p["text"], me, parse_time(media["timestamp"])))
         return out
 
+    def conversations(self, our_id: str, handle: str, limit: int = 20) -> list[DirectMessage]:
+        self._maybe_fail()
+        out: list[DirectMessage] = []
+        for conv in self.fixture.get("conversations", [])[:limit]:
+            last = None
+            for m in conv["messages"]:
+                frm = m["from"]
+                last = parse_time(m["timestamp"])
+                out.append(
+                    DirectMessage(
+                        id=m["id"],
+                        thread_id=conv["id"],
+                        sender_id=frm["id"],
+                        sender_username=frm["username"],
+                        text=m.get("text", ""),
+                        timestamp=last,
+                        from_us=frm["id"] == our_id or frm["username"].lower() == handle.lower(),
+                    )
+                )
+            for p in self.posted:
+                if p["kind"] == "dm" and p["thread"] == conv["id"]:
+                    out.append(
+                        DirectMessage(p["id"], conv["id"], our_id, handle, p["text"], last, from_us=True)  # type: ignore[arg-type]
+                    )
+        return out
+
     def reply(self, comment_id: str, text: str) -> str:
         self._maybe_fail()
         new_id = f"fake-reply-{next(self._ids)}"
         self.posted.append({"kind": "reply", "id": new_id, "parent": comment_id, "text": text})
+        self._save()
+        return new_id
+
+    def send_dm(self, recipient_id: str, text: str) -> str:
+        self._maybe_fail()
+        thread = next(
+            (
+                c["id"]
+                for c in self.fixture.get("conversations", [])
+                if any(m["from"]["id"] == recipient_id for m in c["messages"])
+            ),
+            None,
+        )
+        if thread is None:
+            raise ChannelError("no conversation with that person", "bad_request")
+        new_id = f"fake-dm-{next(self._ids)}"
+        self.posted.append({"kind": "dm", "id": new_id, "thread": thread, "to": recipient_id, "text": text})
         self._save()
         return new_id
 
@@ -123,3 +153,40 @@ class FakeInstagram:
         self._maybe_fail()
         self.hidden.append(comment_id)
         self._save()
+
+
+class FakeGraph:
+    """Business Discovery and hashtag search, from the fixture's "creators" and "hashtags"."""
+
+    def __init__(self, fixture: dict):
+        self.fixture = fixture
+        self.lookups: list[str] = []
+        self.hashtag_calls: list[str] = []
+
+    def business_discovery(self, username: str) -> Profile | None:
+        self.lookups.append(username)
+        raw = self.fixture.get("creators", {}).get(username.lower())
+        if raw is None:
+            return None  # a personal account, or no such account
+        return Profile(
+            username=username.lower(),
+            name=raw.get("name", ""),
+            biography=raw.get("biography", ""),
+            website=raw.get("website", ""),
+            followers=raw.get("followers_count", 0),
+            media_count=raw.get("media_count", 0),
+            posts=tuple(raw.get("media", [])),
+        )
+
+    def hashtag_top_media(self, tag: str) -> list[dict]:
+        self.hashtag_calls.append(tag)
+        return list(self.fixture.get("hashtags", {}).get(tag, []))
+
+
+class FakeEmail:
+    def __init__(self) -> None:
+        self.sent: list[dict] = []
+
+    def send(self, to: str, subject: str, body: str) -> str:
+        self.sent.append({"to": to, "subject": subject, "body": body})
+        return f"fake-email-{len(self.sent)}"

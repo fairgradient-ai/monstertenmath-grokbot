@@ -1,9 +1,9 @@
 ---
 name: monsterten-voice
-description: How to write a reply as @monstertenmath. Use whenever you draft a reply to an Instagram comment for Monster Ten, or the owner asks you to word something for the account. Covers the voice, what we may and may never say, the two phases (being built / open), and examples. The engine checks every draft against these rules.
+description: How to write a reply or a Collab email as @monstertenmath. Use whenever you write a reply to an Instagram comment or DM for Monster Ten, a personal line for a creator email, or the owner asks you to word something for the account. Covers the voice, what we may and may never say, the two phases (being built / open), and examples. The engine checks every draft against these rules.
 license: Proprietary
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   category: social
 ---
 
@@ -12,6 +12,12 @@ metadata:
 Source: the launch pack in fairgradient-ai/monstertenmath_social (instagram/README.md sections 0, 6 and 7;
 instagram/growth-plan.md section 6.2). The engine runs the same rules on every draft (knowledge/rules.toml),
 so a reply that breaks one comes back with a ✗ and the reason.
+
+## Learn from the owner first
+
+Run `run.sh examples` before a batch of replies. It shows the replies the owner typed in the app, edited, or
+approved, newest first, with what you had written when they changed it. Match their length, warmth and
+phrasing; where they corrected you, don't repeat what they took out.
 
 ## The voice
 
@@ -56,9 +62,15 @@ so a reply that breaks one comes back with a ✗ and the reason.
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | "Does this work for a 3 year old?"         | "Our lessons are made for 4 to 6. Plenty of 3-year-olds love the cracker part with you, though." |
 | "We played it at dinner and he hid 5!"     | "He hid 5? That's a big Monster move. Did you get it right?"                                     |
-| "Can I use this in my kindergarten class?" | (A business question: it's listed for the owner. Don't draft unless asked.)                      |
+| "Can I use this in my kindergarten class?" | (Business: the engine answers with the holding line, "email us". Nothing to write.)                      |
 | "What crackers do you use?"                | "Any small square crackers work. Blocks or toy cars do the job too."                                   |
 | "Is it really only 10 minutes?"            | "Yes: 1 minute warm-up, 5 minutes together, a 3-minute game, then a sticker."                    |
 
 Check facts against the pack when you're unsure: one night is 10 minutes (1 + 5 + 3 + 1), ages 4–6, the
 lessons go from counting to adding and subtracting within 20.
+
+## Collab emails
+
+The email itself is a fixed template (growth plan 6.5). You write only the personal line: one or two sentences
+about one specific recent post of theirs, true to its caption. Warm, specific, no flattery pile-up, and no
+claims about what their audience or child will get. Never invent a detail you didn't see in their captions.

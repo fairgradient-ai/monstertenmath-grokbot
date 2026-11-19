@@ -54,6 +54,9 @@ CREATE TABLE IF NOT EXISTS items (
   attempted_at TEXT,
   replied_at TEXT,
   error TEXT,
+  recipient_id TEXT,
+  draft_by TEXT,
+  sent_by TEXT,
   UNIQUE(channel, external_id)
 );
 CREATE TABLE IF NOT EXISTS actions (
@@ -68,7 +71,45 @@ CREATE TABLE IF NOT EXISTS actions (
 );
 CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS followers (day TEXT PRIMARY KEY, count INTEGER NOT NULL, recorded_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS examples (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ts TEXT NOT NULL,
+  source TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  item_id INTEGER,
+  incoming TEXT,
+  bot_draft TEXT,
+  final TEXT NOT NULL,
+  external_id TEXT UNIQUE
+);
+CREATE TABLE IF NOT EXISTS creators (
+  username TEXT PRIMARY KEY,
+  name TEXT,
+  followers INTEGER,
+  media_count INTEGER,
+  engagement REAL,
+  last_post TEXT,
+  biography TEXT,
+  website TEXT,
+  email TEXT,
+  captions TEXT,
+  score INTEGER,
+  score_notes TEXT,
+  source TEXT,
+  status TEXT NOT NULL DEFAULT 'new',
+  note TEXT,
+  checked_at TEXT,
+  outreach_subject TEXT,
+  outreach_body TEXT,
+  outreach_violations TEXT,
+  outreach_sent_at TEXT,
+  updated_at TEXT
+);
+CREATE TABLE IF NOT EXISTS hashtag_queries (tag TEXT NOT NULL, ts TEXT NOT NULL);
 """
+
+# Columns added after v0.1.0; added in place to an older database.
+MIGRATIONS = [("items", "recipient_id", "TEXT"), ("items", "draft_by", "TEXT"), ("items", "sent_by", "TEXT")]
 
 OPEN_STATUSES = ("queued", "drafted", "unverified")
 
@@ -98,6 +139,13 @@ class Item:
     attempted_at: datetime | None
     replied_at: datetime | None
     error: str | None
+    recipient_id: str | None = None
+    draft_by: str | None = None
+    sent_by: str | None = None
+
+    @property
+    def is_dm(self) -> bool:
+        return self.channel.endswith("-dm")
 
 
 def _dt(value: str | None) -> datetime | None:
@@ -129,6 +177,9 @@ def _row_to_item(row: sqlite3.Row) -> Item:
         attempted_at=_dt(row["attempted_at"]),
         replied_at=_dt(row["replied_at"]),
         error=row["error"],
+        recipient_id=row["recipient_id"],
+        draft_by=row["draft_by"],
+        sent_by=row["sent_by"],
     )
 
 
@@ -139,6 +190,10 @@ class Ledger:
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.executescript(SCHEMA)
+        for table, column, kind in MIGRATIONS:
+            cols = {r[1] for r in self.db.execute(f"PRAGMA table_info({table})")}
+            if column not in cols:
+                self.db.execute(f"ALTER TABLE {table} ADD COLUMN {column} {kind}")
 
     def close(self) -> None:
         self.db.close()
@@ -201,7 +256,8 @@ class Ledger:
         author: str | None = None,
         category: str | None = None,
     ) -> int:
-        sql = "SELECT COUNT(*) FROM items WHERE status = 'replied' AND tier = 'auto' AND replied_at >= ?"
+        # Everything the bot posted without the owner's tap: canned replies and its own written ones.
+        sql = "SELECT COUNT(*) FROM items WHERE status = 'replied' AND sent_by IN ('auto', 'bot') AND replied_at >= ?"
         args: list[object] = [since.isoformat()]
         for col, val in (("media_id", media_id), ("author", author), ("category", category)):
             if val is not None:
@@ -260,6 +316,80 @@ class Ledger:
     def followers_on(self, day: str) -> int | None:
         row = self.db.execute("SELECT count FROM followers WHERE day = ?", (day,)).fetchone()
         return int(row[0]) if row else None
+
+    # --- examples: how the owner answers, for the bot to learn from ------------------------------------
+    def add_example(
+        self,
+        now: datetime,
+        *,
+        source: str,
+        kind: str,
+        final: str,
+        incoming: str | None = None,
+        bot_draft: str | None = None,
+        item_id: int | None = None,
+        external_id: str | None = None,
+    ) -> bool:
+        cur = self.db.execute(
+            "INSERT OR IGNORE INTO examples (ts, source, kind, item_id, incoming, bot_draft, final, external_id) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (now.isoformat(), source, kind, item_id, incoming, bot_draft, final, external_id),
+        )
+        return cur.rowcount > 0
+
+    def examples(self, limit: int = 20, sources: tuple[str, ...] | None = None) -> list[sqlite3.Row]:
+        sql, args = "SELECT * FROM examples", []
+        if sources:
+            sql += f" WHERE source IN ({', '.join('?' for _ in sources)})"
+            args = list(sources)
+        return list(self.db.execute(sql + " ORDER BY id DESC LIMIT ?", (*args, limit)))
+
+    def our_reply_ids(self) -> set[str]:
+        return {
+            r[0] for r in self.db.execute("SELECT reply_external_id FROM items WHERE reply_external_id IS NOT NULL")
+        }
+
+    # --- creators --------------------------------------------------------------------------------------
+    def creator(self, username: str) -> sqlite3.Row | None:
+        return self.db.execute("SELECT * FROM creators WHERE username = ?", (username.lower(),)).fetchone()
+
+    def upsert_creator(self, username: str, now: datetime, **fields: object) -> None:
+        username = username.lower()
+        fields["updated_at"] = now.isoformat()
+        if self.creator(username) is None:
+            fields.setdefault("status", "new")
+            cols = ["username", *fields]
+            self.db.execute(
+                f"INSERT INTO creators ({', '.join(cols)}) VALUES ({', '.join('?' for _ in cols)})",
+                (username, *map(_sql, fields.values())),
+            )
+        else:
+            sets = ", ".join(f"{k} = ?" for k in fields)
+            self.db.execute(f"UPDATE creators SET {sets} WHERE username = ?", (*map(_sql, fields.values()), username))
+
+    def creators(self, statuses: tuple[str, ...] | None = None, limit: int = 50) -> list[sqlite3.Row]:
+        sql, args = "SELECT * FROM creators", []
+        if statuses:
+            sql += f" WHERE status IN ({', '.join('?' for _ in statuses)})"
+            args = list(statuses)
+        return list(self.db.execute(sql + " ORDER BY COALESCE(score, -1) DESC, username LIMIT ?", (*args, limit)))
+
+    def emails_sent_since(self, since: datetime) -> int:
+        return int(
+            self.db.execute(
+                "SELECT COUNT(*) FROM creators WHERE outreach_sent_at >= ?", (since.isoformat(),)
+            ).fetchone()[0]
+        )
+
+    # --- hashtag searches (30 different tags in a rolling 7 days) --------------------------------------
+    def record_hashtag(self, tag: str, now: datetime) -> None:
+        self.db.execute("INSERT INTO hashtag_queries (tag, ts) VALUES (?, ?)", (tag, now.isoformat()))
+
+    def hashtags_since(self, since: datetime) -> dict[str, str]:
+        rows = self.db.execute(
+            "SELECT tag, MAX(ts) FROM hashtag_queries WHERE ts >= ? GROUP BY tag", (since.isoformat(),)
+        )
+        return {r[0]: r[1] for r in rows}
 
 
 def _sql(value: object) -> object:

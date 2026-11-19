@@ -1,20 +1,24 @@
 """The commands scripts/run.sh runs. The Grok Bot posts their output verbatim.
 
 Exit codes: 0 done, 1 refused or not done, 2 config, 3 Instagram or the computer.
-Environment: MT_DESK (the desk folder), IG_ACCESS_TOKEN (secret card), MT_CHANNEL ("instagram", or
-"fake:<fixture.json>" for tests), MT_NOW (a fixed ISO time, for tests).
+Environment: MT_DESK (the desk folder); from the secret card IG_ACCESS_TOKEN, FB_ACCESS_TOKEN (scouting),
+SMTP_USER and SMTP_PASSWORD (outreach); for tests MT_CHANNEL / MT_GRAPH ("fake:<fixture.json>"), MT_EMAIL
+("fake") and MT_NOW (a fixed ISO time).
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
 from . import __version__, doctor
-from .channels.fake import FakeInstagram
+from .channels.email import SmtpEmail
+from .channels.facebook import FacebookGraph
+from .channels.fake import FakeEmail, FakeGraph, FakeInstagram
 from .channels.instagram import InstagramChannel
 from .config import load_config
 from .desk import Desk
@@ -22,7 +26,9 @@ from .engine import Engine, short
 from .errors import BotError, ChannelError, Refused
 from .knowledge import load_knowledge
 from .ledger import Ledger
-from .report import draft_report, inbox_report, sweep_report
+from .outreach import Outreach
+from .report import draft_report, examples_report, inbox_report, sweep_report
+from .scout import STATUSES, Scout
 from .token import expiry, load_token, save_refreshed
 
 
@@ -43,6 +49,50 @@ def channel_factory(desk: Desk, cfg):
     )
 
 
+def graph_factory(cfg):
+    spec = os.environ.get("MT_GRAPH", "facebook")
+    if spec.startswith("fake:"):
+        return FakeGraph(json.loads(Path(spec[5:]).read_text()))
+    return FacebookGraph(
+        os.environ.get("FB_ACCESS_TOKEN", "").strip(),
+        ig_user_id=cfg.scout_ig_user_id,
+        host=cfg.scout_graph_host,
+        version=cfg.scout_graph_version,
+        timeout=cfg.timeout_seconds,
+    )
+
+
+class FileEmail(FakeEmail):
+    """MT_EMAIL=fake: emails are written to the desk instead of sent."""
+
+    def __init__(self, path: Path):
+        super().__init__()
+        self.path = path
+
+    def send(self, to: str, subject: str, body: str) -> str:
+        sent = json.loads(self.path.read_text()) if self.path.exists() else []
+        sent.append({"to": to, "subject": subject, "body": body})
+        self.path.write_text(json.dumps(sent, indent=1, ensure_ascii=False))
+        return f"fake-email-{len(sent)}"
+
+
+def email_factory(cfg, desk: Desk):
+    if os.environ.get("MT_EMAIL") == "fake":
+        return FileEmail(desk.state / "fake-emails.json")
+    return SmtpEmail(
+        host=cfg.smtp_host,
+        port=cfg.smtp_port,
+        user=os.environ.get("SMTP_USER", ""),
+        password=os.environ.get("SMTP_PASSWORD", ""),
+        from_name=cfg.outreach_from_name,
+        from_email=cfg.outreach_from_email,
+    )
+
+
+def handles(values: list[str]) -> list[str]:
+    return [v.strip().lstrip("@").lower() for value in values for v in value.replace(",", " ").split() if v.strip()]
+
+
 def ids_arg(values: list[str], engine: Engine | None = None) -> list[int]:
     if values == ["all"] and engine is not None:
         return engine.drafted_ids()
@@ -60,9 +110,13 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("sweep", help="read new comments, post canned replies (live), list the rest")
     sub.add_parser("inbox", help="what waits for you: drafts, questions, escalations, spam")
-    d = sub.add_parser("draft", help="save a reply for an item (read from --text or standard input)")
+    r = sub.add_parser("reply", help="the Grok Bot's written reply: posted at once if it passes the check")
+    r.add_argument("item", type=int)
+    r.add_argument("--text")
+    d = sub.add_parser("draft", help="save a reply for an item without posting it (--text or standard input)")
     d.add_argument("item", type=int)
     d.add_argument("--text")
+    d.add_argument("--by", choices=["bot", "owner"], default="bot", help="owner: the owner gave these words")
     s = sub.add_parser("send", help="post drafts (needs the owner's tap)")
     s.add_argument("items", nargs="+")
     s.add_argument("--owner-tapped", action="store_true")
@@ -84,6 +138,22 @@ def build_parser() -> argparse.ArgumentParser:
         m.add_argument("--owner-tapped", action="store_true")
     t = sub.add_parser("token", help="show or refresh the Instagram token's expiry (never the token)")
     t.add_argument("action", choices=["status", "refresh"])
+    sub.add_parser("examples", help="how the owner answers: replies they wrote, edited or approved")
+    sc = sub.add_parser("scout", help="find creators (read-only), or add usernames to look at")
+    sc.add_argument("action", nargs="?", choices=["run", "add"], default="run")
+    sc.add_argument("usernames", nargs="*")
+    cr = sub.add_parser("creators", help="the creator list: show, or mark one")
+    cr.add_argument("action", nargs="?", choices=["list", "show", "mark"], default="list")
+    cr.add_argument("username", nargs="?")
+    cr.add_argument("status", nargs="?", choices=STATUSES)
+    cr.add_argument("--note", default="")
+    cr.add_argument("--all", action="store_true")
+    ou = sub.add_parser("outreach", help="Collab emails: draft one, list them, or send (needs the owner's tap)")
+    ou.add_argument("action", choices=["draft", "list", "send"])
+    ou.add_argument("usernames", nargs="*")
+    ou.add_argument("--first-name")
+    ou.add_argument("--text")
+    ou.add_argument("--owner-tapped", action="store_true")
     sub.add_parser("version")
     return p
 
@@ -149,9 +219,69 @@ def _run(args, desk: Desk) -> int:
     if args.cmd == "draft":
         text = args.text if args.text is not None else sys.stdin.read()
         with desk.lock(wait_seconds=120):
-            item, violations = engine.draft(args.item, text)
+            item, violations = engine.draft(args.item, text, by=args.by)
         print("\n".join(draft_report(item, violations)))
         return 0 if not violations else 1
+
+    if args.cmd == "reply":
+        text = args.text if args.text is not None else sys.stdin.read()
+        with desk.lock(wait_seconds=120):
+            item, violations, outcome = engine.reply(args.item, text)
+        print("\n".join(reply_report(engine, item, violations, outcome)))
+        return 0 if outcome in ("sent", "rehearsal") or outcome.startswith("waits") else 1
+
+    if args.cmd == "examples":
+        print("\n".join(examples_report(ledger)))
+        return 0
+
+    if args.cmd == "scout":
+        if args.action == "add":
+            names = handles(args.usernames)
+            for name in names:
+                if ledger.creator(name) is None:
+                    ledger.upsert_creator(name, now(), status="seed", source="added for a look")
+            print(f"SCOUT: {len(names)} added to look at on the next scout run: " + ", ".join("@" + n for n in names))
+            return 0
+        if not cfg.scout_enabled:
+            raise Refused("REFUSED: scouting is off. Set [scout] enabled = true in config.toml (SETUP.md, 13).")
+        with desk.lock(wait_seconds=120):
+            looked, notes = Scout(cfg, kn, ledger, graph_factory(cfg), now()).run()
+        print("\n".join(scout_report(ledger, looked, notes)))
+        return 0
+
+    if args.cmd == "creators":
+        return creators_command(args, ledger, now())
+
+    if args.cmd == "outreach":
+        out = Outreach(cfg, kn, ledger, desk.phase(), desk.mode(), now())
+        if args.action == "list":
+            print("\n".join(outreach_list(ledger)))
+            return 0
+        if args.action == "draft":
+            if len(args.usernames) != 1:
+                raise Refused("REFUSED: draft one creator at a time: outreach draft <username>.")
+            line = args.text if args.text is not None else sys.stdin.read()
+            with desk.lock(wait_seconds=120):
+                body, violations = out.compose(handles(args.usernames)[0], line, args.first_name)
+            head = (
+                "OUTREACH DRAFT saved · passes the check"
+                if not violations
+                else "OUTREACH DRAFT saved · FAILS the check"
+            )
+            print("\n".join([head, "", body, *[f"✗ {v}" for v in violations]]))
+            return 0 if not violations else 1
+        if not cfg.outreach_enabled:
+            raise Refused("REFUSED: outreach is off. Set [outreach] enabled = true in config.toml (SETUP.md, 14).")
+        names = out.ready() if args.usernames == ["all"] else handles(args.usernames)
+        if not names:
+            print("NOTHING TO SEND: no outreach draft passes the check.")
+            return 1
+        with desk.lock(wait_seconds=120):
+            lines = out.send(
+                names, None if desk.mode() == "rehearsal" else email_factory(cfg, desk), owner_tapped=args.owner_tapped
+            )
+        print("\n".join(lines))
+        return 0 if all(line.startswith(("SENT", "REHEARSAL")) for line in lines) else 1
 
     if args.cmd == "send":
         with desk.lock(wait_seconds=120):
@@ -231,6 +361,84 @@ def _run(args, desk: Desk) -> int:
     raise Refused(f"unknown command {args.cmd}")
 
 
+def reply_report(engine: Engine, item, violations, outcome: str) -> list[str]:
+    text = f'"{short(item.draft_text, 300)}"'
+    if violations:
+        return [
+            f"HELD [{item.id}]: the reply fails the check, so it wasn't posted:",
+            f"  {text}",
+            *[f"  ✗ {v}" for v in violations],
+        ]
+    if outcome == "sent":
+        return [f"SENT [{item.id}] to @{item.author} on {engine.label(item)}: {text}"]
+    if outcome == "rehearsal":
+        return [f"REHEARSAL [{item.id}]: would send to @{item.author}: {text}"]
+    return [f"SAVED [{item.id}], not posted: {outcome}.", f"  {text}"]
+
+
+def scout_report(ledger: Ledger, looked: list[str], notes: list[str]) -> list[str]:
+    top = [r for r in ledger.creators(statuses=("new", "shortlist", "drafted"), limit=12)]
+    out = [f"SCOUT · looked up {len(looked)} profiles · {len(top)} candidates to consider"]
+    for r in top:
+        out.append(creator_line(r))
+    out.extend(f"Note: {n}" for n in notes)
+    out.append('Say "creators show <name>" for a profile, "creators mark <name> shortlist" or "reject".')
+    return out
+
+
+def creator_line(r) -> str:
+    eng = f"{(r['engagement'] or 0):.1%}" if r["engagement"] is not None else "?"
+    email = "email ✓" if r["email"] else "no email"
+    followers = f"{r['followers']:,}" if r["followers"] is not None else "?"
+    score = r["score"] if r["score"] is not None else "–"
+    return f"  {score:>3} @{r['username']} · {followers} followers · {eng} engagement · {email} · {r['status']}"
+
+
+def creators_command(args, ledger: Ledger, now) -> int:
+    if args.action == "list":
+        statuses = None if args.all else ("new", "shortlist", "drafted", "contacted", "booked")
+        rows = ledger.creators(statuses=statuses, limit=40)
+        print("\n".join(["CREATORS · by score", *[creator_line(r) for r in rows]] if rows else ["CREATORS · none yet"]))
+        return 0
+    name = (args.username or "").lstrip("@").lower()
+    row = ledger.creator(name) if name else None
+    if row is None:
+        raise Refused(f"REFUSED: @{name} isn't in the creator list.")
+    if args.action == "show":
+        lines = [
+            f"@{row['username']} · {row['name'] or ''}",
+            creator_line(row).strip(),
+            f"Bio: {row['biography'] or ''}",
+            f"Website: {row['website'] or ''}",
+            f"Found: {row['source'] or ''} · checked {row['checked_at'] or 'never'}",
+        ]
+        lines += [f"Note: {n}" for n in json.loads(row["score_notes"] or "[]")]
+        if row["note"]:
+            lines.append(f"Our note: {row['note']}")
+        lines += ["Recent captions:", *[f"  - {short(c, 160)}" for c in json.loads(row["captions"] or "[]")]]
+        print("\n".join(lines))
+        return 0
+    if not args.status:
+        raise Refused("REFUSED: say which: creators mark <name> shortlist|reject|declined|booked|new.")
+    ledger.upsert_creator(name, now, status=args.status, **({"note": args.note} if args.note else {}))
+    print(f"CREATOR @{name}: {args.status}" + (f" · {args.note}" if args.note else ""))
+    return 0
+
+
+def outreach_list(ledger: Ledger) -> list[str]:
+    rows = ledger.creators(statuses=("drafted", "contacted", "booked", "declined"), limit=100)
+    if not rows:
+        return ["OUTREACH · nothing drafted or sent yet"]
+    out = ["OUTREACH"]
+    for r in rows:
+        bad = json.loads(r["outreach_violations"] or "[]")
+        state = r["status"] + (f" {r['outreach_sent_at'][:10]}" if r["outreach_sent_at"] else "")
+        out.append(f"  @{r['username']} · {r['email'] or 'no email'} · {state}" + (" · FAILS the check" if bad else ""))
+        out.extend(f"      ✗ {v}" for v in bad)
+    out.append('Say "send all outreach" to email every draft that passes (one tap), or "send outreach to @name".')
+    return out
+
+
 def status_lines(engine: Engine, source: str) -> list[str]:
     ledger, desk = engine.ledger, engine.desk
     last = ledger.kv_get("last_sweep")
@@ -248,8 +456,17 @@ def status_lines(engine: Engine, source: str) -> list[str]:
         "Last sweep: "
         + (f"{engine.local(datetime.fromisoformat(last))} ({ledger.kv_get('last_sweep_result')})" if last else "never"),
         f"Waiting for you: {len(waiting)} ({len(drafts)} drafts, {len(owner)} for you only)",
-        f"Canned replies in the last 24 h: {ledger.auto_replies_since(day_ago(engine.now()))} "
+        f"Posted without your tap in the last 24 h: {ledger.auto_replies_since(day_ago(engine.now()))} "
         f"(cap {engine.cfg.max_auto_replies_per_day})",
+        "On: comments"
+        + ", written replies" * engine.cfg.autosend_written
+        + ", DMs" * engine.cfg.dms_enabled
+        + ", scout" * engine.cfg.scout_enabled
+        + ", outreach" * engine.cfg.outreach_enabled,
+        f"Creators: {len(ledger.creators(statuses=('shortlist',), limit=999))} shortlisted, "
+        f"{len(ledger.creators(statuses=('drafted',), limit=999))} emails waiting for your OK, "
+        f"{len(ledger.creators(statuses=('contacted',), limit=999))} contacted, "
+        f"{len(ledger.creators(statuses=('booked',), limit=999))} booked",
     ]
     return lines
 

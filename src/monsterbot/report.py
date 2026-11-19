@@ -26,16 +26,15 @@ def sweep_report(engine: Engine, res: SweepResult) -> list[str]:
     waiting = engine.ledger.items(statuses=("queued", "drafted", "unverified"))
     acted = res.replied or res.would_reply or res.first_comments or res.problems
 
+    where = f"{res.posts} posts" + (f" and {res.threads} DM threads" if res.threads else "")
     if not fresh_items and not acted:
         tail = f' Waiting for you: {len(waiting)} (say "inbox").' if waiting else ""
-        return [f"{head} · quiet: nothing new on {res.posts} posts.{tail}"]
+        learned = f" Learned {res.learned} replies you wrote in the app." if res.learned else ""
+        return [f"{head} · quiet: nothing new on {where}.{learned}{tail}"]
 
     verb = "replied" if mode == "live" else "would reply"
     count = len(res.replied) if mode == "live" else len(res.would_reply)
-    out = [
-        head,
-        f"{len(fresh_items)} new comments on {res.posts} posts · {verb} {count} · waiting for you {len(waiting)}",
-    ]
+    out = [head, f"{len(fresh_items)} new on {where} · {verb} {count} · waiting for you {len(waiting)}"]
     if res.stopped:
         out.insert(0, f"STOPPED: {STOPPED.get(res.stopped, res.stopped)}")
 
@@ -50,12 +49,19 @@ def sweep_report(engine: Engine, res: SweepResult) -> list[str]:
 
     needs = [i for i in fresh_items if i.status == "queued" and i.tier == "draft"]
     if needs:
-        out.append("Needs a written reply (I'll draft these next; you send them):")
+        out.append("Needs a written reply (I'll write these next; each posts by itself if it passes the check):")
         out.extend(_line(engine, i, f" · {i.reason}" if i.reason else "") for i in needs)
+    holding = [i for i in fresh_items if i.category == "escalate" and i.tier == "auto"]
     owner = [i for i in fresh_items if i.status == "queued" and i.tier == "owner" and i.category != "spam"]
-    if owner:
-        out.append("For you (I won't answer these):")
-        out.extend(_line(engine, i, f" · {i.reason}") for i in owner)
+    if holding or owner:
+        out.append("For you:")
+        verb_h = "answered" if mode == "live" else "would answer"
+        out.extend(
+            _line(engine, i, f" · {i.reason} · {verb_h} with the holding line; follow up by email") for i in holding
+        )
+        for i in owner:
+            tail = i.reason if "24-hour" in i.reason else f"{i.reason} · I'll draft a reply and wait for your OK"
+            out.append(_line(engine, i, f" · {tail}"))
     spam = [i for i in fresh_items if i.category == "spam"]
     if spam:
         out.append('Spam (hide, delete or block it in the app, or say "hide <number>"):')
@@ -63,6 +69,8 @@ def sweep_report(engine: Engine, res: SweepResult) -> list[str]:
     skipped = [i for i in fresh_items if i.status == "skipped"]
     if skipped:
         out.append(f"Skipped {len(skipped)}: our own comments and friends tagging friends.")
+    if res.learned:
+        out.append(f'Learned {res.learned} replies you wrote in the app (say "examples" to see them).')
     if res.held:
         out.append(f"Held {res.held} canned replies for the next sweep (the per-sweep or daily cap).")
     if res.problems:
@@ -88,7 +96,7 @@ def inbox_report(engine: Engine) -> list[str]:
             needs.append(i)
     out = [f"INBOX · {len(items)} waiting · {engine.desk.mode()} · {engine.desk.phase()}"]
     if ready:
-        out.append('Drafts ready (say "send 14", "send all", "edit 14: ..." or "skip 14"):')
+        out.append('Drafts waiting for your OK (say "send 14", "send all", "edit 14: ..." or "skip 14"):')
         for i in ready:
             out.append(_line(engine, i))
             out.append(f'      draft: "{short(i.draft_text, 300)}"')
@@ -122,3 +130,19 @@ def draft_report(item: Item, violations: list) -> list[str]:
         f'  "{short(item.draft_text, 300)}"',
         *[f"  ✗ {v}" for v in violations],
     ]
+
+
+SOURCE_LABEL = {"owner-edit": "you edited", "owner-instagram": "you, in the app", "owner-approved": "you approved"}
+
+
+def examples_report(ledger) -> list[str]:
+    rows = ledger.examples(limit=20, sources=tuple(SOURCE_LABEL))
+    if not rows:
+        return ["EXAMPLES · none yet. Every reply you write in the app, edit or approve is kept here."]
+    out = [f"EXAMPLES · how you answer, newest first ({len(rows)})"]
+    for r in rows:
+        out.append(f'  [{SOURCE_LABEL[r["source"]]}, {r["kind"]}] "{short(r["incoming"], 90)}"')
+        out.append(f'      → "{short(r["final"], 200)}"')
+        if r["bot_draft"]:
+            out.append(f'      (I had: "{short(r["bot_draft"], 160)}")')
+    return out

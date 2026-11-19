@@ -3,7 +3,7 @@ name: monsterten-social-bootstrap
 description: First-time setup of the Monster Ten social bot on the Grok Bot computer. Use when the owner says "set up", "install", "start", or follows the Start prompt in README.md. Clones the pinned release, installs, checks Instagram access through the secret card, and ends with a receipt. Posts nothing.
 license: Proprietary
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   category: social
 ---
 
@@ -18,7 +18,7 @@ Follow SETUP.md in the checkout. In order:
 1. **Clone the release** (the owner's GitHub access on the computer, or a read-only deploy key):
 
    ```bash
-   git clone --branch v0.1.0 --depth 1 https://github.com/fairgradient-ai/monstertenmath-grokbot.git /workspace/monstertenmath-grokbot
+   git clone --branch v0.2.0 --depth 1 https://github.com/fairgradient-ai/monstertenmath-grokbot.git /workspace/monstertenmath-grokbot
    ```
 
    If /workspace/monstertenmath-grokbot already exists, don't touch it: tell the owner and use SETUP.md,
@@ -34,12 +34,14 @@ Follow SETUP.md in the checkout. In order:
    for "done". Then run `run.sh doctor` again: it must answer as @monstertenmath and read comments.
 
 5. **A first look**: `run.sh sweep`. It's rehearsal: it shows what it would reply and posts nothing. Post the
-   output and write drafts for anything under "Needs a written reply" (operations skill, "After a sweep").
+   output and write replies for anything under "Needs a written reply" with `run.sh reply` (operations skill,
+   "After a sweep"); in rehearsal they're saved, not posted.
 
 6. **Receipt.** End with exactly these lines, filled in:
 
    ```text
-   SETUP DONE · release v0.1.0 · mode rehearsal · phase building
+   SETUP DONE · release v0.2.0 · mode rehearsal · phase building
    Instagram: @monstertenmath · reads comments: yes · token: secret card
    Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
+   Later: DMs (SETUP.md 12), creator scouting (13) and outreach email (14), each when its access is ready.
    ```

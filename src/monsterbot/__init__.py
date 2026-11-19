@@ -1,3 +1,3 @@
-"""Monster Ten's social media bot: answers comments on @monstertenmath under the brand's rules."""
+"""Monster Ten's social media bot: comments, DMs and creator outreach for @monstertenmath, by the brand's rules."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
