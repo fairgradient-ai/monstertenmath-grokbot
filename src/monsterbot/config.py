@@ -37,8 +37,9 @@ class Config:
     username: str = "monstertenmath"
     timezone: str = "America/New_York"
     # [instagram]
-    graph_host: str = "https://graph.instagram.com"
+    graph_host: str = "auto"  # auto: chosen from the token (channels/instagram.py, host_for)
     graph_version: str = "v24.0"
+    ig_user_id: str = ""  # only for a Facebook-side token that doesn't name its account
     media_lookback: int = 12
     timeout_seconds: int = 30
     # [engage]
@@ -91,7 +92,7 @@ class Config:
 # section -> {key in config.toml: field name}
 SECTIONS: dict[str, dict[str, str]] = {
     "account": {"username": "username", "timezone": "timezone"},
-    "instagram": {k: k for k in ("graph_host", "graph_version", "media_lookback", "timeout_seconds")},
+    "instagram": {k: k for k in ("graph_host", "graph_version", "ig_user_id", "media_lookback", "timeout_seconds")},
     "engage": {
         k: k
         for k in (

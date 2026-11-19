@@ -15,10 +15,10 @@ stop them and point to the card.
 
 Follow SETUP.md in the checkout. In order:
 
-1. **Clone the release** (the owner's GitHub access on the computer, or a read-only deploy key):
+1. **Clone `main`** (the owner's GitHub access on the computer, or a read-only GITHUB_TOKEN on the card):
 
    ```bash
-   git clone --branch v0.4.0 --depth 1 https://github.com/fairgradient-ai/monstertenmath-grokbot.git /workspace/monstertenmath-grokbot
+   git clone --depth 1 https://github.com/fairgradient-ai/monstertenmath-grokbot.git /workspace/monstertenmath-grokbot
    ```
 
    If /workspace/monstertenmath-grokbot already exists, don't touch it: tell the owner and use SETUP.md,

@@ -104,3 +104,11 @@ def test_doctor_full_against_the_fake(run):
     assert code == 0, out
     assert out.splitlines()[0] in ("DOCTOR: PASS", "DOCTOR: WARN")
     assert "fake sweep (open, live)" in out
+
+
+def test_a_system_user_token_needs_no_refresh(run, monkeypatch):
+    monkeypatch.setenv("IG_ACCESS_TOKEN", "EAAfaketoken")
+    code, out = run("token", "refresh")
+    assert code == 0 and "doesn't expire" in out
+    code, out = run("doctor")
+    assert "doesn't expire" in out and "EAAfaketoken" not in out

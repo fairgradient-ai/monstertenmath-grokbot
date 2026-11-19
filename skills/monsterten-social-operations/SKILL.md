@@ -45,6 +45,7 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 | "go live"                                       | `run.sh go-live --owner-tapped`                        | **their tap** |
 | "stop posting", "rehearsal"                     | `run.sh rehearse --owner-tapped`                       | **their tap** |
 | "refresh the token"                             | `run.sh token refresh`                                 | automatic     |
+| "update yourself"                               | SETUP.md section 10 (clone `main`, test, swap)         | swap: tap     |
 | "check yourself", "doctor"                      | `run.sh doctor`                                        | automatic     |
 
 "We're open" also has a twin in the social repo: the owner tells Claude Code "we're open" there too, which
