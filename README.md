@@ -16,6 +16,7 @@ Built from the launch pack in [fairgradient-ai/monstertenmath_social](https://gi
 | "3!" on Reel #3                           | Replies "Yes! 7 and 3 make 10." by itself                               |
 | "Is this AI?"                             | Replies with that Reel's own AI line, by itself                         |
 | "How much?", "Where's the link?"          | The pack's answer for today's phase and price (founding or standard)    |
+| "Can I cancel anytime?"                   | The pack's cancel answer, with the trial terms whole, by itself         |
 | "Love this!"                              | A thank-you, by itself                                                  |
 | "Does it work for a 3 year old?"          | Writes a reply in the brand voice and posts it once it passes the check |
 | A DM: "How much is it?"                   | The same answers, in the DM thread (once Meta grants DM access)         |

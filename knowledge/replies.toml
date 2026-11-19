@@ -6,6 +6,8 @@
 #
 # A comment is sorted in this order, and the first match wins:
 #   own comment > spam > escalate > tag only > "is this AI?" > guess (pieces.toml) > faq > praise > played > draft
+# An faq with `ahead_of_escalation` (founding, cancel) may answer a question that also matches those escalations,
+# unless its `unless` pattern matches too.
 # Canned replies post by themselves in live mode. "draft" is written by the Grok Bot and posts by itself when
 # it passes the check. Escalations get a holding line (below) or wait for your OK. Spam waits for you.
 # Patterns are Python regexes, matched case-insensitively.
@@ -92,6 +94,24 @@ pattern = '''founding|first 500|\b500 families|how many (spots|places|seats|fami
 open_founding = "The founding price is $59.99 a year or $9.99 a month, for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. It starts after the free week: you add a card at signup and nothing is charged that day, we remind you on day 5, and you can cancel in 2 taps. The price on the site's ticket is always the one you'd pay."
 ahead_of_escalation = ["billing"]
 unless = '''refund\w*|charged|charge me|billing|scam\w*|rip ?off|twice|double'''
+
+# How cancelling works (launch pack README section 7: "Can I cancel anytime? Is it easy to cancel?"), with the
+# trial terms whole (section 6). "Can I cancel anytime?" is a question before buying, not a complaint, so this
+# answers ahead of the billing escalation. Everything else about cancelling stays with you, through the billing
+# holding line: a charge, a bill, a refund or money back; "my subscription", "our account" and the like; a cancel
+# that already happened ("cancelled", "canceled"); "can't cancel", "won't let me", "please cancel", "I want to
+# cancel"; a scam or rip-off. "How do I cancel?" stays with you too: it's likely a member, and only you can tell
+# them where they are. A question the founding faq above takes ("If I cancel, do I keep the founding price?")
+# stays its own, even while there's no founding text: the first faq whose pattern matches decides.
+[[faq]]
+id = "cancel"
+question_only = true
+pattern = '''cancel (at )?any ?time|any ?time cancel|cancel whenever|\b(easy|easily|simple|quick|hard|difficult|tricky|impossible|a pain) (is it )?(to cancel|cancel(l?ing|l?ation))|cancel(l?ing|l?ation) (is |it )?(easy|simple|quick|hard|difficult|tricky|a pain)|\b(way|possible|able) to cancel|\bcan (i|you|we|u|one) (still |always |just |easily |then )?cancel\b|\bif (i|we|you) (\w+ to )?cancel\b|how (does|do|will|would) cancel(l?ing|l?ation) work|how (would|could) (i|we|you|one) cancel|cancell?ation policy'''
+building = "You can cancel in 2 taps. At launch there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $79.99 a year or $12.99 a month, unless you cancel."
+open = "You can cancel in 2 taps. First there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $79.99 a year or $12.99 a month, unless you cancel."
+open_founding = "You can cancel in 2 taps. First there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $59.99 a year or $9.99 a month, unless you cancel. That's our founding price for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. After the first 500, it's $79.99 a year or $12.99 a month."
+ahead_of_escalation = ["billing"]
+unless = '''charg\w*|\bbill(s|ed|ing)?\b|refund\w*|money back|\bpaid\b|payment|scam\w*|rip ?off|fraud\w*|twice|double|\b(my|our) (subscription|account|membership|plan|order|(free )?(trial|week))\b|cancel (it|this|that) for (me|us)|cancel (me|us)\b|can you (please |pls )?cancel (it|this|that|mine|ours)\b|cancell?ed\b|already cancel|(can'?t|cannot|couldn'?t|unable to|tried to|trying to) cancel|why can'?t (i|we|you)|(won'?t|doesn'?t|didn'?t|wouldn'?t) let (me|us)|(please|pls|plz) cancel|(?<!if )\b(i|we) (really )?(want|need|wanna|would like|'d like) to cancel'''
 
 [[faq]]
 id = "price"
