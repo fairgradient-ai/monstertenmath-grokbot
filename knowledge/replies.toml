@@ -152,13 +152,10 @@ open = "That's who the scripts are for. Every word is written out. You read, you
 id = "platform"
 question_only = true
 pattern = '''iphone|android|\bios\b|app store|google play|play store'''
-building = "Both are planned. We'll say here which comes first."
-# From launch day the reply depends on the stores the app is really in (config.toml: stores, gate step 4).
-# With no store set, the comment goes to you.
-[faq.open_by_stores]
-"app_store+google_play" = "Both: it's on the App Store and Google Play."
-"app_store" = "iPhone first: it's on the App Store now. We'll post here when Android is out."
-"google_play" = "Android first: it's on Google Play now. We'll post here when iPhone is out."
+# Launch (Tue 1 Dec 2026) is web only: lessons play in the browser. The iPhone and Android apps come later, with no
+# date given (the owner, 20 Nov 2026). When a store listing is live, bring back open_by_stores (git history).
+building = "It will play in your browser, on a phone, tablet or computer. Apps for iPhone and Android come later."
+open = "It plays in your browser, on a phone, tablet or computer. Apps for iPhone and Android come later."
 
 [[faq]]
 id = "check-a-test"

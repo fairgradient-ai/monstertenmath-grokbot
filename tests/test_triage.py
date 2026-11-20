@@ -105,12 +105,11 @@ def test_faq_needs_a_question(kn):
     assert sort(kn, "love the price").category != "faq:price"
 
 
-def test_platform_reply_depends_on_stores(kn):
-    assert sort(kn, "iPhone or Android?").reply.startswith("Both are planned")
-    assert sort(kn, "iPhone or Android?", phase="open").tier == "draft"  # no store set yet
-    assert sort(kn, "iPhone or Android?", phase="open", stores=("app_store",)).reply.startswith("iPhone first")
-    both = sort(kn, "iPhone or Android?", phase="open", stores=("google_play", "app_store"))
-    assert both.reply.startswith("Both: it's on the App Store and Google Play")
+def test_platform_reply_is_the_browser(kn):
+    # Launch (1 Dec 2026) is web only; the store apps come later (the owner, 20 Nov 2026).
+    assert sort(kn, "iPhone or Android?").reply.startswith("It will play in your browser")
+    assert sort(kn, "iPhone or Android?", phase="open").reply.startswith("It plays in your browser")
+    assert sort(kn, "Is it on the App Store?", phase="open", stores=("app_store",)).reply.startswith("It plays in your browser")
 
 
 def test_card_question_has_no_building_reply(kn):
