@@ -90,7 +90,7 @@ caption_start = "We're open. Monster Ten is math for"
 
 [[piece]]
 key = "#8"
-name = "Lesson 14 in the app"
+name = "Lesson 14 in the browser"
 type = "reel"
 ai = true
 voice = "ai"
@@ -317,3 +317,984 @@ ai = true
 voice = "ai"
 caption_start = "Answer by writing: a new Monster Ten gam"
 ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#101"
+name = "Lesson 1 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 1 of 100: Feed the Monster. Feed "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#102"
+name = "Lesson 2 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 2 of 100: Cracker Parade. Count a"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#202"
+name = "Try it tonight: lesson 2"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 2, Cracker Parade"
+
+[[piece]]
+key = "#103"
+name = "Lesson 3 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 3 of 100: Cracker Caf\u00e9. The Monst"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#203"
+name = "Try it tonight: lesson 3"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 3, Cracker Caf\u00e9."
+
+[[piece]]
+key = "#104"
+name = "Lesson 4 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 4 of 100: Growing Snake. Feed a c"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#204"
+name = "Try it tonight: lesson 4"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 4, Growing Snake."
+
+[[piece]]
+key = "#105"
+name = "Lesson 5 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 5 of 100: Cracker Scatter. Scatte"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#106"
+name = "Lesson 6 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 6 of 100: Peekaboo Dots. Peek at "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#206"
+name = "Try it tonight: lesson 6"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 6, Peekaboo Dots."
+
+[[piece]]
+key = "#107"
+name = "Lesson 7 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 7 of 100: Dice Dots. Make dice pa"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#108"
+name = "Lesson 8 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 8 of 100: Monster's Bus. Fill the"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#208"
+name = "Try it tonight: lesson 8"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 8, Monster's Bus."
+
+[[piece]]
+key = "#109"
+name = "Lesson 9 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 9 of 100: Who Has More?. Match cr"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#110"
+name = "Lesson 10 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 10 of 100: Monster's Feast. Count"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#210"
+name = "Try it tonight: lesson 10"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 10, Monster's Fea"
+
+[[piece]]
+key = "#111"
+name = "Lesson 11 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 11 of 100: Monster's Hat. Hide so"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#112"
+name = "Lesson 12 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 12 of 100: Shake and Spill. Shake"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#212"
+name = "Try it tonight: lesson 12"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 12, Shake and Spi"
+
+[[piece]]
+key = "#113"
+name = "Lesson 13 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 13 of 100: Monster's Menu. Write "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#213"
+name = "Try it tonight: lesson 13"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 13, Monster's Men"
+
+[[piece]]
+key = "#114"
+name = "Lesson 14 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 14 of 100: Monster's Cave. Hide a"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#115"
+name = "Lesson 15 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 15 of 100: Monster's House. Some "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#215"
+name = "Try it tonight: lesson 15"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 15, Monster's Hou"
+
+[[piece]]
+key = "#116"
+name = "Lesson 16 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 16 of 100: Two Plates. Move crack"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#117"
+name = "Lesson 17 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 17 of 100: Cracker Train. Part of"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#217"
+name = "Try it tonight: lesson 17"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 17, Cracker Train"
+
+[[piece]]
+key = "#118"
+name = "Lesson 18 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 18 of 100: Ten Friends. Find ever"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#218"
+name = "Try it tonight: lesson 18"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 18, Ten Friends."
+
+[[piece]]
+key = "#119"
+name = "Lesson 19 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 19 of 100: Number Duel. Flip two "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#219"
+name = "Try it tonight: lesson 19"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 19, Number Duel."
+
+[[piece]]
+key = "#120"
+name = "Lesson 20 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 20 of 100: Party Tent. Guests hid"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#220"
+name = "Try it tonight: lesson 20"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 20, Party Tent."
+
+[[piece]]
+key = "#121"
+name = "Lesson 21 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 21 of 100: Picnic Stories. Act ou"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#221"
+name = "Try it tonight: lesson 21"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 21, Picnic Storie"
+
+[[piece]]
+key = "#122"
+name = "Lesson 22 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 22 of 100: Spin the Plate. Spin t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#222"
+name = "Try it tonight: lesson 22"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 22, Spin the Plat"
+
+[[piece]]
+key = "#123"
+name = "Lesson 23 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 23 of 100: Shape Snack. Tonight t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#223"
+name = "Try it tonight: lesson 23"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 23, Shape Snack."
+
+[[piece]]
+key = "#124"
+name = "Lesson 24 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 24 of 100: Pat the Cup. Pat the c"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#224"
+name = "Try it tonight: lesson 24"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 24, Pat the Cup."
+
+[[piece]]
+key = "#125"
+name = "Lesson 25 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 25 of 100: Monster's Lunch. The M"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#225"
+name = "Try it tonight: lesson 25"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 25, Monster's Lun"
+
+[[piece]]
+key = "#126"
+name = "Lesson 26 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 26 of 100: Where's the Monster?. "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#226"
+name = "Try it tonight: lesson 26"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 26, Where's the M"
+
+[[piece]]
+key = "#127"
+name = "Lesson 27 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 27 of 100: Finger Fives. Quick fi"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#227"
+name = "Try it tonight: lesson 27"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 27, Finger Fives."
+
+[[piece]]
+key = "#128"
+name = "Lesson 28 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 28 of 100: Tens Parade. Flash ten"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#228"
+name = "Try it tonight: lesson 28"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 28, Tens Parade."
+
+[[piece]]
+key = "#129"
+name = "Lesson 29 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 29 of 100: Garage Stories. Cars d"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#229"
+name = "Try it tonight: lesson 29"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 29, Garage Storie"
+
+[[piece]]
+key = "#130"
+name = "Lesson 30 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 30 of 100: Box or Ball. A kitchen"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#230"
+name = "Try it tonight: lesson 30"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 30, Box or Ball."
+
+[[piece]]
+key = "#131"
+name = "Lesson 31 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 31 of 100: Double Trouble. Copy t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#231"
+name = "Try it tonight: lesson 31"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 31, Double Troubl"
+
+[[piece]]
+key = "#132"
+name = "Lesson 32 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 32 of 100: Marching Ants. Ants ma"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#232"
+name = "Try it tonight: lesson 32"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 32, Marching Ants"
+
+[[piece]]
+key = "#133"
+name = "Lesson 33 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 33 of 100: Longer or Taller. Whic"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#233"
+name = "Try it tonight: lesson 33"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 33, Longer or Tal"
+
+[[piece]]
+key = "#134"
+name = "Lesson 34 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 34 of 100: Backward Bunny. Hop ba"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#234"
+name = "Try it tonight: lesson 34"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 34, Backward Bunn"
+
+[[piece]]
+key = "#135"
+name = "Lesson 35 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 35 of 100: Night Nibbles. The Mon"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#235"
+name = "Try it tonight: lesson 35"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 35, Night Nibbles"
+
+[[piece]]
+key = "#136"
+name = "Lesson 36 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 36 of 100: Sort the Snack. Sort a"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#236"
+name = "Try it tonight: lesson 36"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 36, Sort the Snac"
+
+[[piece]]
+key = "#137"
+name = "Lesson 37 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 37 of 100: Tall Towers. Build two"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#237"
+name = "Try it tonight: lesson 37"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 37, Tall Towers."
+
+[[piece]]
+key = "#138"
+name = "Lesson 38 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 38 of 100: Shape Twins. Two paper"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#238"
+name = "Try it tonight: lesson 38"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 38, Shape Twins."
+
+[[piece]]
+key = "#139"
+name = "Lesson 39 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 39 of 100: All Aboard. Riders get"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#239"
+name = "Try it tonight: lesson 39"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 39, All Aboard."
+
+[[piece]]
+key = "#140"
+name = "Lesson 40 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 40 of 100: Doodle Stories. Draw c"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#240"
+name = "Try it tonight: lesson 40"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 40, Doodle Storie"
+
+[[piece]]
+key = "#141"
+name = "Lesson 41 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 41 of 100: Hundred Walk. Start at"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#241"
+name = "Try it tonight: lesson 41"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 41, Hundred Walk."
+
+[[piece]]
+key = "#142"
+name = "Lesson 42 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 42 of 100: Cracker Shapes. Snap a"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#242"
+name = "Try it tonight: lesson 42"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 42, Cracker Shape"
+
+[[piece]]
+key = "#143"
+name = "Lesson 43 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 43 of 100: Number Road. Drive a t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#243"
+name = "Try it tonight: lesson 43"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 43, Number Road."
+
+[[piece]]
+key = "#144"
+name = "Lesson 44 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 44 of 100: Ping-Pong Sums. Bounce"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#244"
+name = "Try it tonight: lesson 44"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 44, Ping-Pong Sum"
+
+[[piece]]
+key = "#145"
+name = "Lesson 45 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 45 of 100: Monster's Big Day. Act"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#245"
+name = "Try it tonight: lesson 45"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 45, Monster's Big"
+
+[[piece]]
+key = "#146"
+name = "Lesson 46 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 46 of 100: Cup of Ten. A full cup"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#246"
+name = "Try it tonight: lesson 46"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 46, Cup of Ten."
+
+[[piece]]
+key = "#147"
+name = "Lesson 47 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 47 of 100: Teen Builders. Build t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#247"
+name = "Try it tonight: lesson 47"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 47, Teen Builders"
+
+[[piece]]
+key = "#148"
+name = "Lesson 48 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 48 of 100: Teen Names. Six-teen s"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#248"
+name = "Try it tonight: lesson 48"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 48, Teen Names."
+
+[[piece]]
+key = "#149"
+name = "Lesson 49 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 49 of 100: Hiding Zero. Write 10,"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#249"
+name = "Try it tonight: lesson 49"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 49, Hiding Zero."
+
+[[piece]]
+key = "#150"
+name = "Lesson 50 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 50 of 100: Egg Carton Teens. Fill"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#250"
+name = "Try it tonight: lesson 50"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 50, Egg Carton Te"
+
+[[piece]]
+key = "#151"
+name = "Lesson 51 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 51 of 100: Ten Bundles. Bundle 10"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#251"
+name = "Try it tonight: lesson 51"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 51, Ten Bundles."
+
+[[piece]]
+key = "#152"
+name = "Lesson 52 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 52 of 100: Big Ten Jump. A whole "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#252"
+name = "Try it tonight: lesson 52"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 52, Big Ten Jump."
+
+[[piece]]
+key = "#153"
+name = "Lesson 53 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 53 of 100: Ribbon Race. Put three"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#253"
+name = "Try it tonight: lesson 53"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 53, Ribbon Race."
+
+[[piece]]
+key = "#154"
+name = "Lesson 54 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 54 of 100: Nibble to Ten. The Mon"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#254"
+name = "Try it tonight: lesson 54"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 54, Nibble to Ten"
+
+[[piece]]
+key = "#155"
+name = "Lesson 55 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 55 of 100: Teen Stairs. Climb the"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#255"
+name = "Try it tonight: lesson 55"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 55, Teen Stairs."
+
+[[piece]]
+key = "#156"
+name = "Lesson 56 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 56 of 100: Race to Twenty. Roll t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#256"
+name = "Try it tonight: lesson 56"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 56, Race to Twent"
+
+[[piece]]
+key = "#157"
+name = "Lesson 57 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 57 of 100: Two Full Tens. Two pla"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#257"
+name = "Try it tonight: lesson 57"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 57, Two Full Tens"
+
+[[piece]]
+key = "#158"
+name = "Lesson 58 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 58 of 100: Bigger Teen. Both card"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#258"
+name = "Try it tonight: lesson 58"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 58, Bigger Teen."
+
+[[piece]]
+key = "#159"
+name = "Lesson 59 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 59 of 100: Bundles of Ten. Bundle"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#259"
+name = "Try it tonight: lesson 59"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 59, Bundles of Te"
+
+[[piece]]
+key = "#160"
+name = "Lesson 60 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 60 of 100: Build a Number. You sa"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#260"
+name = "Try it tonight: lesson 60"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 60, Build a Numbe"
+
+[[piece]]
+key = "#161"
+name = "Lesson 61 Reel"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Lesson 61 of 100: Monster's Hundred. Bui"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+
+[[piece]]
+key = "#261"
+name = "Try it tonight: lesson 61"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: lesson 61, Monster's Hun"
