@@ -122,7 +122,7 @@ ai = true
 voice = "ai"
 caption_start = "No crackers? No problem. Sleepy fingers"
 first_comment = "How many fingers are awake? Type your child's answer here."   # source = "bot"
-ai_reply = "The pictures are AI-made stills of a grown-up's hands, and the voice and music are AI-made too. That's why it has the AI label. The game is lesson 13's, Sleepy fingers."
+ai_reply = "The pictures are AI-made stills of a grown-up's hands, and the voice and music are AI-made too. That's why it has the AI label. The game is Sleepy fingers, a round of lesson 14, Monster's Cave."
 [piece.play_along]
 # source = "bot": the Reel leaves the second answer (7 awake, 3 asleep) unsaid for the comments.
 answer = 7
@@ -170,13 +170,14 @@ right = "Yes! 6 and 4 make 10."
 wrong = "Let's check! Count up from 6: 7, 8, 9, 10. He took 4."
 
 
+
 [[piece]]
 key = "#16"
-name = "What's next"
+name = "Every standard"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "What's next for Monster Ten's 100 lesson"
+caption_start = "Monster Ten's 100 lessons cover every Ki"
 
 [[piece]]
 key = "#17"
@@ -188,14 +189,6 @@ caption_start = "Try it tonight: the Monster's menu, a nu"
 
 [[piece]]
 key = "#18"
-name = "Every standard"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Monster Ten's 100 lessons now cover ever"
-
-[[piece]]
-key = "#19"
 name = "The pace"
 type = "carousel"
 ai = false
@@ -203,17 +196,25 @@ voice = "none"
 caption_start = "How fast do the 100 lessons go?"
 
 [[piece]]
-key = "#20"
+key = "#19"
 name = "Still gentle"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "More topics, and the nights stay gentle."
+caption_start = "Two school years of topics, and the nigh"
 
 [[piece]]
-key = "#21"
-name = "Writing numbers"
+key = "#20"
+name = "Monster Writes"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Writing numbers in Monster Ten: read it"
+caption_start = "Monster Writes: the solo game where your"
+
+[[piece]]
+key = "#21"
+name = "Check-ups and How it's going"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "How do you know how it's going, without"
