@@ -1,4 +1,4 @@
-# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 19 Nov 2026).
+# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 20 Nov 2026).
 #
 # A post on Instagram is matched to a piece by the start of its caption (`caption_start`, compared with
 # spaces collapsed), the same way the social repo's tools/v2/buffer/schedule.py finds a post in Buffer.
@@ -94,7 +94,7 @@ name = "Lesson 14 in the app"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Lesson 14, Monster's Cave, in the Monster Ten app"
+caption_start = "Lesson 14, Monster's Cave, in Monster Ten, played"
 ai_reply = "The screens are a real recording of our app. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
 
 [[piece]]
@@ -122,7 +122,7 @@ ai = true
 voice = "ai"
 caption_start = "No crackers? No problem. Sleepy fingers"
 first_comment = "How many fingers are awake? Type your child's answer here."   # source = "bot"
-ai_reply = "The pictures are AI-made stills of a grown-up's hands, and the voice and music are AI-made too. That's why it has the AI label. The game is lesson 13's, Sleepy fingers."
+ai_reply = "The pictures are AI-made stills of a grown-up's hands, and the voice and music are AI-made too. That's why it has the AI label. The game is Sleepy fingers, a round of lesson 14, Monster's Cave."
 [piece.play_along]
 # source = "bot": the Reel leaves the second answer (7 awake, 3 asleep) unsaid for the comments.
 answer = 7
@@ -168,3 +168,152 @@ ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, t
 answer = 4
 right = "Yes! 6 and 4 make 10."
 wrong = "Let's check! Count up from 6: 7, 8, 9, 10. He took 4."
+
+
+
+[[piece]]
+key = "#16"
+name = "Every standard"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Monster Ten's 100 lessons cover every Ki"
+
+[[piece]]
+key = "#17"
+name = "The Monster's menu"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: the Monster's menu, a nu"
+
+[[piece]]
+key = "#18"
+name = "The pace"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "How fast do the 100 lessons go?"
+
+[[piece]]
+key = "#19"
+name = "Still gentle"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Two school years of topics, and the nigh"
+
+[[piece]]
+key = "#20"
+name = "Monster Writes"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Monster Writes: the solo game where your"
+
+[[piece]]
+key = "#21"
+name = "Check-ups and How it's going"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "How do you know how it's going, without"
+
+[[piece]]
+key = "#22"
+name = "Shape Hunt"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Shape Hunt: a new Monster Ten game for f"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#23"
+name = "Snack Sort"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Snack Sort: a new Monster Ten game for s"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#24"
+name = "Worm Ruler"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Worm Ruler: a new Monster Ten game for m"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#25"
+name = "Line Up"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Line Up: a new Monster Ten game for orde"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#26"
+name = "Wake the Monster"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Wake the Monster: a new Monster Ten game"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#27"
+name = "Cracker Shop"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Cracker Shop: a new Monster Ten game for"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#28"
+name = "Fair Scale"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Fair Scale: a new Monster Ten game for t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#29"
+name = "Pizza Party"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Pizza Party: a new Monster Ten game for "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#30"
+name = "Shape Puzzle"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Shape Puzzle: a new Monster Ten game for"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#31"
+name = "Monster's Hundred"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Monster's Hundred: a new Monster Ten gam"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
+
+[[piece]]
+key = "#32"
+name = "Answer by writing"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Answer by writing: a new Monster Ten gam"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
