@@ -1,4 +1,4 @@
-# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 19 Nov 2026).
+# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 20 Nov 2026).
 #
 # A post on Instagram is matched to a piece by the start of its caption (`caption_start`, compared with
 # spaces collapsed), the same way the social repo's tools/v2/buffer/schedule.py finds a post in Buffer.
@@ -168,3 +168,52 @@ ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, t
 answer = 4
 right = "Yes! 6 and 4 make 10."
 wrong = "Let's check! Count up from 6: 7, 8, 9, 10. He took 4."
+
+
+[[piece]]
+key = "#16"
+name = "What's next"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "What's next for Monster Ten's 100 lesson"
+
+[[piece]]
+key = "#17"
+name = "The Monster's menu"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Try it tonight: the Monster's menu, a nu"
+
+[[piece]]
+key = "#18"
+name = "Every standard"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Monster Ten's 100 lessons now cover ever"
+
+[[piece]]
+key = "#19"
+name = "The pace"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "How fast do the 100 lessons go?"
+
+[[piece]]
+key = "#20"
+name = "Still gentle"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "More topics, and the nights stay gentle."
+
+[[piece]]
+key = "#21"
+name = "Writing numbers"
+type = "carousel"
+ai = false
+voice = "none"
+caption_start = "Writing numbers in Monster Ten: read it"

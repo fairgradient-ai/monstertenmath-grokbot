@@ -194,6 +194,19 @@ open = "Fair! It's an AI voice, which is why it has the AI label. Thanks for tel
 # Also tell the owner: growth plan section 8 has the re-cut for comments like this.
 notify = "A voice complaint: the growth plan's section 8 has the re-cut for this."
 
+# Standards (the owner approved the restructured 100 lessons on 20 Nov 2026; social repo schedule.json #16–#21).
+# True today: the live lessons go deep on numbers to 20. The new lessons, which give every Kindergarten and
+# Grade 1 standard at least one lesson, aren't shipped yet. When they ship, change both lines to say so, with the
+# map's link (the social repo's instagram/README.md section 7 has the after-release text). Never "ahead",
+# "surpasses" or a school's name.
+[[faq]]
+id = "standards"
+source = "bot"
+question_only = true
+pattern = '''common core|\bstandards?\b|curriculum|grade[- ]level|aligned|\balign\w*|what (do|does) (it|they|the lessons) (teach|cover)|(kindergarten|first grade|1st grade|grade 1) (math|topics)'''
+building = "Today's 100 lessons go deep on numbers to 20: counting, making 10, teen numbers, adding and taking away. We're adding lessons so every Kindergarten and Grade 1 math standard (the Common Core, which California uses) has at least one, and we'll post the lesson-by-lesson map when they're in."
+open = "Today's 100 lessons go deep on numbers to 20: counting, making 10, teen numbers, adding and taking away. We're adding lessons so every Kindergarten and Grade 1 math standard (the Common Core, which California uses) has at least one, and we'll post the lesson-by-lesson map when they're in."
+
 # ---------------------------------------------------------------------------------------------------
 # Short praise with no question: a thank-you, never the same line twice in a row on one post.
 [praise]
