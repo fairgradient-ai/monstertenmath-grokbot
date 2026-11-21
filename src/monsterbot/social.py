@@ -31,7 +31,8 @@ from pathlib import Path
 from . import policy
 from .errors import BotError, Refused
 
-LAUNCH_UTC = "2026-12-01T05:00:00+00:00"  # Tue 1 Dec 2026, midnight Eastern: posts due from then are "open"
+LAUNCH_UTC = "2026-11-24T05:00:00+00:00"  # Tue 24 Nov 2026, midnight Eastern: posts due from then are "open"
+# (the owner moved the social launch from 1 Dec to 24 Nov on 21 Nov 2026: the site is already live, announced 24 Nov)
 STORY_TAG = re.compile(r"\[Story ([^\]]+)\]")
 OUT = """__typename ... on PostActionSuccess { post { id dueAt status schedulingType } }
   ... on InvalidInputError { message } ... on UnexpectedError { message } ... on LimitReachedError { message }

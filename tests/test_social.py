@@ -113,8 +113,10 @@ def env(tmp_path, kn):
 
 
 def test_phase_at():
-    assert phase_at("2026-11-30T22:00:00Z") == "building"
-    assert phase_at("2026-12-01T17:30:00Z") == "open"
+    assert phase_at("2026-11-23T22:00:00Z") == "building"
+    assert phase_at("2026-11-24T04:59:00Z") == "building"
+    assert phase_at("2026-11-24T05:00:00Z") == "open"
+    assert phase_at("2026-11-24T17:30:00Z") == "open"  # the launch film, 12:30 pm Eastern
 
 
 def test_sync_refuses_before_adopt(env):
