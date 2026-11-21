@@ -46,7 +46,13 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
         return [Violation("empty", "The reply is empty.")]
 
     outbound = ctx.category == "outbound"  # a comment on someone else's post (the brief)
-    max_length = 3000 if ctx.category == "email" else 300 if outbound else int(rules.get("max_length", 600))
+    caption = ctx.category == "caption"  # a post's caption or Story text (Instagram allows 2,200 and 5 hashtags)
+    if caption:
+        max_length = 2200
+    elif ctx.category == "email":
+        max_length = 3000
+    else:
+        max_length = 300 if outbound else int(rules.get("max_length", 600))
     if len(body) > max_length:
         out.append(Violation("too-long", f"Keep replies under {max_length} characters (this is {len(body)})."))
 
@@ -56,7 +62,9 @@ def check(text: str, ctx: Context, rules: dict) -> list[Violation]:
         scrubbed = re.sub(re.escape(allowed), " ", scrubbed, flags=FLAGS)
 
     tags = HASHTAG.findall(scrubbed)
-    if len(tags) > int(rules.get("max_hashtags", 0)):
+    if caption and len(tags) > 5:
+        out.append(Violation("hashtags", "A caption carries at most 5 hashtags.", " ".join(tags)))
+    elif not caption and len(tags) > int(rules.get("max_hashtags", 0)):
         out.append(Violation("hashtags", "Replies carry no hashtags: captions already use all 5.", " ".join(tags)))
 
     handle = str(rules.get("handle", "")).lower()

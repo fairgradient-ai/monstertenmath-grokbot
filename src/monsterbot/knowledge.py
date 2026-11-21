@@ -26,6 +26,32 @@ class PlayAlong:
     context: frozenset[int] = frozenset()
 
 
+PILLARS = {
+    "games": "Game Reels: the Monster's games, animated",
+    "tonight": "Try it tonight: a game with things at home",
+    "realistic": "Realistic Reels: a parent's phone over a child's hands",
+    "play-along": "Play along: guess with the Monster",
+    "features": "What's inside: the standards, Monster Writes, check-ups, How it's going",
+    "brand": "Brand and launch (not scored as a pillar)",
+}
+
+
+def pillar_for(key: str) -> str:
+    """Today's pillars, from the calendar's numbering. pieces.toml may name one instead (pillar = "...")."""
+    n = int(key.lstrip("#")) if key.lstrip("#").isdigit() else 0
+    if n in (3, 14, 15):
+        return "play-along"
+    if n in (4, 6) or 500 <= n < 600:
+        return "tonight"
+    if 22 <= n <= 32:
+        return "games"
+    if 600 <= n < 700:
+        return "realistic"
+    if 401 <= n <= 411:
+        return "features"
+    return "brand"
+
+
 @dataclass(frozen=True)
 class Piece:
     key: str
@@ -37,6 +63,9 @@ class Piece:
     first_comment: str | None = None
     ai_reply: str | None = None
     play_along: PlayAlong | None = None
+    pillar: str = ""  # set from the key when pieces.toml leaves it out (pillar_for)
+    child: bool = False  # a real child on screen
+    ad_cleared: bool = False  # a real child's release allows ads (release box 2, checked by the lawyer)
 
     @property
     def label(self) -> str:
@@ -189,6 +218,9 @@ def load_knowledge(directory: Path | None = None) -> Knowledge:
                 first_comment=raw.get("first_comment"),
                 ai_reply=raw.get("ai_reply"),
                 play_along=play,
+                pillar=raw.get("pillar") or pillar_for(raw["key"]),
+                child=bool(raw.get("child", False)),
+                ad_cleared=bool(raw.get("ad_cleared", False)),
             )
         )
 

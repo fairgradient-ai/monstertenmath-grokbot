@@ -118,6 +118,59 @@ CREATE TABLE IF NOT EXISTS brief_posts (
   status TEXT NOT NULL DEFAULT 'proposed',
   done_at TEXT
 );
+CREATE TABLE IF NOT EXISTS browser_sessions (
+  session INTEGER PRIMARY KEY,
+  planned_at TEXT NOT NULL,
+  started_at TEXT,
+  ended_at TEXT,
+  status TEXT NOT NULL DEFAULT 'planned',
+  end_reason TEXT
+);
+CREATE TABLE IF NOT EXISTS browser_steps (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session INTEGER NOT NULL REFERENCES browser_sessions(session),
+  seq INTEGER NOT NULL,
+  kind TEXT NOT NULL,
+  target TEXT NOT NULL,
+  brief_id INTEGER,
+  item_id INTEGER,
+  text TEXT,
+  dwell_seconds INTEGER NOT NULL,
+  gap_seconds INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'planned',
+  issued_at TEXT,
+  done_at TEXT,
+  did TEXT,
+  note TEXT,
+  UNIQUE(session, seq)
+);
+CREATE TABLE IF NOT EXISTS follows (username TEXT PRIMARY KEY, source TEXT, followed_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS media_insights (
+  media_id TEXT NOT NULL, day TEXT NOT NULL, metric TEXT NOT NULL, value INTEGER,
+  PRIMARY KEY (media_id, day, metric)
+);
+CREATE TABLE IF NOT EXISTS media_posts (
+  media_id TEXT PRIMARY KEY, piece TEXT, kind TEXT, posted_at TEXT, caption_start TEXT, permalink TEXT,
+  updated_at TEXT
+);
+CREATE TABLE IF NOT EXISTS buffer_posts (
+  buffer_id TEXT PRIMARY KEY,
+  kind TEXT NOT NULL,
+  key TEXT UNIQUE,
+  due_at TEXT NOT NULL,
+  text_start TEXT,
+  commit_sha TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  missing_since TEXT,
+  main_hash TEXT,
+  sent_hash TEXT,
+  updated_at TEXT,
+  source TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS pillar_proposals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL, body TEXT NOT NULL,
+  violations TEXT, status TEXT NOT NULL DEFAULT 'proposed'
+);
 """
 
 # Columns added after v0.1.0; added in place to an older database.

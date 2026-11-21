@@ -17,6 +17,7 @@ from pathlib import Path
 
 from . import __version__, doctor
 from .brief import Brief, ago, ids_from
+from .browser import Browser
 from .channels.email import SmtpEmail
 from .channels.facebook import FacebookGraph
 from .channels.fake import FakeEmail, FakeGraph, FakeInstagram
@@ -25,9 +26,11 @@ from .config import load_config
 from .desk import Desk
 from .engine import Engine, short
 from .errors import BotError, ChannelError, Refused
+from .insights import Insights
 from .knowledge import load_knowledge
 from .ledger import Ledger
 from .outreach import Outreach
+from .policy import Context, check
 from .report import draft_report, examples_report, inbox_report, sweep_report
 from .scout import STATUSES, Scout
 from .token import expiry, load_token, save_refreshed
@@ -150,7 +153,7 @@ def build_parser() -> argparse.ArgumentParser:
         m = sub.add_parser(name, help=f"switch to {'live' if name == 'go-live' else 'rehearsal'} mode")
         m.add_argument("--owner-tapped", action="store_true")
     t = sub.add_parser("token", help="show or refresh the Instagram token's expiry (never the token)")
-    t.add_argument("action", choices=["status", "refresh"])
+    t.add_argument("action", choices=["status", "refresh", "scopes"])
     sub.add_parser("examples", help="how the owner answers: replies they wrote, edited or approved")
     sc = sub.add_parser("scout", help="find creators (read-only), or add usernames to look at")
     sc.add_argument("action", nargs="?", choices=["run", "add"], default="run")
@@ -171,6 +174,31 @@ def build_parser() -> argparse.ArgumentParser:
     br.add_argument("action", nargs="?", choices=["new", "comment", "show", "done", "skip", "email"], default="new")
     br.add_argument("items", nargs="*")
     br.add_argument("--text")
+    bw = sub.add_parser("browser", help="likes, comments and follows in the Grok browser, one step at a time")
+    bw.add_argument("action", choices=["plan", "start", "next", "done", "verify", "stop", "resume", "status", "manual"])
+    bw.add_argument("session", nargs="?", help="S<n>, or a reason for stop")
+    bw.add_argument("seq", nargs="?", type=int)
+    bw.add_argument("--did", default="")
+    bw.add_argument("--ok", action="store_true")
+    bw.add_argument("--skip")
+    bw.add_argument("--others", type=int)
+    bw.add_argument("--total", type=int)
+    bw.add_argument("--comments", type=int, default=0)
+    bw.add_argument("--likes", type=int, default=0)
+    bw.add_argument("--follows", type=int, default=0)
+    bw.add_argument("--following", type=int)
+    bw.add_argument("--owner-tapped", action="store_true")
+    ins = sub.add_parser("insights", help="read per-post insights and report (week: the last 7 days)")
+    ins.add_argument("action", nargs="?", choices=["day", "week", "show"], default="day")
+    ad = sub.add_parser("ads", help="which posts are worth promoting (suggestions only; never spends)")
+    ad.add_argument("action", nargs="?", choices=["suggest"], default="suggest")
+    pl = sub.add_parser("pillars", help="score the content pillars; propose new ones (text on standard input)")
+    pl.add_argument("action", nargs="?", choices=["show", "propose", "adopt", "decline"], default="show")
+    pl.add_argument("id", nargs="?")
+    sub.add_parser("timing", help="engagement by posting slot, from our own posts")
+    ck = sub.add_parser("check", help="run the brand check on a text (standard input)")
+    ck.add_argument("--category", choices=["caption", "outbound", "draft"], default="caption")
+    ck.add_argument("--due", help="the post's dueAt (UTC ISO): checked against the phase it will post in")
     sub.add_parser("version")
     return p
 
@@ -271,6 +299,10 @@ def _run(args, desk: Desk) -> int:
 
     if args.cmd == "brief":
         return brief_command(args, cfg, kn, ledger, desk, now())
+
+    if args.cmd == "browser":
+        with desk.lock(wait_seconds=120):
+            return browser_command(args, Browser(cfg, kn, ledger, desk.phase(), now))
 
     if args.cmd == "outreach":
         out = Outreach(cfg, kn, ledger, desk.phase(), desk.mode(), now())
@@ -376,6 +408,74 @@ def _run(args, desk: Desk) -> int:
                 else " Nothing posts by itself."
             )
         )
+        return 0
+
+    if args.cmd == "token" and args.action == "scopes":
+        print("\n".join(token_scopes(channel(), cfg)))
+        return 0
+
+    if args.cmd in ("insights", "ads", "pillars", "timing"):
+        ins = Insights(cfg, kn, ledger, desk.phase(), desk.pricing(), now())
+        if args.cmd == "insights":
+            notes: list[str] = []
+            if args.action != "show":
+                if not cfg.insights_enabled:
+                    notes.append("not read from Instagram: [insights] enabled = false (run.sh token scopes first)")
+                else:
+                    with desk.lock(wait_seconds=120):
+                        notes = ins.collect(channel())
+            local_day = now().astimezone(cfg.tz).date().isoformat()
+            lines = ins.report(7 if args.action == "week" else 1, ledger.followers_on(local_day))
+            print("\n".join(lines + [f"({n})" for n in notes]))
+            return 0
+        if args.cmd == "ads":
+            print("\n".join(ins.ads()))
+            return 0
+        if args.cmd == "timing":
+            print("\n".join(ins.timing()))
+            return 0
+        if args.action == "propose":
+            body = sys.stdin.read()
+            if not body.strip():
+                raise Refused("REFUSED: give the proposal on standard input (a quoted heredoc).")
+            pid, problems = ins.propose(body)
+            if problems:
+                print(f"PROPOSAL P{pid} saved · FAILS the check:\n" + "\n".join(f"✗ {v}" for v in problems))
+                return 1
+            print(f'PROPOSAL P{pid} saved · passes the check. Ask the owner: "pillar yes {pid}" or "pillar no {pid}".')
+            return 0
+        if args.action in ("adopt", "decline"):
+            pid = int((args.id or "").upper().lstrip("P") or 0)
+            row = ledger.db.execute("SELECT status FROM pillar_proposals WHERE id=?", (pid,)).fetchone()
+            if row is None:
+                raise Refused(f"REFUSED: there's no proposal P{pid}.")
+            new = "adopted" if args.action == "adopt" else "declined"
+            ledger.db.execute("UPDATE pillar_proposals SET status=? WHERE id=?", (new, pid))
+            print(
+                f"P{pid} {new}."
+                + (
+                    " Next: a pull request adding it to instagram/pillars.md (the owner merges)."
+                    if new == "adopted"
+                    else ""
+                )
+            )
+            return 0
+        print("\n".join(ins.pillars()))
+        return 0
+
+    if args.cmd == "check":
+        text = sys.stdin.read()
+        phase = desk.phase()
+        if args.due:
+            due = datetime.fromisoformat(args.due.replace("Z", "+00:00"))
+            launch = datetime.fromisoformat(LAUNCH_UTC)
+            phase = "open" if due >= launch else "building"
+        ctx = Context(phase, args.category, stores=cfg.stores, pricing=desk.pricing())
+        bad = check(text, ctx, kn.rules)
+        if bad:
+            print(f"FAILS the check ({args.category}, {phase}):\n" + "\n".join(f"✗ {v}" for v in bad))
+            return 1
+        print(f"PASSES the check ({args.category}, {phase}).")
         return 0
 
     if args.cmd == "token":
@@ -646,3 +746,111 @@ def stats_lines(engine: Engine) -> list[str]:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def _session_arg(value: str | None) -> int:
+    v = (value or "").strip().upper().lstrip("S")
+    if not v.isdigit():
+        raise Refused(f'REFUSED: "{value}" isn\'t a session. Use S<n>, for example S7.')
+    return int(v)
+
+
+def browser_command(args, b: Browser) -> int:
+    a = args.action
+    if a == "plan":
+        session = b.plan()
+        if not session:
+            print("NO PLAN: nothing to engage with right now (no fresh brief comments, likes or follows left).")
+            return 0
+        print("\n".join(b.plan_lines(session)))
+        return 0
+    if a == "status":
+        print("\n".join(b.status(_session_arg(args.session) if args.session else None)))
+        return 0
+    if a == "stop":
+        if not args.session:
+            raise Refused('REFUSED: say why: run.sh browser stop "<what Instagram showed>".')
+        print(b.stop(args.session))
+        return 0
+    if a == "resume":
+        print(b.resume(args.owner_tapped))
+        return 0
+    if a == "manual":
+        print(b.manual(args.comments, args.likes, args.follows, args.following))
+        return 0
+    session = _session_arg(args.session)
+    if a == "start":
+        print(b.start(session, args.owner_tapped))
+        return 0
+    if a == "next":
+        print(b.next(session))
+        return 0
+    if a == "verify":
+        if args.skip:
+            if args.seq is None:
+                step = b.db.execute(
+                    "SELECT seq FROM browser_steps WHERE session=? AND kind='verify'", (session,)
+                ).fetchone()
+                if step is None:
+                    raise Refused(f"REFUSED: S{session} has no verify step.")
+                args.seq = step[0]
+            print(b.done(session, args.seq, [], skip=args.skip))
+            if b._session(session)["status"] == "started":
+                b._end(session, "ended", "verify skipped")
+            return 0
+        print(b.verify(session, args.others, args.total))
+        return 0
+    if a == "done":
+        if args.seq is None:
+            raise Refused(f"REFUSED: which step? run.sh browser done S{session} <step> --did ...")
+        did = [] if args.ok else [d.strip() for d in args.did.split(",") if d.strip()]
+        if not did and not args.ok and not args.skip:
+            raise Refused('REFUSED: say what you did (--did like,comment), --ok for a check, or --skip "<why>".')
+        print(b.done(session, args.seq, did, skip=args.skip))
+        return 0
+    raise Refused(f"REFUSED: unknown browser action {a}.")
+
+
+LAUNCH_UTC = "2026-12-01T05:00:00+00:00"  # Tue 1 Dec 2026, midnight Eastern: a post due from then is in the open phase
+
+
+def token_scopes(ch, cfg) -> list[str]:
+    """What the token can do, against the features that need it. Meta lists permissions only for a Facebook-side
+    token; otherwise each feature is tried once, read-only."""
+    lines = ["TOKEN SCOPES · read-only checks, nothing posted"]
+    granted = None
+    try:
+        granted = ch.permissions()
+    except ChannelError as e:
+        lines.append(f"(Meta wouldn't list the permissions: {e})")
+    if granted is not None:
+        lines.append("granted: " + ", ".join(granted))
+    probes: list[tuple[str, str, object]] = []
+    try:
+        media = ch.recent_media(1)
+        probes.append(("read posts and profile", "sweeps, stats", True))
+    except ChannelError as e:
+        media = []
+        probes.append(("read posts and profile", "sweeps, stats", e))
+    if media:
+        for label, feature, call in (
+            ("read comments", "sweeps, replies", lambda: ch.comments(media[0].id)),
+            ("insights", "insights, ads suggest, pillars, timing", lambda: ch.media_insights(media[0].id, ("reach",))),
+        ):
+            try:
+                call()
+                probes.append((label, feature, True))
+            except ChannelError as e:
+                probes.append((label, feature, e))
+    for label, feature, result in probes:
+        lines.append(
+            f"{'✓' if result is True else '✗'} {label} · {feature}" + ("" if result is True else f" · {result}")
+        )
+    if any(label == "insights" and r is not True for label, _, r in probes):
+        lines.append(
+            "Add instagram_business_manage_insights (or instagram_manage_insights) to the token, then set "
+            "[insights] enabled = true. SETUP.md, section 2b."
+        )
+    elif any(label == "insights" for label, _, _ in probes) and not cfg.insights_enabled:
+        lines.append("Insights work: set [insights] enabled = true in config.toml.")
+    return lines

@@ -11,7 +11,7 @@ HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 # shellcheck source=env.sh
 . "$HERE/env.sh"
 
-COMMANDS="sweep inbox reply draft send discard hide status stats doctor phase pricing go-live rehearse token examples scout creators outreach brief version"
+COMMANDS="sweep inbox reply draft send discard hide status stats doctor phase pricing go-live rehearse token examples scout creators outreach brief browser insights ads pillars timing check version"
 cmd=${1:-}
 case " $COMMANDS " in
   *" $cmd "*) [ -n "$cmd" ] || { echo "FAILED: no command. Commands: $COMMANDS"; exit 2; } ;;
