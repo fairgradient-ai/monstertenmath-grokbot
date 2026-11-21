@@ -29,7 +29,6 @@ class PlayAlong:
 PILLARS = {
     "games": "Game Reels: the Monster's games, animated",
     "tonight": "Try it tonight: a game with things at home",
-    "realistic": "Realistic Reels: a parent's phone over a child's hands",
     "play-along": "Play along: guess with the Monster",
     "features": "What's inside: the standards, Monster Writes, check-ups, How it's going",
     "brand": "Brand and launch (not scored as a pillar)",
@@ -37,16 +36,15 @@ PILLARS = {
 
 
 def pillar_for(key: str) -> str:
-    """Today's pillars, from the calendar's numbering. pieces.toml may name one instead (pillar = "...")."""
+    """Today's pillars, from the calendar's numbering. pieces.toml may name one instead (pillar = "...").
+    There is no realistic pillar since 21 Nov 2026: the owner removed every realistic Reel and wants no new ones."""
     n = int(key.lstrip("#")) if key.lstrip("#").isdigit() else 0
     if n in (3, 14, 15):
         return "play-along"
-    if n in (4, 6) or 500 <= n < 600:
+    if 500 <= n < 600:
         return "tonight"
     if 22 <= n <= 32:
         return "games"
-    if 600 <= n < 700:
-        return "realistic"
     if 401 <= n <= 411:
         return "features"
     return "brand"
@@ -120,7 +118,7 @@ class Knowledge:
     holding: dict[str, str] = field(default_factory=dict)
 
     def match_piece(self, caption: str) -> Piece | None:
-        # The longest matching start wins: "Try it tonight: Monster's Cave" (#4) is a prefix of #402's start.
+        # The longest matching start wins, so a piece whose start is a prefix of another's never takes its posts.
         cap = _norm(caption)
         hits = [p for p in self.pieces if cap.startswith(_norm(p.caption_start))]
         return max(hits, key=lambda p: len(_norm(p.caption_start)), default=None)

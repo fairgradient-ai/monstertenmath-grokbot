@@ -60,7 +60,7 @@ def test_flash_dots_sequence(kn):
 
 
 def test_no_guess_key_no_guess(kn):
-    assert sort(kn, "3", piece="#4").category != "guess"
+    assert sort(kn, "3", piece="#402").category != "guess"
 
 
 def test_own_spam_escalate_tags(kn):
@@ -119,8 +119,13 @@ def test_card_question_has_no_building_reply(kn):
 
 
 def test_piece_limited_and_voice_limited_faqs(kn):
-    assert sort(kn, "Can we play it in the car?", piece="#6").category == "faq:car"
-    assert sort(kn, "Can we play it in the car?", piece="#3").category != "faq:car"
+    # No answer is limited to one piece today (the car answer went with #6 on 21 Nov 2026), so test the rule on one.
+    from dataclasses import replace
+
+    screen = next(f for f in kn.faqs if f.id == "screen-time")
+    kn2 = replace(kn, faqs=tuple(replace(f, pieces=("#26",)) if f is screen else f for f in kn.faqs))
+    assert sort(kn2, "Is this more screen time?", piece="#26").category == "faq:screen-time"
+    assert sort(kn2, "Is this more screen time?", piece="#3").category != "faq:screen-time"
     assert sort(kn, "The voice sounds robotic").notify
     assert sort(kn, "The voice sounds robotic", piece="#15").tier == "draft"  # #15 has no voice
 

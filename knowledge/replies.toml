@@ -165,13 +165,6 @@ building = "It's a 2-minute check you play together. It finds the square your ch
 open = "It's a 2-minute check you play together. It finds the square your child starts on. There are no wrong answers. It's free, at the link in bio."
 
 [[faq]]
-id = "car"
-pieces = ["#6"]
-pattern = '''\bcar\b|driving|road trip'''
-building = "It needs you face to face with both hands up, so it's one for the table, the bath or a waiting room. Never while driving."
-open = "It needs you face to face with both hands up, so it's one for the table, the bath or a waiting room. Never while driving."
-
-[[faq]]
 id = "screen-time"
 pattern = '''screen ?time|more screens?|screens? for (4|four|little|young)|another app for kids'''
 building = "Half the night is 5 minutes with real crackers at the table, with you. Your child's time alone on the phone is a 3-minute game, then a sticker, and the night's done."

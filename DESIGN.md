@@ -88,7 +88,8 @@ posts when the owner starts one, or a person posts by hand as before.
   account's own median, and below 3 posts with reach >= 300 the verdict is "too early".
 - **Ads** are suggestions only: filtered (no brand posts, no real child without an ad release, nothing that
   breaks the caption check or the phase), ranked by shares, follows, saves and comments. The bot never spends.
-- **Pillars**: today's six (games, tonight, realistic, play-along, features, brand) scored weekly; demand themes
+- **Pillars**: today's five (games, tonight, play-along, features, brand; the owner dropped realistic Reels on 21 Nov
+  2026) scored weekly; demand themes
   from comments; up to 2 proposals a week, each through the caption check, adopted by the owner.
 
 ## 4. What pickletime-grokbot taught, and what changed
