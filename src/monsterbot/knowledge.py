@@ -91,11 +91,10 @@ class Knowledge:
     holding: dict[str, str] = field(default_factory=dict)
 
     def match_piece(self, caption: str) -> Piece | None:
+        # The longest matching start wins: "Try it tonight: Monster's Cave" (#4) is a prefix of #402's start.
         cap = _norm(caption)
-        for piece in self.pieces:
-            if cap.startswith(_norm(piece.caption_start)):
-                return piece
-        return None
+        hits = [p for p in self.pieces if cap.startswith(_norm(p.caption_start))]
+        return max(hits, key=lambda p: len(_norm(p.caption_start)), default=None)
 
     def piece(self, key: str | None) -> Piece | None:
         return next((p for p in self.pieces if p.key == key), None) if key else None

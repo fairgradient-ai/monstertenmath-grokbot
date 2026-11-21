@@ -107,14 +107,6 @@ caption_start = "Where does your 4- to 6-year-old start?"
 ai_reply = "The screens are a real recording of our website. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
 
 [[piece]]
-key = "#5"
-name = "Meet the Monster"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Meet the Monster. Teal, two yellow horns"
-
-[[piece]]
 key = "#6"
 name = "Sleepy fingers"
 type = "reel"
@@ -130,14 +122,6 @@ right = "Yes! 7 awake and 3 asleep. 7 and 3 make 10."
 wrong = "Let's check! Hold up 10 fingers and put 3 to sleep. Count the ones still awake together: 7. 7 and 3 make 10."
 
 [[piece]]
-key = "#9"
-name = "Why a ten-frame?"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Why is there a little grid behind our Monster?"
-
-[[piece]]
 key = "#10"
 name = "Fuel the rocket"
 type = "reel"
@@ -145,14 +129,6 @@ ai = true
 voice = "ai"
 caption_start = "After the lesson at the table, your child"
 ai_reply = "The screens are a real recording of our app. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
-
-[[piece]]
-key = "#11"
-name = "Every word scripted"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Not a \"math person\"? You don't need to be."
 
 [[piece]]
 key = "#12"
@@ -172,52 +148,12 @@ wrong = "Let's check! Count up from 6: 7, 8, 9, 10. He took 4."
 
 
 [[piece]]
-key = "#16"
-name = "Every standard"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Monster Ten's 100 lessons cover every Ki"
-
-[[piece]]
-key = "#17"
-name = "The Monster's menu"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: the Monster's menu, a nu"
-
-[[piece]]
 key = "#18"
 name = "The pace"
 type = "carousel"
 ai = false
 voice = "none"
 caption_start = "How fast do the 100 lessons go?"
-
-[[piece]]
-key = "#19"
-name = "Still gentle"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Two school years of topics, and the nigh"
-
-[[piece]]
-key = "#20"
-name = "Monster Writes"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Monster Writes: the solo game where your"
-
-[[piece]]
-key = "#21"
-name = "Check-ups and How it's going"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "How do you know how it's going, without"
 
 [[piece]]
 key = "#22"
@@ -318,1154 +254,821 @@ voice = "ai"
 caption_start = "Answer by writing: a new Monster Ten gam"
 ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
 
-[[piece]]
-key = "#101"
-name = "Feed the Monster (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Feed the Monster: Feed the Monster one c"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+# The v2 calendar (social schedule.json, 20 Nov 2026): #401-#412 feed posts and carousels, #501-#561
+# lesson Reels ("Try it tonight"), #601-#619 one-take realistic Reels. Rebuild with scripts/sync_social.py.
 
 [[piece]]
-key = "#102"
-name = "Cracker Parade (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Cracker Parade: Count a cracker parade, "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+key = "#401"
+name = "No red X"
+type = "post"
+ai = false
+voice = "none"
+caption_start = "No timer. No score. No red X. In Monster"
 
 [[piece]]
-key = "#202"
-name = "Try it tonight: Cracker Parade"
+key = "#402"
+name = "Monster's Cave"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Cracker Parade. Count a "
+caption_start = "Try it tonight: Monster's Cave, a 5-minu"
 
 [[piece]]
-key = "#103"
-name = "Cracker Café (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Cracker Café: The Monster orders cracker"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#203"
-name = "Try it tonight: Cracker Café"
+key = "#403"
+name = "The Monster's menu"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Cracker Café. The Monste"
+caption_start = "Try it tonight: the Monster's menu, a nu"
 
 [[piece]]
-key = "#104"
-name = "Growing Snake (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Growing Snake: Feed a cracker snake one "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#204"
-name = "Try it tonight: Growing Snake"
+key = "#404"
+name = "Every standard"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Growing Snake. Feed a cr"
+caption_start = "Monster Ten's 100 lessons cover every Ki"
 
 [[piece]]
-key = "#105"
-name = "Cracker Scatter (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Cracker Scatter: Scatter 10 crackers and"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#106"
-name = "Peekaboo Dots (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Peekaboo Dots: Peek at crackers for a se"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#206"
-name = "Try it tonight: Peekaboo Dots"
+key = "#405"
+name = "Monster Writes"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Peekaboo Dots. Peek at c"
+caption_start = "Monster Writes: the solo game where your"
 
 [[piece]]
-key = "#107"
-name = "Dice Dots (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Dice Dots: Make dice patterns with crack"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#108"
-name = "Monster's Bus (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Monster's Bus: Fill the bus seats and se"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#208"
-name = "Try it tonight: Monster's Bus"
+key = "#406"
+name = "Gentle nights"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Monster's Bus. Fill the "
+caption_start = "Two school years of topics, and the nigh"
 
 [[piece]]
-key = "#109"
-name = "Who Has More? (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Who Has More?: Match crackers in pairs t"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#110"
-name = "Monster's Feast (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Monster's Feast: Count 20 crackers for a"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#210"
-name = "Try it tonight: Monster's Feast"
+key = "#407"
+name = "Why a ten-frame?"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Monster's Feast. Count 2"
+caption_start = "Why is there a little grid behind our Mo"
 
 [[piece]]
-key = "#111"
-name = "Monster's Hat (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Monster's Hat: Hide some of 5 under the "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#112"
-name = "Shake and Spill (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Shake and Spill: Shake 6 crackers, spill"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#212"
-name = "Try it tonight: Shake and Spill"
+key = "#408"
+name = "How it's going"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Shake and Spill. Shake 6"
+caption_start = "How do you know how it's going, without "
 
 [[piece]]
-key = "#113"
-name = "Monster's Menu (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Monster's Menu: Write a number in dots. "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#213"
-name = "Try it tonight: Monster's Menu"
+key = "#409"
+name = "Meet the Monster"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Monster's Menu. Write a "
+caption_start = "Meet the Monster. Teal, two yellow horns"
 
 [[piece]]
-key = "#114"
-name = "Monster's Cave (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Monster's Cave: Hide and count, then the"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#115"
-name = "Monster's House (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Monster's House: Some of 7 crackers go i"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#215"
-name = "Try it tonight: Monster's House"
+key = "#410"
+name = "Every word scripted"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Monster's House. Some of"
+caption_start = "Not a \"math person\"? You don't need to b"
 
 [[piece]]
-key = "#116"
-name = "Two Plates (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Two Plates: Move crackers one at a time "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#117"
-name = "Cracker Train (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Cracker Train: Part of a 9-cracker train"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#217"
-name = "Try it tonight: Cracker Train"
+key = "#411"
+name = "One night"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Cracker Train. Part of a"
+caption_start = "Tomorrow we open, so here's a night of M"
 
 [[piece]]
-key = "#118"
-name = "Ten Friends (Reel)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Ten Friends: Find every pair that makes "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
-
-[[piece]]
-key = "#218"
-name = "Try it tonight: Ten Friends"
+key = "#412"
+name = "We're open"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Try it tonight: Ten Friends. Find every "
+caption_start = "We're open! Monster Ten is math for 4–6 "
 
 [[piece]]
-key = "#119"
-name = "Number Duel (Reel)"
+key = "#501"
+name = "Hungry Monster"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Number Duel: Flip two number cards. Whos"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: feed the hungry Monster."
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#219"
-name = "Try it tonight: Number Duel"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Number Duel. Flip two nu"
-
-[[piece]]
-key = "#120"
-name = "Party Tent (Reel)"
+key = "#502"
+name = "Cracker parade"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Party Tent: Guests hide in the party ten"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the cracker parade. Line"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#220"
-name = "Try it tonight: Party Tent"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Party Tent. Guests hide "
-
-[[piece]]
-key = "#121"
-name = "Picnic Stories (Reel)"
+key = "#503"
+name = "Monster's café"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Picnic Stories: Act out little picnic st"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's café. The "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#221"
-name = "Try it tonight: Picnic Stories"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Picnic Stories. Act out "
-
-[[piece]]
-key = "#122"
-name = "Spin the Plate (Reel)"
+key = "#504"
+name = "Baby snake"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Spin the Plate: Spin the plate: 3 and 1 "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: grow a baby snake. Start"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#222"
-name = "Try it tonight: Spin the Plate"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Spin the Plate. Spin the"
-
-[[piece]]
-key = "#123"
-name = "Shape Snack (Reel)"
+key = "#505"
+name = "Runaway crackers"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Shape Snack: Tonight the Monster eats on"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the crackers ran away! S"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#223"
-name = "Try it tonight: Shape Snack"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Shape Snack. Tonight the"
-
-[[piece]]
-key = "#124"
-name = "Pat the Cup (Reel)"
+key = "#506"
+name = "Peekaboo crackers"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Pat the Cup: Pat the cup, say its number"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: peekaboo crackers. Hide "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#224"
-name = "Try it tonight: Pat the Cup"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Pat the Cup. Pat the cup"
-
-[[piece]]
-key = "#125"
-name = "Monster's Lunch (Reel)"
+key = "#507"
+name = "Dice five"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Monster's Lunch: The Monster gobbles som"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: five, the dice way. Lay "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#225"
-name = "Try it tonight: Monster's Lunch"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Monster's Lunch. The Mon"
-
-[[piece]]
-key = "#126"
-name = "Where's the Monster? (Reel)"
+key = "#508"
+name = "Monster's bus"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Where's the Monster?: Put the Monster cr"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's bus. Draw "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#226"
-name = "Try it tonight: Where's the Monster?"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Where's the Monster?. Pu"
-
-[[piece]]
-key = "#127"
-name = "Finger Fives (Reel)"
+key = "#509"
+name = "Who has more"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Finger Fives: Quick finger sums and take"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: who has more? You take a"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#227"
-name = "Try it tonight: Finger Fives"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Finger Fives. Quick fing"
-
-[[piece]]
-key = "#128"
-name = "Tens Parade (Reel)"
+key = "#510"
+name = "Giant feast"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Tens Parade: Flash ten fingers and march"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's giant feas"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#228"
-name = "Try it tonight: Tens Parade"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Tens Parade. Flash ten f"
-
-[[piece]]
-key = "#129"
-name = "Garage Stories (Reel)"
+key = "#511"
+name = "Monster's hat"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Garage Stories: Cars drive into the Mons"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: what's under the Monster"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#229"
-name = "Try it tonight: Garage Stories"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Garage Stories. Cars dri"
-
-[[piece]]
-key = "#130"
-name = "Box or Ball (Reel)"
+key = "#512"
+name = "Shake and spill"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Box or Ball: A kitchen hunt: does it rol"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: shake and spill. Put six"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#230"
-name = "Try it tonight: Box or Ball"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Box or Ball. A kitchen h"
-
-[[piece]]
-key = "#131"
-name = "Double Trouble (Reel)"
+key = "#513"
+name = "Monster's menu"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Double Trouble: Copy the Monster's crack"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's menu. Draw"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#231"
-name = "Try it tonight: Double Trouble"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Double Trouble. Copy the"
-
-[[piece]]
-key = "#132"
-name = "Marching Ants (Reel)"
+key = "#514"
+name = "Monster's cave"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Marching Ants: Ants march off with picni"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's cave. Turn"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#232"
-name = "Try it tonight: Marching Ants"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Marching Ants. Ants marc"
-
-[[piece]]
-key = "#133"
-name = "Longer or Taller (Reel)"
+key = "#515"
+name = "Monster's house"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Longer or Taller: Which spoon is longer?"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: visitors at the Monster'"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#233"
-name = "Try it tonight: Longer or Taller"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Longer or Taller. Which "
-
-[[piece]]
-key = "#134"
-name = "Backward Bunny (Reel)"
+key = "#516"
+name = "Two plates"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Backward Bunny: Hop back on the number l"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: two plates. Put eight cr"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#234"
-name = "Try it tonight: Backward Bunny"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Backward Bunny. Hop back"
-
-[[piece]]
-key = "#135"
-name = "Night Nibbles (Reel)"
+key = "#517"
+name = "Cracker train"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Night Nibbles: The Monster nibbles crack"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the cracker train. Line "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#235"
-name = "Try it tonight: Night Nibbles"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Night Nibbles. The Monst"
-
-[[piece]]
-key = "#136"
-name = "Sort the Snack (Reel)"
+key = "#518"
+name = "Friends of ten"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Sort the Snack: Sort a mixed handful ont"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the friends of ten. Spli"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#236"
-name = "Try it tonight: Sort the Snack"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Sort the Snack. Sort a m"
-
-[[piece]]
-key = "#137"
-name = "Tall Towers (Reel)"
+key = "#519"
+name = "Number duel"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Tall Towers: Build two towers side by si"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the number duel. Write n"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#237"
-name = "Try it tonight: Tall Towers"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Tall Towers. Build two t"
-
-[[piece]]
-key = "#138"
-name = "Shape Twins (Reel)"
+key = "#520"
+name = "Party tent"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Shape Twins: Two paper shapes side by si"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the party tent. Ten crac"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#238"
-name = "Try it tonight: Shape Twins"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Shape Twins. Two paper s"
-
-[[piece]]
-key = "#139"
-name = "All Aboard (Reel)"
+key = "#521"
+name = "Picnic stories"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "All Aboard: Riders get on and off the Mo"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: picnic stories. The crac"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#239"
-name = "Try it tonight: All Aboard"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: All Aboard. Riders get o"
-
-[[piece]]
-key = "#140"
-name = "Doodle Stories (Reel)"
+key = "#522"
+name = "Spin the plate"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Doodle Stories: Draw circles to solve st"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: spin the plate. Put thre"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#240"
-name = "Try it tonight: Doodle Stories"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Doodle Stories. Draw cir"
-
-[[piece]]
-key = "#141"
-name = "Hundred Walk (Reel)"
+key = "#523"
+name = "Shape snack"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Hundred Walk: Start at 37 and take steps"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's shape snac"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#241"
-name = "Try it tonight: Hundred Walk"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Hundred Walk. Start at 3"
-
-[[piece]]
-key = "#142"
-name = "Cracker Shapes (Reel)"
+key = "#524"
+name = "Pat the cup"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Cracker Shapes: Snap a square cracker co"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: pat the cup. Hide five c"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#242"
-name = "Try it tonight: Cracker Shapes"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Cracker Shapes. Snap a s"
-
-[[piece]]
-key = "#143"
-name = "Number Road (Reel)"
+key = "#525"
+name = "Monster's lunch"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Number Road: Drive a toy car on a number"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's lunch. Put"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#243"
-name = "Try it tonight: Number Road"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Number Road. Drive a toy"
-
-[[piece]]
-key = "#144"
-name = "Ping-Pong Sums (Reel)"
+key = "#526"
+name = "Where's the Monster"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Ping-Pong Sums: Bounce quick sums back a"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: where's the Monster crac"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#244"
-name = "Try it tonight: Ping-Pong Sums"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Ping-Pong Sums. Bounce q"
-
-[[piece]]
-key = "#145"
-name = "Monster's Big Day (Reel)"
+key = "#527"
+name = "Finger fives"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Monster's Big Day: Act out the Monster's"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: finger fives. Show me th"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#245"
-name = "Try it tonight: Monster's Big Day"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Monster's Big Day. Act o"
-
-[[piece]]
-key = "#146"
-name = "Cup of Ten (Reel)"
+key = "#528"
+name = "Tens parade"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Cup of Ten: A full cup of 10 and some mo"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the tens parade. Line up"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#246"
-name = "Try it tonight: Cup of Ten"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Cup of Ten. A full cup o"
-
-[[piece]]
-key = "#147"
-name = "Teen Builders (Reel)"
+key = "#529"
+name = "Garage stories"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Teen Builders: Build teen numbers from a"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: garage stories. Draw a g"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#247"
-name = "Try it tonight: Teen Builders"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Teen Builders. Build tee"
-
-[[piece]]
-key = "#148"
-name = "Teen Names (Reel)"
+key = "#530"
+name = "Roll or stack"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Teen Names: Six-teen says 6 and 10. List"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: does it roll or does it "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#248"
-name = "Try it tonight: Teen Names"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Teen Names. Six-teen say"
-
-[[piece]]
-key = "#149"
-name = "Hiding Zero (Reel)"
+key = "#531"
+name = "Double trouble"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Hiding Zero: Write 10, then hide its zer"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: double trouble. Put down"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#249"
-name = "Try it tonight: Hiding Zero"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Hiding Zero. Write 10, t"
-
-[[piece]]
-key = "#150"
-name = "Egg Carton Teens (Reel)"
+key = "#532"
+name = "Marching ants"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Egg Carton Teens: Fill an egg carton of "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: marching ants. Five crac"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#250"
-name = "Try it tonight: Egg Carton Teens"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Egg Carton Teens. Fill a"
-
-[[piece]]
-key = "#151"
-name = "Ten Bundles (Reel)"
+key = "#533"
+name = "Longer or shorter"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Ten Bundles: Bundle 10 straws with a ban"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: which spoon is longer? G"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#251"
-name = "Try it tonight: Ten Bundles"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Ten Bundles. Bundle 10 s"
-
-[[piece]]
-key = "#152"
-name = "Big Ten Jump (Reel)"
+key = "#534"
+name = "Backward bunny"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Big Ten Jump: A whole plate of 10 joins "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the backward bunny. Draw"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#252"
-name = "Try it tonight: Big Ten Jump"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Big Ten Jump. A whole pl"
-
-[[piece]]
-key = "#153"
-name = "Ribbon Race (Reel)"
+key = "#535"
+name = "Night nibbles"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Ribbon Race: Put three ribbons in order "
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: night nibbles. The Monst"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#253"
-name = "Try it tonight: Ribbon Race"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Ribbon Race. Put three r"
-
-[[piece]]
-key = "#154"
-name = "Nibble to Ten (Reel)"
+key = "#536"
+name = "Sort the snack"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Nibble to Ten: The Monster nibbles the e"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: sort the snack. Pour out"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#254"
-name = "Try it tonight: Nibble to Ten"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Nibble to Ten. The Monst"
-
-[[piece]]
-key = "#155"
-name = "Teen Stairs (Reel)"
+key = "#537"
+name = "Tall towers"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Teen Stairs: Climb the teen stairs one c"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: tall towers. Build two c"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#255"
-name = "Try it tonight: Teen Stairs"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Teen Stairs. Climb the t"
-
-[[piece]]
-key = "#156"
-name = "Race to Twenty (Reel)"
+key = "#538"
+name = "Corners and sides"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Race to Twenty: Roll the die, collect cr"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: corners and sides. Cut o"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#256"
-name = "Try it tonight: Race to Twenty"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Race to Twenty. Roll the"
-
-[[piece]]
-key = "#157"
-name = "Two Full Tens (Reel)"
+key = "#539"
+name = "All aboard"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Two Full Tens: Two plates of 10 make 20."
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: all aboard! Draw a bus w"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#257"
-name = "Try it tonight: Two Full Tens"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Two Full Tens. Two plate"
-
-[[piece]]
-key = "#158"
-name = "Bigger Teen (Reel)"
+key = "#540"
+name = "Doodle stories"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Bigger Teen: Both cards are a ten. Whoev"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: doodle stories. Tell a t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#258"
-name = "Try it tonight: Bigger Teen"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Bigger Teen. Both cards "
-
-[[piece]]
-key = "#159"
-name = "Bundles of Ten (Reel)"
+key = "#541"
+name = "Hundred walk"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Bundles of Ten: Bundles of ten straws: 1"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the hundred walk. Write "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#259"
-name = "Try it tonight: Bundles of Ten"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Bundles of Ten. Bundles "
-
-[[piece]]
-key = "#160"
-name = "Build a Number (Reel)"
+key = "#542"
+name = "Number road"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Build a Number: You say 34. Your child b"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the number road. Draw a "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#260"
-name = "Try it tonight: Build a Number"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Build a Number. You say "
-
-[[piece]]
-key = "#161"
-name = "Monster's Hundred (Reel)"
+key = "#543"
+name = "Monster's big day"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Monster's Hundred: Build 45 with bundles"
-ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every line about the lesson comes from its script in the 100 lessons."
+caption_start = "Try it tonight: the Monster's big day. D"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#261"
-name = "Try it tonight: Monster's Hundred"
-type = "carousel"
-ai = false
-voice = "none"
-caption_start = "Try it tonight: Monster's Hundred. Build"
-
-[[piece]]
-key = "#301"
-name = "Snap! (realistic)"
+key = "#544"
+name = "Cup of ten"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Snap a square cracker corner to corner: "
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+caption_start = "Try it tonight: the cup of ten. Drop ten"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
 
 [[piece]]
-key = "#302"
+key = "#545"
+name = "Egg carton teens"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: egg carton teens. Put on"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#546"
+name = "Listen to seventeen"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: listen to seventeen. Say"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#547"
+name = "Hide the zero"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: hide the zero. Write 10 "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#548"
+name = "Straw bundles"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: straw bundles. Count ten"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#549"
+name = "Shortest ribbon"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the shortest ribbon. Put"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#550"
+name = "Big ten jump"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the big ten jump. Put si"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#551"
+name = "Nibble to ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: nibble to ten. Lay out t"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#552"
+name = "Teen stairs"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the teen stairs. Build s"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#553"
+name = "Race to twenty"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: race to twenty. Take tur"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#554"
+name = "Two tens and a trick"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: two tens and a trick. Se"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#555"
+name = "Bigger teen"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the bigger teen. Write 1"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#556"
+name = "Build a number"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: build a number. Say a nu"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#557"
+name = "Hundred chart hunt"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the hundred chart hunt. "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#558"
+name = "Which is heavier"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: which is heavier? Put an"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#559"
+name = "Kitchen shape hunt"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the kitchen shape hunt. "
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#560"
+name = "Snack pattern"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the snack pattern. Lay o"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#561"
+name = "Doubles plate"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Try it tonight: the doubles plate. Put f"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+[[piece]]
+key = "#601"
+name = "Laundry day (realistic)"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Laundry day? Mix up the clean socks and "
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
+
+[[piece]]
+key = "#602"
 name = "Big dinner tonight? (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "A big dinner tonight? Count the forks to"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#303"
+key = "#603"
 name = "Which spoon is longer? (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Which spoon is longer? Line the ends up "
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#304"
+key = "#604"
 name = "Sort the snack (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "A mixed handful of snack, three plates. "
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#305"
+key = "#605"
 name = "Fold it in half (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Fold a tortilla in half so the two parts"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#306"
+key = "#606"
 name = "Is it fair? (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Measure a spoon in paper clips, end to e"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#307"
+key = "#607"
 name = "Everyone gets a partner? (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Line crackers up in pairs. If everyone h"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#308"
+key = "#608"
 name = "Where's the Monster? (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "One cracker is the Monster. Put him on t"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#309"
+key = "#609"
 name = "Shake and spill (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Shake a few crackers, spill them, and na"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#310"
+key = "#610"
 name = "Ten in a bundle (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Count ten straws and wrap them with a ha"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#311"
-name = "Which tower is taller? (realistic)"
+key = "#611"
+name = "Count the stairs (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Two towers side by side. Which is taller"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+caption_start = "Count the stairs on the way up: one step"
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#312"
+key = "#612"
 name = "Dimes and pennies (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Ten pennies are worth one dime. Count th"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#313"
+key = "#613"
 name = "Make a plate clock (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "A paper plate and two paper strips make "
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#314"
+key = "#614"
 name = "Peekaboo crackers (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Hide a few crackers under a napkin, lift"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+caption_start = "Hide a few crackers under a cup, lift it"
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#315"
+key = "#615"
 name = "Rows of crackers (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Equal rows of crackers: count by rows. T"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#316"
+key = "#616"
 name = "Shortest first (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
-caption_start = "Three ribbons, three lengths. Line the e"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+caption_start = "Three pencils, three lengths. Line the e"
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#317"
+key = "#617"
 name = "Ten in the carton (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "One cracker in each cup: a full box is t"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#318"
+key = "#618"
 name = "Feed the Monster (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Turn a cup on its side: it's the Monster"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
 
 [[piece]]
-key = "#319"
+key = "#619"
 name = "How many under the cup? (realistic)"
 type = "reel"
 ai = true
 voice = "ai"
 caption_start = "Hide some crackers under a cup. Count th"
-ai_reply = "Good eye! The video is AI-made: the grown-up's hands and the room are generated, and the voice and music are AI-made too. That's why it has the AI label. The game is real, though: you can play it at home tonight with things you already have."
+ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
