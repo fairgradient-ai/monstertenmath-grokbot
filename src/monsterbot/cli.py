@@ -33,6 +33,7 @@ from .outreach import Outreach
 from .policy import Context, check
 from .report import draft_report, examples_report, inbox_report, sweep_report
 from .scout import STATUSES, Scout
+from .social import Calendar, Social, buffer_from_env, phase_at
 from .token import expiry, load_token, save_refreshed
 
 
@@ -199,6 +200,15 @@ def build_parser() -> argparse.ArgumentParser:
     ck = sub.add_parser("check", help="run the brand check on a text (standard input)")
     ck.add_argument("--category", choices=["caption", "outbound", "draft"], default="caption")
     ck.add_argument("--due", help="the post's dueAt (UTC ISO): checked against the phase it will post in")
+    bu = sub.add_parser(
+        "buffer", help="the Buffer bridge: status, audit, adopt, sync; taps: remind, delete, restore, push"
+    )
+    bu.add_argument("action", choices=["status", "audit", "adopt", "sync", "remind", "delete", "restore", "push"])
+    bu.add_argument("key", nargs="?")
+    bu.add_argument("--dry", action="store_true")
+    bu.add_argument("--redo", action="store_true")
+    bu.add_argument("--no-pull", action="store_true", help=argparse.SUPPRESS)
+    bu.add_argument("--owner-tapped", action="store_true")
     sub.add_parser("version")
     return p
 
@@ -463,13 +473,31 @@ def _run(args, desk: Desk) -> int:
         print("\n".join(ins.pillars()))
         return 0
 
+    if args.cmd == "buffer":
+        cal = Calendar(Path(cfg.buffer_social_checkout), cfg.buffer_media_bucket)
+        soc = Social(cfg, kn, ledger, buffer_from_env(cfg), cal, desk.phase(), desk.pricing(), now())
+        a = args.action
+        with desk.lock(wait_seconds=120):
+            if a == "status":
+                lines = soc.status()
+            elif a == "audit":
+                lines = soc.audit()
+            elif a == "adopt":
+                lines = soc.adopt(redo=args.redo)
+            elif a == "sync":
+                lines = soc.sync(dry=args.dry, pull=not args.no_pull and not args.dry)
+            else:
+                if not args.key:
+                    raise Refused(f"REFUSED: which post? run.sh buffer {a} <key> --owner-tapped")
+                lines = [getattr(soc, a)(args.key, args.owner_tapped)]
+        print("\n".join(lines))
+        return 1 if lines and lines[-1].startswith("REFUSED") else 0
+
     if args.cmd == "check":
         text = sys.stdin.read()
         phase = desk.phase()
         if args.due:
-            due = datetime.fromisoformat(args.due.replace("Z", "+00:00"))
-            launch = datetime.fromisoformat(LAUNCH_UTC)
-            phase = "open" if due >= launch else "building"
+            phase = phase_at(args.due)
         ctx = Context(phase, args.category, stores=cfg.stores, pricing=desk.pricing())
         bad = check(text, ctx, kn.rules)
         if bad:
@@ -809,9 +837,6 @@ def browser_command(args, b: Browser) -> int:
         print(b.done(session, args.seq, did, skip=args.skip))
         return 0
     raise Refused(f"REFUSED: unknown browser action {a}.")
-
-
-LAUNCH_UTC = "2026-12-01T05:00:00+00:00"  # Tue 1 Dec 2026, midnight Eastern: a post due from then is in the open phase
 
 
 def token_scopes(ch, cfg) -> list[str]:
