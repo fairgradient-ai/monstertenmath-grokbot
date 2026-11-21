@@ -2,7 +2,8 @@
 """sync_social.py SOCIAL_CHECKOUT : compare knowledge/pieces.toml with the social repo's schedule.
 
 Reads monstertenmath_social/instagram/schedule.json (the approved Buffer calendar on main) and checks that
-every scheduled piece is in pieces.toml, that its caption still starts with `caption_start`, and that the AI
+every scheduled piece is in pieces.toml (entries with a "hold" are skipped, as the social repo's schedule.py
+skips them), that its caption still starts with `caption_start`, and that the AI
 flag agrees. It changes nothing: fix pieces.toml by hand, in a pull request. Exit 1 if anything differs.
 """
 
@@ -30,6 +31,8 @@ def main(argv: list[str]) -> int:
     problems = 0
     for entry in schedule:
         key = entry["name"].split()[0]
+        if entry.get("hold"):
+            continue  # never scheduled (schedule.py skips it); a piece posted earlier stays in pieces.toml
         piece = pieces.pop(key, None)
         if piece is None:
             print(f"MISSING  {entry['name']}: add it to knowledge/pieces.toml")

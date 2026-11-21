@@ -35,3 +35,9 @@ def test_ai_pieces_have_an_ai_line(kn):
             assert p.ai_reply and "AI" in p.ai_reply, p.key
         else:
             assert p.ai_reply is None, p.key
+
+
+def test_longest_caption_start_wins(kn):
+    # #4's start "Try it tonight: Monster's Cave" is a prefix of #402's, which must still match #402.
+    assert kn.match_piece("Try it tonight: Monster's Cave, a 5-minute game for 4–6 year olds.").key == "#402"
+    assert kn.match_piece("Try it tonight: Monster's Cave! Ten crackers and a cup.").key == "#4"
