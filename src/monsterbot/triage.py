@@ -50,6 +50,7 @@ this took takes under was we were wow yay yeah yelled yes hmm um maybe
 QUESTION = re.compile(
     r"\?|^\s*(how|what|when|where|which|who|why|is|are|can|could|do|does|will|would|should)\b", re.IGNORECASE
 )
+NOT_A_GUESS = re.compile(r"\b(lessons?|levels?|episodes?|parts?|videos?)\b", re.IGNORECASE)
 TOKENS = re.compile(r"[a-z][a-z']*|\d+")
 
 
@@ -90,6 +91,8 @@ def numbers_in(text: str) -> list[int]:
 def looks_like_guess(text: str) -> bool:
     """Short, mostly numbers: "3!", "he took 3", "my son said three". Not "my 5 year old loved it"."""
     if len(text.strip()) > 60:
+        return False
+    if NOT_A_GUESS.search(text):  # "Is this lesson 12?" asks about the post, it doesn't answer it
         return False
     toks = TOKENS.findall(text.lower())
     nums = [t for t in toks if t.isdigit() or t in NUMBER_WORDS]

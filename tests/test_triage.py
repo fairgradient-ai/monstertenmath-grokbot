@@ -136,3 +136,10 @@ def test_thread_replies(kn):
     assert sort(kn, "Same question, does it work at 3?", parent="someone").tier == "draft"
     # answers under our own pinned first comment are treated like top-level comments
     assert sort(kn, "3!", parent="monstertenmath").category == "guess"
+
+
+def test_a_question_about_a_lesson_is_not_a_guess(kn):
+    assert not looks_like_guess("Is this lesson 12?")
+    v = sort(kn, "Is this lesson 12?")
+    assert v.tier == "draft"
+    assert sort(kn, "3!").category == "guess"
