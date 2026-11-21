@@ -1,4 +1,5 @@
-# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 20 Nov 2026).
+# The pieces the bot knows, from monstertenmath_social/instagram/schedule.json (as of 21 Nov 2026: launch Tue 24 Nov,
+# no realistic Reels; #3 stays because it was posted on 19 Nov and its comments still need answers).
 #
 # A post on Instagram is matched to a piece by the start of its caption (`caption_start`, compared with
 # spaces collapsed), the same way the social repo's tools/v2/buffer/schedule.py finds a post in Buffer.
@@ -57,16 +58,6 @@ right = "Yes! 7 and 3 make 10."
 wrong = "Let's check! Count up from 7: 8, 9, 10. He took 3."
 
 [[piece]]
-key = "#4"
-name = "Try it tonight"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Try it tonight: Monster's Cave"
-first_comment = "Send this to a parent who has crackers in the cupboard."
-ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, the hand on the cup too, and the voice and music are AI-made. That's why it has the AI label. The game is Monster's Cave, and it works with 10 real crackers and a cup tonight."
-
-[[piece]]
 key = "#15"
 name = "Flash dots"
 type = "reel"
@@ -107,21 +98,6 @@ caption_start = "Where does your 4- to 6-year-old start?"
 ai_reply = "The screens are a real recording of our website. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
 
 [[piece]]
-key = "#6"
-name = "Sleepy fingers"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "No crackers? No problem. Sleepy fingers"
-first_comment = "How many fingers are awake? Type your child's answer here."   # source = "bot"
-ai_reply = "The pictures are AI-made stills of a grown-up's hands, and the voice and music are AI-made too. That's why it has the AI label. The game is Sleepy fingers, a round of Monster's Cave."
-[piece.play_along]
-# source = "bot": the Reel leaves the second answer (7 awake, 3 asleep) unsaid for the comments.
-answer = 7
-right = "Yes! 7 awake and 3 asleep. 7 and 3 make 10."
-wrong = "Let's check! Hold up 10 fingers and put 3 to sleep. Count the ones still awake together: 7. 7 and 3 make 10."
-
-[[piece]]
 key = "#10"
 name = "Fuel the rocket"
 type = "reel"
@@ -129,23 +105,6 @@ ai = true
 voice = "ai"
 caption_start = "After the lesson at the table, your child"
 ai_reply = "The screens are a real recording of our app. The blurred kitchen table behind the phone is an AI-made picture, and the voice and music are AI-made too. That's why it has the AI label."
-
-[[piece]]
-key = "#12"
-name = "Round 2"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Round 2: how many did the Monster take"
-first_comment = "How many did he take this time? Type your child's answer here."   # source = "bot"
-ai_reply = "Good question! The pictures are AI-made stills of a kitchen table, the hand on the cup too, and the voice and music are AI-made. That's why it has the AI label. The game is Monster's Cave, and it works with 10 real crackers and a cup tonight."
-[piece.play_along]
-# source = "bot", in #3's pattern: Round 2 hides 4, so 6 are left.
-answer = 4
-right = "Yes! 6 and 4 make 10."
-wrong = "Let's check! Count up from 6: 7, 8, 9, 10. He took 4."
-
-
 
 [[piece]]
 key = "#18"
@@ -254,8 +213,8 @@ voice = "ai"
 caption_start = "Answer by writing: a new Monster Ten gam"
 ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. The game is one of the solo games in the 100 lessons."
 
-# The v2 calendar (social schedule.json, 20 Nov 2026): #401-#412 feed posts and carousels, #501-#561
-# lesson Reels ("Try it tonight"), #601-#619 one-take realistic Reels. Rebuild with scripts/sync_social.py.
+# The v2 calendar (social schedule.json, 21 Nov 2026): #401-#412 feed posts and carousels, #501-#561
+# lesson Reels ("Try it tonight") and #700, the launch film. Rebuild with scripts/sync_social.py.
 
 [[piece]]
 key = "#401"
@@ -343,7 +302,18 @@ name = "One night"
 type = "carousel"
 ai = false
 voice = "none"
-caption_start = "Tomorrow we open, so here's a night of M"
+caption_start = "Here's a night of Monster Ten. 10 minutes"
+
+[[piece]]
+key = "#700"
+name = "Monster Ten is live"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Monster Ten is live."
+# source = "bot": the launch film (Tue 24 Nov 2026, 12:30 pm ET), drawn in the app's flat style; AI image and video tools
+# made some of its frames and motion, and the voices and music are AI-made.
+ai_reply = "Good question! The film is drawn in our app's style with help from AI image and video tools, and the voices and music are AI-made, which is why it has the AI label. The games and lessons in it are the real Monster Ten."
 
 [[piece]]
 key = "#412"
@@ -901,174 +871,3 @@ ai = true
 voice = "ai"
 caption_start = "Try it tonight: the doubles plate. Put f"
 ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
-
-[[piece]]
-key = "#601"
-name = "Laundry day (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Laundry day? Mix up the clean socks and "
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#602"
-name = "Big dinner tonight? (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "A big dinner tonight? Count the forks to"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#603"
-name = "Which spoon is longer? (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Which spoon is longer? Line the ends up "
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#604"
-name = "Sort the snack (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "A mixed handful of snack, three plates. "
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#605"
-name = "Fold it in half (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Fold a tortilla in half so the two parts"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#606"
-name = "Is it fair? (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Measure a spoon in paper clips, end to e"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#607"
-name = "Everyone gets a partner? (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Line crackers up in pairs. If everyone h"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#608"
-name = "Where's the Monster? (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "One cracker is the Monster. Put him on t"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#609"
-name = "Shake and spill (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Shake a few crackers, spill them, and na"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#610"
-name = "Ten in a bundle (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Count ten straws and wrap them with a ha"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#611"
-name = "Count the stairs (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Count the stairs on the way up: one step"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#612"
-name = "Dimes and pennies (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Ten pennies are worth one dime. Count th"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#613"
-name = "Make a plate clock (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "A paper plate and two paper strips make "
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#614"
-name = "Peekaboo crackers (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Hide a few crackers under a cup, lift it"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#615"
-name = "Rows of crackers (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Equal rows of crackers: count by rows. T"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#616"
-name = "Shortest first (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Three pencils, three lengths. Line the e"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#617"
-name = "Ten in the carton (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "One cracker in each cup: a full box is t"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#618"
-name = "Feed the Monster (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Turn a cup on its side: it's the Monster"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."
-
-[[piece]]
-key = "#619"
-name = "How many under the cup? (realistic)"
-type = "reel"
-ai = true
-voice = "ai"
-caption_start = "Hide some crackers under a cup. Count th"
-ai_reply = "Good eye! The video is AI-made: the room and the child's hands are generated, and the voice and music are AI-made too. That's why it has the AI label. The activity is real, though: you can try it at home tonight with things you already have."

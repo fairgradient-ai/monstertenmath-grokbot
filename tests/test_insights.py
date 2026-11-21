@@ -17,10 +17,10 @@ CAPTIONS = {
     "#501": "Try it tonight: feed the hungry Monster. Put five crackers on a plate.",
     "#502": "Try it tonight: count a cracker parade, one by one.",
     "#503": "Try it tonight: open Monster's café and take orders.",
-    "#601": "Laundry day? Mix up the clean socks and find the matching pairs, two by two.",
-    "#602": "Big dinner tonight? Set the table together and count the forks.",
-    "#603": "Which spoon is longer? Line them up and check.",
-    "#23": "Ten crackers, one Monster: a new Monster Ten game",
+    "#24": "Worm Ruler: a new Monster Ten game",
+    "#25": "Line Up: a new Monster Ten game",
+    "#26": "Wake the Monster: a new Monster Ten game",
+    "#403": "Try it tonight: the Monster's menu",
 }
 
 
@@ -39,8 +39,8 @@ def media_fixture(kn):
                 "comments": [],
             }
         )
-        # realistic Reels share most
-        shares = 40 if key.startswith("#6") else 8
+        # the game Reels #24-#26 share most
+        shares = 40 if key in ("#24", "#25", "#26") else 8
         insights[mid] = {
             "reach": 2000,
             "shares": shares,
@@ -68,14 +68,14 @@ def ins(tmp_path, kn):
 def test_collect_matches_pieces(ins):
     posts = ins.posts()
     assert len(posts) == len(CAPTIONS)
-    assert {p["pillar"] for p in posts} == {"tonight", "realistic", "games"}
+    assert {p["pillar"] for p in posts} == {"tonight", "games", "features"}
     assert all(p["v"]["reach"] == 2000 for p in posts)
 
 
 def test_report_ranks_by_shares(ins):
     lines = ins.report(7, followers=500)
     best = lines[lines.index(next(line for line in lines if line.startswith("Best"))) + 1]
-    assert "realistic" in best
+    assert "games" in best
     assert any(line.startswith("Weakest") for line in lines)
 
 
@@ -90,15 +90,15 @@ def test_too_early_with_few_posts(tmp_path, kn):
 def test_ads_pick_shared_posts_and_never_spend(ins):
     lines = ins.ads()
     assert "never spends" in lines[0]
-    assert lines[1].startswith("1. #60")  # a realistic Reel: most shared
+    assert lines[1].startswith("1. #2")  # a game Reel: most shared
     assert "AI label" in lines[2]
 
 
 def test_ads_skip_a_child_without_release(ins, kn):
     from dataclasses import replace
 
-    ins.kn = replace(kn, pieces=tuple(replace(p, child=True) if p.key == "#601" else p for p in kn.pieces))
-    assert any("#601" in line and "ad release" in line for line in ins.ads())
+    ins.kn = replace(kn, pieces=tuple(replace(p, child=True) if p.key == "#24" else p for p in kn.pieces))
+    assert any("#24" in line and "ad release" in line for line in ins.ads())
 
 
 def test_pillars_score_and_demand(ins):
@@ -110,7 +110,7 @@ def test_pillars_score_and_demand(ins):
     )
     lines = ins.pillars()
     text = "\n".join(lines)
-    assert "realistic" in text and "double down" in text
+    assert "games" in text and "double down" in text
     assert "ages: 1" in text and "no crackers: 1" in text
 
 

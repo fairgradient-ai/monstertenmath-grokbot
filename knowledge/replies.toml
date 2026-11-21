@@ -152,7 +152,7 @@ open = "That's who the scripts are for. Every word is written out. You read, you
 id = "platform"
 question_only = true
 pattern = '''iphone|android|\bios\b|app store|google play|play store'''
-# Launch (Tue 1 Dec 2026) is web only: lessons play in the browser. The iPhone and Android apps come later, with no
+# Launch (Tue 24 Nov 2026) is web only: lessons play in the browser. The iPhone and Android apps come later, with no
 # date given (the owner, 20 Nov 2026). When a store listing is live, bring back open_by_stores (git history).
 building = "It will play in your browser, on a phone, tablet or computer. Apps for iPhone and Android come later."
 open = "It plays in your browser, on a phone, tablet or computer. Apps for iPhone and Android come later."
@@ -163,13 +163,6 @@ question_only = true
 pattern = '''is (it|the check|this|that) a (test|quiz|screening|assessment|exam)'''
 building = "It's a 2-minute check you play together. It finds the square your child starts on. There are no wrong answers."
 open = "It's a 2-minute check you play together. It finds the square your child starts on. There are no wrong answers. It's free, at the link in bio."
-
-[[faq]]
-id = "car"
-pieces = ["#6"]
-pattern = '''\bcar\b|driving|road trip'''
-building = "It needs you face to face with both hands up, so it's one for the table, the bath or a waiting room. Never while driving."
-open = "It needs you face to face with both hands up, so it's one for the table, the bath or a waiting room. Never while driving."
 
 [[faq]]
 id = "screen-time"
@@ -191,7 +184,7 @@ open = "Fair! It's an AI voice, which is why it has the AI label. Thanks for tel
 # Also tell the owner: growth plan section 8 has the re-cut for comments like this.
 notify = "A voice complaint: the growth plan's section 8 has the re-cut for this."
 
-# Standards. Launch is Tue 1 Dec 2026 with the restructured lessons (v2): every Kindergarten and Grade 1 standard
+# Standards. Launch is Tue 24 Nov 2026 with the restructured lessons (v2): every Kindergarten and Grade 1 standard
 # has at least one lesson (social repo instagram/new-lessons-campaign.md). Never "ahead", "surpasses" or a school's name.
 [[faq]]
 id = "standards"

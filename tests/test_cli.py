@@ -129,7 +129,7 @@ def test_v1_commands_run(run, tmp_path, monkeypatch):
     assert code == 0 and out.startswith("TIMING")
     code, out = run("check", "--category", "caption", stdin="Play along tonight! #math #prek")
     assert code == 0 and "PASSES" in out
-    code, out = run("check", "--category", "caption", "--due", "2026-11-25T01:00:00Z", stdin="Link in bio!")
+    code, out = run("check", "--category", "caption", "--due", "2026-11-23T01:00:00Z", stdin="Link in bio!")
     assert code == 1 and "building" in out
     code, out = run("check", "--category", "caption", "--due", "2026-12-05T01:00:00Z", stdin="Link in bio!")
     assert code == 0
