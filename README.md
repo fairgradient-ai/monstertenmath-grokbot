@@ -1,8 +1,10 @@
 # Monster Ten Social Bot
 
-A Grok Bot that runs [@monstertenmath](https://www.instagram.com/monstertenmath/)'s conversations under the
+A Grok Bot that works as [@monstertenmath](https://www.instagram.com/monstertenmath/)'s social agency under the
 launch pack's rules: it answers every comment and DM, finds the right creators and writes them Collab emails,
-and learns how you answer. It asks you only about a child's health, legal, rivals, complaints and money.
+likes, comments and follows in the Grok browser with human pauses (one tap per session), keeps Buffer in step
+with the approved calendar, and reports what works: insights, ads worth promoting, content pillars and posting
+times. It learns how you answer, and asks you only about a child's health, legal, rivals, complaints and money.
 
 Built from the launch pack in [fairgradient-ai/monstertenmath_social](https://github.com/fairgradient-ai/monstertenmath_social)
 (`instagram/README.md` sections 6–7, `instagram/growth-plan.md` 6.2 and 6.5), in the shape of
@@ -29,9 +31,12 @@ scores creators by the growth plan's criteria, drafts Collab emails you send wit
 day sends a **brief**: fresh posts from those creators, each with a comment written for it, for you or a helper
 to post.
 
-It never follows, likes, comments or DMs on _other_ accounts: Instagram's terms forbid automating that, and it
-gets new accounts blocked. [`DESIGN.md`](DESIGN.md), section 3, says what does that job instead. Every reply
-and email passes the pack's 30-second check in code first ([`knowledge/rules.toml`](knowledge/rules.toml)).
+Since v1.0 it also likes, comments and follows on other accounts in the Grok browser, but only in a session
+you start ("engage S7"), one step at a time with random breaks, under caps that ramp over two weeks, and it
+stops for 48 hours at any warning ([`DESIGN.md`](DESIGN.md), section 3: your decision, and the risk it carries).
+It never unfollows or DMs other accounts. It keeps Buffer in step with `schedule.json` on the social repo's
+`main` (merged posts only), and every Sunday scores the pillars and proposes new ones. Every reply, comment,
+caption and email passes the pack's 30-second check in code first ([`knowledge/rules.toml`](knowledge/rules.toml)).
 
 ## Say these
 
@@ -53,6 +58,12 @@ and email passes the pack's 30-second check in code first ([`knowledge/rules.tom
 | "founding price on"        | Price answers give the founding price, its terms whole    | **yes**   |
 | "founding price closed"    | Back to $79.99 / $12.99; founding questions come to you   | **yes**   |
 | "go live" / "stop posting" | Replies post by themselves / nothing posts                | **yes**   |
+| "engage S7"                | Runs browser session S7: likes, comments, follows, paced  | **yes**   |
+| "stop engaging"            | Stops browser sessions for 48 hours                       | no        |
+| "sync Buffer"              | Merged posts from main into Buffer, then an audit         | no        |
+| "delete #512 from Buffer"  | Deletes one scheduled post (also remind, restore, push)   | **yes**   |
+| "insights" / "ads"         | How posts did / what's worth promoting (never spends)     | no        |
+| "pillars" / "pillar yes 2" | Pillar scores and proposals / adopts one                  | no        |
 
 ## What protects you
 

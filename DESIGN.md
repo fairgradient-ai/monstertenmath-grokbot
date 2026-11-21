@@ -46,25 +46,50 @@ Auto-review rules. The model writes and judges; the code decides what may be pos
   and keeps the owner posted. Persona in `agents/`, skills in `skills/`, schedule in `routines/manifest.toml`,
   approvals in `routines/autoreview.txt`.
 
-## 3. Why the bot doesn't comment on other accounts, and what does that job instead
+## 3. Likes, comments and follows on other accounts: the owner's decision, and how risk is held down
 
-The growth plan's commenting and following (6.3, 6.4) were there to put the Monster in front of parents who
-follow parent and teacher creators. Automating that on the owner's behalf is the one thing this design refuses:
+Until v0.4 the bot refused to like, comment or follow on other accounts. On 20 Nov 2026 the owner decided
+otherwise: the Grok Bot may do it in the Grok browser, with breaks like a person's, knowing that Instagram's
+terms forbid automating it and that the account could be restricted. v1.0 implements that decision and keeps
+the risk as low as the engine can make it (`src/monsterbot/browser.py`):
 
-- Instagram's terms and Meta's spam policy forbid automated likes, follows and comments on other accounts, and
-  the official API has no way to do them. The only route is a scripted, logged-in browser that hides from
-  Instagram's bot detection.
-- Meta detects that pattern. The usual result is an action block, then restrictions, and for a new account a
-  real chance of being disabled: the account the launch ads and the creators send people to.
+- **One tap per session.** A routine only *plans* a session (`run.sh browser plan`). Nothing happens until the
+  owner says "engage S<n>" (`browser start --owner-tapped`), the one Ask-first card for the session.
+- **One step at a time, revealed late.** `browser next` hands out one link (and one comment) only after its
+  random gap (45–150 s by default) since the last step finished, and the Bot reports each step with
+  `browser done`. A step reported sooner than its look time is "early"; two end the session.
+- **Caps that ramp.** Days 0–6 of `ramp_start`: 15 comments, 30 likes and no follows a day; days 7–13: 25, 50
+  and 10; then the config's numbers (30, 60, 25), with per-session caps too and a ceiling of 200 accounts
+  followed. Comments a person posted by hand (`brief done`, `browser manual`) count toward the same caps.
+- **Spacing.** At most 3 sessions a day, 90 minutes apart, none in quiet hours (22:00–07:30), and no action
+  handed out in the last 15 minutes before quiet hours.
+- **Stop signs.** Any warning, "Try again later" or login check: `browser stop` pauses everything for 48
+  hours. A click already made is still recorded, so the caps never undercount.
+- **Verify.** The last step of a session with a comment counts today's comments on other accounts on our own
+  activity page. More than the ledger allows pauses sessions until the owner looks (`browser resume`).
+- **Never.** No unfollowing, no DMs, no comments that fail the brand check (category `outbound`): those become
+  likes. Every comment is re-checked when the session is planned.
 
-What does the job instead, all within the rules:
+What still does the bigger job, within the rules: Collab emails to creators (section 9), fast answers to every
+parent who comments or DMs (section 6), and the brief (section 9a), whose comments the browser session now
+posts when the owner starts one, or a person posts by hand as before.
 
-| Instead of…                    | The bot…                                                                                                                                                                            |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Commenting on creators' posts  | Finds the creators those comments were aimed at, scores them, writes them a Collab email you approve with one tap. A creator's Reel reaches their whole audience, with their trust. |
-| Following parents and teachers | Answers every parent who comments or DMs within the hour, so the people already interested stay and share.                                                                          |
-| Hunting for accounts by hand   | Reads the top posts under the plan's hashtags, the accounts tagged in them, and our own commenters who run creator accounts.                                                        |
-| Writing comments on creators' posts | Writes them for you three times a day (the brief, section 9a). A person posts them, so the account stays safe; finding the posts and writing the comments is the bot's job. |
+## 3a. The Buffer bridge, insights and pillars (v1.0)
+
+- **Buffer** (`src/monsterbot/social.py`): the social repo's `schedule.json` and `stories.json` on `main` are the
+  approved calendar. `buffer adopt` records what is already in Buffer once; `buffer sync` then creates new
+  entries and updates changed ones, never re-creates a post that went missing, never overwrites an edit made in
+  the Buffer app, and never creates a post whose time has passed. Media must already be public in the bucket.
+  `remind`, `delete`, `restore` and `push` are the owner's taps. The QA team's read-only `buffer_check.py`
+  watches for drift from main; the bot's `buffer audit` covers the AI label, same-minute clashes, and posts
+  that no longer fit the phase or price they'll meet.
+- **Insights** (`src/monsterbot/insights.py`): per-post metrics read one at a time into `media_insights`.
+  `insights`, `ads suggest`, `pillars` and `timing` read only the ledger. Rates are per reach against the
+  account's own median, and below 3 posts with reach >= 300 the verdict is "too early".
+- **Ads** are suggestions only: filtered (no brand posts, no real child without an ad release, nothing that
+  breaks the caption check or the phase), ranked by shares, follows, saves and comments. The bot never spends.
+- **Pillars**: today's six (games, tonight, realistic, play-along, features, brand) scored weekly; demand themes
+  from comments; up to 2 proposals a week, each through the caption check, adopted by the owner.
 
 ## 4. What pickletime-grokbot taught, and what changed
 
