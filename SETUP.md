@@ -79,7 +79,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v0.4.3 · mode rehearsal · phase building
+SETUP DONE · release v1.0.0 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -235,5 +235,60 @@ say "done" with the numbers.
 ## 16. Day to day
 
 The phrases ("send 14", "edit 14: …", "skip 14", "hide 16", "inbox", "find creators", "send all outreach",
-"brief", "done 12 13", "examples", "stats") are in the operations skill:
+"brief", "done 12 13", "examples", "stats", "engage S7", "sync Buffer", "insights", "pillars") are in the operations
+skill:
 [`skills/monsterten-social-operations/SKILL.md`](skills/monsterten-social-operations/SKILL.md).
+
+## 17. Buffer (v1.0): the Bot keeps Buffer in step with main
+
+The social repo's `instagram/schedule.json` and `stories.json` on `main` are the approved calendar. From the
+handover, the Bot is the only one that writes to Buffer.
+
+1. On the secret card add `BUFFER_API_KEY` (Buffer → Settings → API). Nothing else needs it.
+2. Ask the Bot to clone the social repo: `git clone https://github.com/fairgradient-ai/monstertenmath_social
+   /workspace/monstertenmath_social` (Auto-review allows this one clone). If the repo is private, give the Grok
+   computer read access the way you gave it to this repo.
+3. Say **"Buffer status"**. It shows the organization, the scheduled posts, and "NOT ADOPTED YET".
+4. At the handover (plan: Thu 3 Dec, after the launch freeze), say **"adopt Buffer"** (`run.sh buffer adopt`).
+   It records which Buffer post is which calendar entry and changes nothing. Read its four lists: ADOPTED,
+   PAST, MISSING (expected but not in Buffer: deleted on purpose, or `buffer restore <key>`), and IN BUFFER BUT
+   NOT ADOPTED (posts you added by hand: never touched).
+5. Ask the Bot to show `/workspace/monsterten-desk/config.toml`, then approve setting `enabled = true` under
+   `[buffer]`. Unpause the `buffer-sync` routine (07:30 daily). From then on, a merged pull request reaches
+   Buffer the next morning, or at once with "sync Buffer".
+
+Media must already be in `gs://monstertenmath-social-media` (the studio uploads it with the content PR, as
+today: `host_and_schedule.sh` or `swap.sh`); sync checks each link before creating a post. Launch-day gate
+changes (`gate.py open`) stay in Claude Code in the social repo (section 7); the next sync carries them over.
+
+## 18. Browser sessions (v1.0): likes, comments and follows with human pauses
+
+Your decision of 20 Nov 2026 (DESIGN.md section 3). Before turning it on:
+
+1. In the Grok browser, log in to Instagram as @monstertenmath once, by hand. Never put the password on the
+   secret card or in chat.
+2. Tell the Bot how many accounts @monstertenmath already follows: "we follow 40 accounts"
+   (`run.sh browser manual --following 40`), so the 200 ceiling counts them.
+3. Update Auto-review from [`routines/autoreview.txt`](routines/autoreview.txt) (it now allows the clicks of a
+   started session and asks first for `browser start`).
+4. Approve `enabled = true` under `[browser]` in the desk's config.toml. `ramp_start` is the first day: caps
+   start low and grow over two weeks.
+5. The brief routines now end with `run.sh browser plan`. When the Bot asks, say **"engage S<n>"**. On day one,
+   start a short session and count the cards: you should get one card (the start), not one per click. If every
+   click asks, tell Claude Code: the fallback is shorter sessions.
+
+Any warning on Instagram: "stop engaging". Comments you post by hand: "I did 5 comments by hand", so the caps
+count them.
+
+## 19. Insights, ads, pillars and posting times (v1.0)
+
+1. Say **"token scopes"**. If insights shows ✗, add `instagram_business_manage_insights` (Instagram Login) or
+   `instagram_manage_insights` (Facebook side) to the token's system user in Business Settings, make a new token,
+   and put it on the card.
+2. Approve `enabled = true` under `[insights]`.
+3. Unpause `insights-nightly` (22:10) and `pillars-weekly` (Sundays 19:05). Verdicts say "too early" until there
+   are 3 posts, 3 days old, with reach 300 or more.
+
+The Bot suggests ads and never spends; you act in Ads Manager. A pillar is adopted with "pillar yes <n>", then a
+pull request to the social repo. A posting-time move is a pull request to `schedule.json`, never a change in
+Buffer (the QA team would flag it as drift).

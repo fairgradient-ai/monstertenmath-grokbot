@@ -339,6 +339,32 @@ class InstagramChannel:
     def hide(self, comment_id: str, hide: bool = True) -> None:
         self._call("POST", f"{self._base}/{comment_id}", {"hide": "true" if hide else "false"})
 
+    def media_insights(self, media_id: str, metrics: tuple[str, ...]) -> dict[str, int]:
+        """One metric at a time: Meta refuses the whole call when one metric doesn't apply to a post's type, so a
+        metric it refuses is left out instead of losing the rest. A token without the insights permission fails
+        on the first metric, and that error is raised."""
+        out: dict[str, int] = {}
+        for i, metric in enumerate(metrics):
+            try:
+                d = self._get(f"{media_id}/insights", {"metric": metric})
+            except ChannelError as e:
+                if e.kind in ("token", "permission") or (i == 0 and e.kind != "bad_request"):
+                    raise
+                continue
+            for row in d.get("data", []):
+                values = row.get("values") or [{}]
+                value = row.get("total_value", {}).get("value", values[-1].get("value"))
+                if isinstance(value, (int, float)):
+                    out[row.get("name", metric)] = int(value)
+        return out
+
+    def permissions(self) -> list[str] | None:
+        """The token's granted permissions where Meta lists them (a Facebook-side token); None otherwise."""
+        if not self.facebook:
+            return None
+        d = self._get("me/permissions")
+        return sorted(r["permission"] for r in d.get("data", []) if r.get("status") == "granted")
+
     def refresh_token(self) -> tuple[str, int]:
         """A long-lived token lasts 60 days; refreshing (once it's 24 hours old) gives a new 60 days.
         (A Facebook-side system-user token never expires and isn't refreshed: the CLI checks first.)"""

@@ -69,3 +69,37 @@ email_to = ""                       # optional: also email each brief to you or 
 "2026-11-21" = 500
 "2026-11-22" = 750
 "2026-11-23" = 1000
+
+[browser]                           # likes, comments, follows in the Grok browser, one tap per session (DESIGN 3)
+enabled = false                     # true once you've checked the Grok browser is logged in as @monstertenmath
+ramp_start = "2026-11-20"           # caps ramp: days 0-6 15 comments/30 likes/0 follows, 7-13 25/50/10, then below
+max_comments_per_day = 30
+max_likes_per_day = 60
+max_follows_per_day = 25            # never unfollows
+max_following_total = 200
+max_comments_per_session = 10       # from day 14; days 0-13 use 8
+max_likes_per_session = 20          # from day 14; days 0-6 12, days 7-13 15
+max_follows_per_session = 8         # from day 14; days 7-13 5; days 0-6 none
+gap_seconds_min = 45                # the wait between two steps, drawn at random
+gap_seconds_max = 150
+dwell_seconds_min = 6               # how long to look at a post before acting
+dwell_seconds_max = 20
+session_gap_minutes = 90            # checked when a session starts
+max_sessions_per_day = 3
+plan_valid_minutes = 180            # an older plan can't be started
+last_call_minutes = 15              # no action handed out this close to quiet_start
+quiet_start = "22:00"
+quiet_end = "07:30"
+cooldown_hours = 48                 # after "Try again later" or any block: nothing for 48 hours
+like_only_share = 25                # percent of brief posts that get a like and no comment
+
+[insights]
+enabled = false                     # true once "token scopes" shows instagram_business_manage_insights
+lookback_days = 30
+min_reach = 300                     # below this a post doesn't count toward a verdict
+min_posts = 3                       # a pillar or slot needs this many posts for a verdict
+
+[buffer]
+enabled = false                     # true after "buffer adopt", when the Bot becomes the Buffer writer
+social_checkout = "/workspace/monstertenmath_social"
+media_bucket = "monstertenmath-social-media"

@@ -144,6 +144,7 @@ def run(desk: Desk, full: bool, channel_factory) -> tuple[list[str], int]:
             except ChannelError as e:
                 c.fail(f"Instagram: {e}")
         _check_v02(c, cfg)
+        _check_v1(c, cfg, ledger)
 
     if full:
         _full(c)
@@ -178,6 +179,40 @@ def _check_instagram(c: Checks, channel, cfg: Config, desk: Desk) -> None:
             c.ok(f"bio link matches the {desk.phase()} phase")
     else:
         c.ok("bio link not readable through this API version (skipped)")
+
+
+def _check_v1(c: Checks, cfg: Config, ledger: Ledger) -> None:
+    """The agency parts: browser sessions, insights and the Buffer bridge. Each is off until set up (SETUP 17-19)."""
+    if cfg.browser_enabled:
+        paused = ledger.kv_get("browser.paused")
+        until = ledger.kv_get("browser.cooldown_until")
+        if paused:
+            c.warn(f"browser: paused after a verify mismatch ({paused}): look, then say browser resume")
+        elif until and until > datetime.now(UTC).isoformat():
+            c.warn(f"browser: cooling down until {until[:16]} UTC ({ledger.kv_get('browser.stop_reason')})")
+        else:
+            c.ok(
+                f"browser: on, one tap per session, quiet {cfg.browser_quiet_start}-{cfg.browser_quiet_end}, "
+                f"ramp from {cfg.browser_ramp_start}"
+            )
+    else:
+        c.ok("browser: off (SETUP.md 18)")
+    c.ok("insights: " + ("on" if cfg.insights_enabled else "off: run.sh token scopes, then SETUP.md 19"))
+    if cfg.buffer_enabled:
+        checkout = Path(cfg.buffer_social_checkout) / "instagram" / "schedule.json"
+        if not os.environ.get("BUFFER_API_KEY") and not os.environ.get("MT_BUFFER", "").startswith("fake:"):
+            c.fail("buffer is on but there's no BUFFER_API_KEY on the card (SETUP.md 17)")
+        elif not checkout.exists():
+            c.fail(f"buffer is on but there's no social checkout at {cfg.buffer_social_checkout} (SETUP.md 17)")
+        elif not ledger.kv_get("buffer.adopted_at"):
+            c.warn("buffer is on but not adopted yet: say buffer adopt once")
+        else:
+            c.ok(
+                f"buffer: on, adopted {ledger.kv_get('buffer.adopted_at')[:16]}, "
+                f"calendar at {cfg.buffer_social_checkout}"
+            )
+    else:
+        c.ok("buffer: off (SETUP.md 17)")
 
 
 def _check_v02(c: Checks, cfg: Config) -> None:

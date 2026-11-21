@@ -3,7 +3,7 @@ name: monsterten-social-operations
 description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "0.4.3"
+  version: "1.0.0"
   category: social
 ---
 
@@ -47,6 +47,25 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 | "refresh the token"                             | `run.sh token refresh`                                 | automatic     |
 | "update yourself"                               | SETUP.md section 10 (clone `main`, test, swap)         | swap: tap     |
 | "check yourself", "doctor"                      | `run.sh doctor`                                        | automatic     |
+| "engage S7"                                     | `run.sh browser start S7 --owner-tapped`, then the monsterten-browser-engagement skill | **their tap** |
+| "browser status", "how much today?"             | `run.sh browser status`                                | automatic     |
+| "I did 10 comments by hand"                     | `run.sh browser manual --comments 10` (or --likes, --follows) | automatic |
+| "stop engaging", "Instagram warned us"          | `run.sh browser stop "<why>"`                          | automatic     |
+| "resume engaging" (after a mismatch)            | `run.sh browser resume --owner-tapped`                 | **their tap** |
+| "sync Buffer"                                   | `run.sh buffer sync`, then `run.sh buffer audit`       | automatic     |
+| "audit Buffer", "is Buffer right?"              | `run.sh buffer audit`                                  | automatic     |
+| "Buffer status"                                 | `run.sh buffer status`                                 | automatic     |
+| "adopt Buffer" (once, at handover)              | `run.sh buffer adopt`                                  | automatic     |
+| "make #512 a reminder"                          | `run.sh buffer remind #512 --owner-tapped`             | **their tap** |
+| "delete #512 from Buffer"                       | `run.sh buffer delete #512 --owner-tapped`             | **their tap** |
+| "restore #512", "push #512"                     | `run.sh buffer restore #512 --owner-tapped` / `push`   | **their tap** |
+| "insights", "how did the posts do?"             | `run.sh insights` (or `insights week`)                 | automatic     |
+| "what should we promote?", "ads"                | `run.sh ads suggest`                                   | automatic     |
+| "pillars"                                       | `run.sh pillars`, then "Pillars" below                 | automatic     |
+| "pillar yes 2" / "pillar no 2"                  | `run.sh pillars adopt 2` / `decline 2`                 | automatic     |
+| "best times to post?"                           | `run.sh timing`                                        | automatic     |
+| "check this caption: …"                         | `run.sh check --category caption` (heredoc; `--due` for a dated post) | automatic |
+| "token scopes", "what can the token do?"        | `run.sh token scopes`                                  | automatic     |
 
 "We're open" also has a twin in the social repo: the owner tells Claude Code "we're open" there too, which
 runs `gate.py open` and unlocks the after-launch posts in Buffer. Remind them if they mention only one.
@@ -144,6 +163,28 @@ The brief picks fresh posts (from the last day) from the shortlisted creators, o
 In live mode the sweep posts a piece's first comment by itself (pieces.toml, `first_comment`), once, when the
 post is less than a day old and has no comment from us yet. The API can't pin, so pass on the sweep's line:
 "Pin it in the app: press and hold the comment, then Pin."
+
+## Pillars
+
+Weekly (Sunday's routine) or when asked: read `run.sh insights week`, `run.sh ads suggest`, `run.sh pillars` and
+`run.sh timing`. Then propose at most 2 new pillars, each with a one-line why from those numbers (a pillar
+scoring 1.3 or more is worth a spin-off; a demand theme with 5+ mentions is a candidate), 3 post ideas and a
+first caption, saved with:
+
+```
+bash /workspace/monstertenmath-grokbot/scripts/run.sh pillars propose <<'MT_EOF'
+Swap the crackers: the same games with grapes, buttons or toy cars
+Why: "no crackers" came up 6 times in two weeks; tonight pillar scores 1.4
+Ideas: 4 things that hide under a cup · Monster's Cave with toy cars · which snack does your Monster like best?
+First caption: No crackers tonight? Grab 10 grapes and a cup. Same game, new snack.
+MT_EOF
+```
+
+It must pass the caption check (no lesson numbers, no outcomes, no "test", no countdowns, no health topics).
+Ask the owner "pillar yes <n>?". On a yes, run `run.sh pillars adopt <n>` and tell the owner the next step is
+a pull request to the social repo adding it to `instagram/pillars.md` (Claude Code or the owner opens it).
+Ads: quote `ads suggest` as it is; never name a budget beyond the plan's rule, never touch Ads Manager.
+Posting times: quote `timing`; a move is a pull request to `schedule.json`, never a change in Buffer.
 
 ## When something fails
 

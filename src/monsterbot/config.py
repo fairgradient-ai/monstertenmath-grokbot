@@ -81,6 +81,38 @@ class Config:
     brief_min_score: int = 60
     brief_lookups: int = 25
     brief_email_to: str = ""
+    # [browser]
+    browser_enabled: bool = False
+    browser_ramp_start: str = "2026-11-20"
+    browser_max_comments_per_day: int = 30
+    browser_max_likes_per_day: int = 60
+    browser_max_follows_per_day: int = 25
+    browser_max_following_total: int = 200
+    browser_max_comments_per_session: int = 10
+    browser_max_likes_per_session: int = 20
+    browser_max_follows_per_session: int = 8
+    browser_gap_seconds_min: int = 45
+    browser_gap_seconds_max: int = 150
+    browser_dwell_seconds_min: int = 6
+    browser_dwell_seconds_max: int = 20
+    browser_session_gap_minutes: int = 90
+    browser_max_sessions_per_day: int = 3
+    browser_plan_valid_minutes: int = 180
+    browser_last_call_minutes: int = 15
+    browser_quiet_start: str = "22:00"
+    browser_quiet_end: str = "07:30"
+    browser_cooldown_hours: int = 48
+    browser_like_only_share: int = 25
+    # [insights]
+    insights_enabled: bool = False
+    insights_lookback_days: int = 30
+    insights_min_reach: int = 300
+    insights_min_posts: int = 3
+    # [buffer]
+    buffer_enabled: bool = False
+    buffer_social_checkout: str = "/workspace/monstertenmath_social"
+    buffer_media_bucket: str = "monstertenmath-social-media"
+    buffer_api: str = "https://api.buffer.com"
     # top level
     stores: tuple[str, ...] = ()
     pace_line: dict[str, int] = field(default_factory=dict)
@@ -138,6 +170,34 @@ SECTIONS["brief"] = {
     "lookups": "brief_lookups",
     "email_to": "brief_email_to",
 }
+SECTIONS["browser"] = {
+    k: "browser_" + k
+    for k in (
+        "enabled",
+        "ramp_start",
+        "max_comments_per_day",
+        "max_likes_per_day",
+        "max_follows_per_day",
+        "max_following_total",
+        "max_comments_per_session",
+        "max_likes_per_session",
+        "max_follows_per_session",
+        "gap_seconds_min",
+        "gap_seconds_max",
+        "dwell_seconds_min",
+        "dwell_seconds_max",
+        "session_gap_minutes",
+        "max_sessions_per_day",
+        "plan_valid_minutes",
+        "last_call_minutes",
+        "quiet_start",
+        "quiet_end",
+        "cooldown_hours",
+        "like_only_share",
+    )
+}
+SECTIONS["insights"] = {k: "insights_" + k for k in ("enabled", "lookback_days", "min_reach", "min_posts")}
+SECTIONS["buffer"] = {k: "buffer_" + k for k in ("enabled", "social_checkout", "media_bucket", "api")}
 TOP_LEVEL = ("stores", "pace_line")
 
 
@@ -184,7 +244,20 @@ def parse_config(data: dict) -> Config:
         if name in values:
             values[name] = _account_id(key, values[name])
 
+    for name in ("browser_quiet_start", "browser_quiet_end"):
+        if name in values and not re.fullmatch(r"([01]\d|2[0-3]):[0-5]\d", values[name]):
+            raise ConfigError(f"browser.{name[8:]} must be a time like 22:00")
+    if "browser_ramp_start" in values and not re.fullmatch(r"\d{4}-\d\d-\d\d", values["browser_ramp_start"]):
+        raise ConfigError("browser.ramp_start must be a date like 2026-11-20")
+
     cfg = Config(**values)
+    if (
+        cfg.browser_gap_seconds_min > cfg.browser_gap_seconds_max
+        or cfg.browser_dwell_seconds_min > cfg.browser_dwell_seconds_max
+    ):
+        raise ConfigError("[browser] each *_min must be at most its *_max")
+    if cfg.browser_like_only_share > 100:
+        raise ConfigError("browser.like_only_share is a percent, 0 to 100")
     try:
         cfg.tz  # noqa: B018 - validates the name
     except (ZoneInfoNotFoundError, ValueError) as e:

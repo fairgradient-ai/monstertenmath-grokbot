@@ -85,6 +85,12 @@ why = "Before launch, never announce the launch day (section 6)."
 # announces the launch.
 skip_categories = ["email", "outbound"]
 
+# No lesson numbers anywhere a parent sees them: the numbers can change (OWNER-DIRECTIONS, 20 Nov 2026).
+[[banned]]
+id = "lesson-number"
+pattern = '''\blesson\s*#?\d+|\bnight\s*#?\d+\b|\bL\d{3}\b|#\d+\s*of\s*100\b|\bday\s*\d+\s*of\s*100\b'''
+why = "No lesson numbers: name the game or the activity. The numbers can change."
+
 # --- From launch day, once the gate has passed ---------------------------------------------------------
 [[banned]]
 id = "open-no-building"

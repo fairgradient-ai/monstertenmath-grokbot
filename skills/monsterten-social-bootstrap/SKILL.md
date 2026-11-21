@@ -3,7 +3,7 @@ name: monsterten-social-bootstrap
 description: First-time setup of the Monster Ten social bot on the Grok Bot computer. Use when the owner says "set up", "install", "start", or follows the Start prompt in README.md. Clones the pinned release, installs, checks Instagram access through the secret card, and ends with a receipt. Posts nothing.
 license: Proprietary
 metadata:
-  version: "0.4.3"
+  version: "1.0.0"
   category: social
 ---
 
@@ -48,7 +48,7 @@ Follow SETUP.md in the checkout. In order:
 6. **Receipt.** End with exactly these lines, filled in:
 
    ```text
-   SETUP DONE · release v0.4.3 · mode rehearsal · phase building
+   SETUP DONE · release v1.0.0 · mode rehearsal · phase building
    Instagram: @monstertenmath · reads comments: yes · token: secret card
    Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
    Later: DMs (SETUP.md 12), creator scouting (13) and outreach email (14), each when its access is ready.

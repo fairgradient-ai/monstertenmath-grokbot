@@ -78,7 +78,7 @@ id = "brief-morning"
 required = false
 slot = "08:40"
 days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Never comment on any account yourself."
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Then run bash /workspace/monstertenmath-grokbot/scripts/run.sh browser plan and post its output verbatim; if it made a plan, ask the owner to say \"engage S<n>\". Never open the browser or comment on any account in a routine."
 posts = "Fresh creator posts from overnight and early morning, each with a comment ready to post."
 
 [[routine]]
@@ -86,7 +86,7 @@ id = "brief-midday"
 required = false
 slot = "13:10"
 days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Never comment on any account yourself."
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Then run bash /workspace/monstertenmath-grokbot/scripts/run.sh browser plan and post its output verbatim; if it made a plan, ask the owner to say \"engage S<n>\". Never open the browser or comment on any account in a routine."
 posts = "The midday batch: posts from the late morning."
 
 [[routine]]
@@ -94,5 +94,29 @@ id = "brief-evening"
 required = false
 slot = "19:10"
 days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Never comment on any account yourself."
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief and post its output verbatim. Then follow the monsterten-social-operations skill, section \"The brief\": write one fresh comment for each post with run.sh brief comment, then run bash /workspace/monstertenmath-grokbot/scripts/run.sh brief show and post its output verbatim. If [brief] email_to is set, also run run.sh brief email. Then run bash /workspace/monstertenmath-grokbot/scripts/run.sh browser plan and post its output verbatim; if it made a plan, ask the owner to say \"engage S<n>\". Never open the browser or comment on any account in a routine."
 posts = "The evening batch, before our own 8:30 pm post."
+
+[[routine]]
+id = "buffer-sync"
+required = false
+slot = "07:30"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh buffer sync and post its output verbatim. Then run bash /workspace/monstertenmath-grokbot/scripts/run.sh buffer audit and post its output verbatim. If the audit lists posts that no longer fit, tell the owner what each needs (a fix by pull request, or buffer remind, delete, restore or push, which are the owner's taps). Never delete or unschedule anything yourself."
+posts = "What main added to or changed in Buffer overnight, and anything scheduled that no longer fits."
+
+[[routine]]
+id = "insights-nightly"
+required = false
+slot = "22:10"
+days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+prompt = "Run bash /workspace/monstertenmath-grokbot/scripts/run.sh insights and post its output verbatim."
+posts = "Reach, shares, saves and follows per post, the community and the growth work, for the 10 pm check."
+
+[[routine]]
+id = "pillars-weekly"
+required = false
+slot = "19:05"
+days = ["sun"]
+prompt = """Run bash /workspace/monstertenmath-grokbot/scripts/run.sh insights week, then bash /workspace/monstertenmath-grokbot/scripts/run.sh ads suggest, then bash /workspace/monstertenmath-grokbot/scripts/run.sh pillars, then bash /workspace/monstertenmath-grokbot/scripts/run.sh timing, posting each output verbatim. Then follow the monsterten-social-operations skill, section "Pillars": propose at most 2 new pillars with run.sh pillars propose and ask the owner which to adopt. Spend nothing; change no ad; move no post."""
+posts = "The week's best and weakest posts, ad candidates, pillar scores, posting times and up to 2 pillar proposals."

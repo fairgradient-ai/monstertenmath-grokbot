@@ -65,11 +65,21 @@ class FakeInstagram:
                 id=m["id"],
                 caption=m["caption"],
                 timestamp=parse_time(m["timestamp"]),
+                permalink=m.get("permalink", ""),
+                media_type=m.get("media_type", ""),
                 comments_count=len(m.get("comments", [])),
                 like_count=m.get("like_count"),
             )
             for m in self.fixture["media"][:limit]
         ]
+
+    def media_insights(self, media_id: str, metrics: tuple[str, ...]) -> dict[str, int]:
+        self._maybe_fail()
+        values = self.fixture.get("insights", {}).get(media_id, {})
+        return {m: int(values[m]) for m in metrics if m in values}
+
+    def permissions(self) -> list[str] | None:
+        return self.fixture.get("permissions")
 
     def comments(self, media_id: str) -> list[Comment]:
         self._maybe_fail()

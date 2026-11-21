@@ -112,3 +112,67 @@ def test_a_system_user_token_needs_no_refresh(run, monkeypatch):
     assert code == 0 and "doesn't expire" in out
     code, out = run("doctor")
     assert "doesn't expire" in out and "EAAfaketoken" not in out
+
+
+def test_v1_commands_run(run, tmp_path, monkeypatch):
+    code, out = run("browser", "status")
+    assert code == 0 and "BROWSER · off" in out
+    code, out = run("browser", "plan")
+    assert code == 1 and "off" in out
+    code, out = run("insights")
+    assert code == 0 and out.startswith("INSIGHTS") and "enabled = false" in out
+    code, out = run("ads")
+    assert code == 0 and "never spends" in out
+    code, out = run("pillars")
+    assert code == 0 and out.startswith("PILLARS")
+    code, out = run("timing")
+    assert code == 0 and out.startswith("TIMING")
+    code, out = run("check", "--category", "caption", stdin="Play along tonight! #math #prek")
+    assert code == 0 and "PASSES" in out
+    code, out = run("check", "--category", "caption", "--due", "2026-11-25T01:00:00Z", stdin="Link in bio!")
+    assert code == 1 and "building" in out
+    code, out = run("check", "--category", "caption", "--due", "2026-12-05T01:00:00Z", stdin="Link in bio!")
+    assert code == 0
+    code, out = run("pillars", "propose", stdin="Swap the crackers\nGrapes, buttons or toy cars under the cup.")
+    assert code == 0 and "P1" in out
+    code, out = run("token", "scopes")
+    assert code == 0 and "TOKEN SCOPES" in out
+
+
+def test_buffer_commands_with_fake_buffer(run, tmp_path, monkeypatch):
+    import json
+
+    social = tmp_path / "social" / "instagram"
+    social.mkdir(parents=True)
+    entry = {
+        "name": "#601 Laundry",
+        "dueAt": "2026-11-24T22:00:00Z",
+        "type": "reel",
+        "text": "Laundry day? Pairs.",
+        "media": ["instagram/reels/v9/x01.mp4"],
+        "ai": True,
+    }
+    (social / "schedule.json").write_text(json.dumps([entry]))
+    (social / "stories.json").write_text("[]")
+    buf = tmp_path / "buffer.json"
+    buf.write_text(
+        json.dumps(
+            {"posts": [{"id": "b1", "dueAt": entry["dueAt"], "text": entry["text"], "schedulingType": "automatic"}]}
+        )
+    )
+    monkeypatch.setenv("MT_BUFFER", f"fake:{buf}")
+    desk = tmp_path / "desk"
+    cfg = (
+        (desk / "config.toml")
+        .read_text()
+        .replace('social_checkout = "/workspace/monstertenmath_social"', f'social_checkout = "{tmp_path / "social"}"')
+    )
+    (desk / "config.toml").write_text(cfg)
+    code, out = run("buffer", "status")
+    assert code == 0 and "NOT ADOPTED" in out
+    code, out = run("buffer", "adopt")
+    assert code == 0 and "ADOPTED 1 of 1" in out
+    code, out = run("buffer", "audit")
+    assert code == 0 and "nothing to fix" in out
+    code, out = run("buffer", "delete", "#601")
+    assert code == 1 and "owner's tap" in out
