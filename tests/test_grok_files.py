@@ -29,10 +29,24 @@ def test_routines_call_only_safe_commands():
     assert len(ids) == len(set(ids))
     for r in manifest["routine"]:
         assert re.fullmatch(r"\d\d:\d\d", r["slot"]), r["id"]
-        commands = re.findall(re.escape(RUN) + r" (\S+)", r["prompt"])
+        assert "--owner-tapped" not in r["prompt"], r["id"]  # an unattended run never taps for the owner
+        commands = re.findall(re.escape(RUN) + r" ([\w-]+)", r["prompt"])
         assert commands, r["id"]
         for cmd in commands:
-            assert cmd in {"sweep", "stats", "doctor", "token", "scout", "brief"}, (r["id"], cmd)
+            assert cmd in {
+                "sweep",
+                "stats",
+                "doctor",
+                "token",
+                "scout",
+                "brief",
+                "browser",
+                "buffer",
+                "insights",
+                "ads",
+                "pillars",
+                "timing",
+            }, (r["id"], cmd)
         assert "--owner-tapped" not in r["prompt"] and "send" not in commands
         assert "outreach send" not in r["prompt"]
 
