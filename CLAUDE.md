@@ -18,3 +18,5 @@ Every piece of work, and every QA finding, lives in Linear: team FairGradient (F
 2. Move it to **In Progress** and put the id in the branch and PR: branch `claude/fai-141-founding-price`,
    PR text "Fixes FAI-141".
 3. QA issues carry a last line `QA-key: ...`. Keep it: it is how the QA team avoids filing the same problem twice.
+4. A bug found by hand (by Shashank or anyone outside a QA run) is one QA missed. Add a lesson and the check that would
+   have caught it to `qa/LESSONS.md` in the monstertenmath repo, with a small PR into `develop` there.
