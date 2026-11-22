@@ -3,6 +3,9 @@
 - Read [README.md](README.md) first.
 - Open pull requests into `main`. This repo has no `develop` branch, so a merged PR means **Done** in Linear
   (Area label: **bot**).
+- `main` is permanent: never delete it, locally or on GitHub. Every other branch is deleted once its PR merges.
+  GitHub does this itself ("Automatically delete head branches" is on). If a merged branch is still there, delete
+  it after the merge with `git push origin --delete <branch>`.
 - The QA team (in the monstertenmath repo, `qa/`) checks this repo every night. It runs `pytest` here and, weekly, the bot in rehearsal only.
 
 ## Tracking work in Linear
