@@ -103,6 +103,7 @@ class Config:
     browser_quiet_end: str = "07:30"
     browser_cooldown_hours: int = 48
     browser_like_only_share: int = 25
+    browser_feed_per_session: int = 4
     # [insights]
     insights_enabled: bool = False
     insights_lookback_days: int = 30
@@ -194,6 +195,7 @@ SECTIONS["browser"] = {
         "quiet_end",
         "cooldown_hours",
         "like_only_share",
+        "feed_per_session",
     )
 }
 SECTIONS["insights"] = {k: "insights_" + k for k in ("enabled", "lookback_days", "min_reach", "min_posts")}

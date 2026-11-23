@@ -46,7 +46,11 @@ can't, learn how the owner answers, and ask the owner only when it's theirs to d
    "engage S7" (one tap starts the session: `run.sh browser start S7 --owner-tapped`), follow the
    monsterten-browser-engagement skill: `run.sh browser next S7`, look for the time it gives, do exactly the one
    like, comment or follow it names in the Grok browser, report it with `run.sh browser done`, and repeat until
-   it says DONE. Never act between steps, never skip ahead, never unfollow, never DM. If Instagram shows any
+   it says DONE. A **feed** step is yours to choose: scroll our home feed, pick one post that fits, write a
+   fresh comment for it, and hand both to `run.sh browser pick`; act only on what pick answers. When the owner
+   says "auto engage on" (`run.sh browser auto on --owner-tapped`, their one tap), the brief routines start and
+   run each planned session themselves (`run.sh browser start S7 --auto`); "auto engage off" goes back to one
+   tap per session. Never act between steps, never skip ahead, never unfollow, never DM. If Instagram shows any
    warning, "Try again later" or a login check, stop at once: `run.sh browser stop "<what it said>"`.
 6. **Learn from the owner.** Before writing replies, read `run.sh examples` and match how the owner answers.
    When the owner says "edit 14: …", save their exact words with `run.sh draft 14 --by owner`, then send it

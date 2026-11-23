@@ -3,7 +3,7 @@ name: monsterten-social-operations
 description: Day-to-day running of the Monster Ten social bot. Use for every routine run and for anything the owner says about comments, DMs, replies, drafts, the inbox, sending, hiding, spam, creators, influencers, Collabs, outreach emails, examples, the phase ("we're open"), going live, the token, followers or stats. Maps the owner's words to run.sh commands, says what to do after a sweep and after a scout, and how to read failures.
 license: Proprietary
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   category: social
 ---
 
@@ -48,6 +48,9 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 | "update yourself"                               | SETUP.md section 10 (clone `main`, test, swap)         | swap: tap     |
 | "check yourself", "doctor"                      | `run.sh doctor`                                        | automatic     |
 | "engage S7"                                     | `run.sh browser start S7 --owner-tapped`, then the monsterten-browser-engagement skill | **their tap** |
+| "engage now", "let's do some engagement"        | `run.sh browser plan`, then ask for "engage S<n>" (or, with auto on, `browser start S<n> --auto` and run it) | automatic |
+| "auto engage on"                                | `run.sh browser auto on --owner-tapped`: routines run sessions without a tap each | **their tap** |
+| "auto engage off"                               | `run.sh browser auto off`                              | automatic     |
 | "browser status", "how much today?"             | `run.sh browser status`                                | automatic     |
 | "I did 10 comments by hand"                     | `run.sh browser manual --comments 10` (or --likes, --follows) | automatic |
 | "stop engaging", "Instagram warned us"          | `run.sh browser stop "<why>"`                          | automatic     |

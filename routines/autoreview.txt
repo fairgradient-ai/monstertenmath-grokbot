@@ -44,14 +44,21 @@ or ||, no redirection other than the heredoc shown, no second command):
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh browser plan, browser status (optionally S<n>),
   browser stop with one quoted reason, browser manual with --comments, --likes, --follows or --following and
   numbers
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh browser start S<n> --auto (the engine refuses it unless
+  the owner turned auto engage on with their tap), and browser auto off.
+- bash /workspace/monstertenmath-grokbot/scripts/run.sh browser pick S<n> <step> with --link and one post link,
+  --author and one username, optionally --caption and one quoted string, and --comment and one quoted string,
+  --like-only, or --follow. (The engine checks the post and the comment before anything is clicked.)
 - bash /workspace/monstertenmath-grokbot/scripts/run.sh browser next S<n>; browser done S<n> <step> with
   --did and a comma list, --ok, or --skip and one quoted reason; browser verify S<n> with --others <number>,
   --total <number>, or --skip and one quoted reason. (The engine refuses next and done for a session the
   owner didn't start.)
 - In the Grok browser, during a session started with run.sh browser start: opening the one link or page the
-  latest run.sh browser next output printed, and doing only the one like, comment (with exactly the printed
-  text) or follow it named; opening https://www.instagram.com/monstertenmath/ for a check step, and Your
-  activity -> Comments for a verify step.
+  latest run.sh browser next or browser pick output printed, and doing only the like, comment (with exactly
+  the printed text) or follow it named; opening https://www.instagram.com/monstertenmath/ for a check step,
+  Your activity -> Comments for a verify step, and, for a feed step, opening https://www.instagram.com/ and
+  scrolling it and opening posts in it (looking only: nothing is liked, commented or followed until
+  run.sh browser pick answers).
 - The git clone of fairgradient-ai/monstertenmath_social into /workspace/monstertenmath_social when that folder
   doesn't exist yet.
 Also allowed: bash /workspace/monstertenmath-grokbot/scripts/install.sh, and the git clone of the pinned
@@ -63,16 +70,17 @@ release into /workspace/monstertenmath-grokbot when that folder doesn't exist ye
   outreach send, phase (other than show), pricing (other than show), go-live or rehearse without it.
 - Writing, editing or deleting anything in /workspace/monstertenmath-grokbot, or config.toml, state/, or
   secrets/ in /workspace/monsterten-desk, by any means.
-- run.sh browser start S<n> --owner-tapped (the one card per browser session: "start browser session S<n>")
-  and run.sh browser resume --owner-tapped.
+- run.sh browser start S<n> --owner-tapped (the one card per browser session: "start browser session S<n>"),
+  run.sh browser resume --owner-tapped, and run.sh browser auto on --owner-tapped (the owner's standing yes:
+  routines then start sessions with --auto, within every cap).
 - run.sh buffer remind, buffer delete, buffer restore and buffer push (each with --owner-tapped).
 - Any request to graph.instagram.com, graph.facebook.com, instagram.com or facebook.com that doesn't go
   through run.sh, and opening Instagram or Facebook in a browser, except, during a session started with
   run.sh browser start, opening the link or page the latest run.sh browser next output printed (see Allow
   automatically).
 - Following, unfollowing, liking, commenting, replying or sending a DM on any account, other than through
-  run.sh, or than the one like, comment or follow the latest run.sh browser next output named, done in the
-  Grok browser on the page it printed. Unfollowing and DMs are never allowed this way.
+  run.sh, or than the like, comment or follow the latest run.sh browser next or browser pick output named,
+  done in the Grok browser on the page it printed. Unfollowing and DMs are never allowed this way.
 - Running any script in /workspace/monstertenmath_social yourself, or changing files there (git pull through
   run.sh buffer sync is fine).
 - Any request to api.buffer.com that doesn't go through run.sh.

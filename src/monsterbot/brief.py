@@ -124,7 +124,9 @@ class Brief:
         text = " ".join(text.split())
         violations = [str(v) for v in policy.check(text, policy.Context(self.phase, "outbound"), self.kn.rules)]
         used = self.ledger.db.execute(
-            "SELECT comment FROM brief_posts WHERE comment IS NOT NULL AND id != ?", (brief_id,)
+            "SELECT comment FROM brief_posts WHERE comment IS NOT NULL AND id != ? "
+            "UNION ALL SELECT text FROM browser_steps WHERE text IS NOT NULL",
+            (brief_id,),
         ).fetchall()
         key = _norm(text).lower()
         if any(_norm(u[0]).lower() == key or _norm(u[0]).lower()[:40] == key[:40] for u in used):

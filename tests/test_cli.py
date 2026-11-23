@@ -176,3 +176,16 @@ def test_buffer_commands_with_fake_buffer(run, tmp_path, monkeypatch):
     assert code == 0 and "nothing to fix" in out
     code, out = run("buffer", "delete", "#601")
     assert code == 1 and "owner's tap" in out
+
+
+def test_v11_browser_pick_and_auto(run):
+    code, out = run("browser", "auto", "on")
+    assert code == 1 and "owner's tap" in out
+    code, out = run("browser", "auto", "maybe")
+    assert code == 1
+    code, out = run("browser", "auto", "on", "--owner-tapped")
+    assert code == 0 and out.startswith("AUTO ON")
+    code, out = run("browser", "pick", "S1", "1")
+    assert code == 1 and "--link" in out
+    code, out = run("browser", "auto", "off")
+    assert code == 0 and out.startswith("AUTO OFF")

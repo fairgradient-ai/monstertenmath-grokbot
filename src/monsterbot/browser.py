@@ -19,11 +19,14 @@ the desk's local day (America/New_York), turned into a UTC range for queries.
 from __future__ import annotations
 
 import random
+import re
 import time
 from datetime import UTC, datetime, timedelta
 
 from . import policy
 from .errors import Refused
+from .knowledge import _norm
+from .scout import GIVEAWAY
 
 RNG = random.SystemRandom()
 MAX_SLEEP = 150  # one call never sleeps longer, so a Grok command timeout can't lose state
@@ -38,17 +41,23 @@ ALLOWED = {  # what `done --did` may report for each step kind
     "like": {"like", "already-liked"},
     "like_reply": {"like", "already-liked"},
     "follow": {"follow", "already-following"},
+    "feed": {"comment", "like", "already-liked", "follow", "already-following"},  # narrowed by the pick's `may`
 }
-NEEDS = {"comment": "comment", "like": "like", "like_reply": "like", "follow": "follow"}  # the cap a step uses
+NEEDS = {"comment": "comment", "like": "like", "like_reply": "like", "follow": "follow", "feed": "like"}
+POST_LINK = re.compile(
+    r"https?://(?:www\.)?instagram\.com/(?:[A-Za-z0-9._]+/)?(p|reel|reels)/([A-Za-z0-9_-]+)/?(?:\?.*)?"
+)
+USERNAME = re.compile(r"@?([A-Za-z0-9._]{1,30})")
+FEED_AUTHOR_DAYS = 7  # one feed pick per account per week: engaging, not hovering
 
 
 def caps(cfg, now_local: datetime) -> dict[str, dict[str, int]]:
     """Day and session caps. One table, the same one as plan 6.6 and the config comments."""
     days = (now_local.date() - datetime.fromisoformat(cfg.browser_ramp_start).date()).days
-    if days < 7:
-        return {"day": {"comment": 15, "like": 30, "follow": 0}, "session": {"comment": 8, "like": 12, "follow": 0}}
+    if days < 7:  # a young account: well under the growth plan's 30 comments a day, a few follows (owner, 23 Nov)
+        return {"day": {"comment": 20, "like": 40, "follow": 10}, "session": {"comment": 8, "like": 15, "follow": 4}}
     if days < 14:
-        return {"day": {"comment": 25, "like": 50, "follow": 10}, "session": {"comment": 8, "like": 15, "follow": 5}}
+        return {"day": {"comment": 25, "like": 50, "follow": 20}, "session": {"comment": 9, "like": 18, "follow": 7}}
     return {
         "day": {
             "comment": cfg.browser_max_comments_per_day,
@@ -222,11 +231,11 @@ class Browser:
         brief posts go back to the pool, so a skipped tap never strands them. Refuses while a session is running
         or when the day's sessions are used up. (The 90-minute gap is checked at start: a plan made at 13:10 may be
         started at 13:40.) Takes, in order and within _left(): the brief's ready comments (fresh, not engaged
-        before), likes on parents' comments on our posts, then (from day 7) the warm list's follows. 1 in 4 brief
-        posts is 'like' only. Every comment is re-checked as category "outbound". Gaps RNG.randint(gap_min,
-        gap_max), redrawn if within 10 s of the previous; dwell RNG.randint(dwell_min, dwell_max). Step 0 is
-        'check'; the last step is 'verify' when the session has a comment. The printed plan shows kinds, not links
-        or text."""
+        before), feed steps (Grok picks the post), likes on parents' comments on our posts, then the warm list's
+        follows. 1 in 4 brief posts is 'like' only. Every comment is re-checked as category "outbound". Gaps
+        RNG.randint(gap_min, gap_max), redrawn if within 10 s of the previous; dwell RNG.randint(dwell_min,
+        dwell_max). Step 0 is 'check'; the last step is 'verify' when the session has a comment or a feed step. The
+        printed plan shows kinds, not links or text."""
         self._guard()
         self._lapse()
         running = self._running()
@@ -271,6 +280,15 @@ class Browser:
                 steps.append(("like", b["permalink"], b["id"], None, None))
                 left["like"] -= 1
 
+        # 1b. the home feed (v1.1): Grok scrolls, picks one fitting post and writes its comment; `pick` checks both
+        #     before anything is clicked. Each feed step holds a comment and a like until it's picked.
+        for _ in range(self.cfg.browser_feed_per_session):
+            if left["comment"] <= 0 and left["like"] <= 0:
+                break
+            steps.append(("feed", "feed", None, None, None))
+            left["comment"] -= 1 if left["comment"] > 0 else 0
+            left["like"] -= 1 if left["like"] > 0 else 0
+
         # 2. likes on parents' comments on our posts (the warm list's first touch), not yet liked
         for it in self.db.execute(
             "SELECT id, external_id, author FROM items WHERE channel='instagram' AND parent_external_id IS NULL "
@@ -284,7 +302,7 @@ class Browser:
             steps.append(("like_reply", f"comment:{it['external_id']}", None, it["id"], None))
             left["like"] -= 1
 
-        # 3. follows from the warm list (4.3), from day 7, never someone already followed
+        # 3. follows from the warm list (4.3), never someone already followed
         for username in self.warm_list():
             if left["follow"] <= 0:
                 break
@@ -296,7 +314,7 @@ class Browser:
         if len(steps) == 1:
             self.db.commit()
             return 0  # nothing to do: cli prints "NO PLAN"
-        if any(k == "comment" for k, *_ in steps):
+        if any(k in ("comment", "feed") for k, *_ in steps):
             steps.append(("verify", "self", None, None, None))
         self.db.execute(
             "INSERT INTO browser_sessions (session, planned_at) VALUES (?, ?)", (session, self.now().isoformat())
@@ -328,13 +346,14 @@ class Browser:
         self.db.commit()
         return session
 
-    def start(self, session: int, owner_tapped: bool) -> str:
-        """The one Ask-first step of a session. Checks everything that decides whether a session may begin NOW:
-        the plan is the newest and under plan_valid_minutes old, nothing else is running, the day's count and the
-        gap since the last session."""
-        if not owner_tapped:
+    def start(self, session: int, owner_tapped: bool, auto: bool = False) -> str:
+        """The one Ask-first step of a session, or, while the owner has turned auto on, a routine's `--auto`.
+        Checks everything that decides whether a session may begin NOW: the plan is the newest and under
+        plan_valid_minutes old, nothing else is running, the day's count and the gap since the last session."""
+        if not owner_tapped and not (auto and self.auto_on()):
             raise Refused(
-                f"REFUSED: starting S{session} is the owner's tap: run.sh browser start S{session} --owner-tapped."
+                f"REFUSED: starting S{session} is the owner's tap: run.sh browser start S{session} --owner-tapped"
+                + (" (auto engage is off)." if auto else ".")
             )
         self._guard()
         self._lapse()
@@ -369,29 +388,52 @@ class Browser:
         self.ledger.kv_set("browser.paused", "")
         return "RESUMED: browser sessions may be planned again."
 
+    def _skip_accounts(self) -> set[str]:
+        """Accounts the browser never engages with: ourselves, rivals, and creators marked skip, declined or
+        rejected."""
+        skip = {r.lower() for r in self.kn.rules.get("rivals", [])} | {self.cfg.username.lower()}
+        skip |= {
+            r[0].lower()
+            for r in self.db.execute("SELECT username FROM creators WHERE status IN ('skip', 'declined', 'rejected')")
+        }
+        return skip
+
     def warm_list(self) -> list[str]:
-        """4.3, from day 7 only: parents who commented on our posts twice or more in 14 days, then shortlisted
-        creators (creators.status = 'shortlist'), excluding rivals, brands and anyone marked 'skip'."""
+        """4.3, who to follow, in order: parents who commented warmly on our posts in the last 14 days (once is
+        enough since v1.1), shortlisted creators, creators whose posts we commented on, then scouted creators with
+        at least [brief] min_score. Never rivals, ourselves, or creators marked skip/declined/rejected."""
         c = caps(self.cfg, self.now().astimezone(self.cfg.tz))
         if c["day"]["follow"] <= 0:
             return []
-        skip = {r.lower() for r in self.kn.rules.get("rivals", [])} | {self.cfg.username.lower()}
-        skip |= {r[0] for r in self.db.execute("SELECT username FROM creators WHERE status = 'skip'")}
+        skip = self._skip_accounts()
         since = (self.now() - timedelta(days=14)).isoformat()
         out: list[str] = []
+
+        def add(name: str | None) -> None:
+            n = (name or "").lower().lstrip("@")
+            if n and n not in skip and n not in out:
+                out.append(n)
+
         for r in self.db.execute(
-            "SELECT lower(author) AS a, COUNT(*) AS n, MAX(first_seen) AS last FROM items WHERE channel = 'instagram' "
+            "SELECT lower(author) AS a, MAX(first_seen) AS last FROM items WHERE channel = 'instagram' "
             "AND parent_external_id IS NULL AND author IS NOT NULL AND first_seen >= ? "
-            "AND category NOT IN ('spam', 'escalate', 'own') GROUP BY lower(author) HAVING n >= 2 ORDER BY last DESC",
+            "AND category IN ('praise', 'played', 'guess', 'thread', 'question', 'faq') "
+            "GROUP BY lower(author) ORDER BY last DESC",
             (since,),
         ):
-            if r["a"] not in skip and r["a"] not in out:
-                out.append(r["a"])
+            add(r["a"])
         for r in self.db.execute(
             "SELECT username FROM creators WHERE status = 'shortlist' ORDER BY COALESCE(score, 0) DESC"
         ):
-            if r[0] not in skip and r[0] not in out:
-                out.append(r[0])
+            add(r[0])
+        for r in self.db.execute("SELECT creator FROM brief_posts WHERE status = 'done' ORDER BY done_at DESC"):
+            add(r[0])
+        for r in self.db.execute(
+            "SELECT username FROM creators WHERE status IN ('new', 'drafted', 'contacted', 'booked') "
+            "AND COALESCE(score, 0) >= ? ORDER BY COALESCE(score, 0) DESC",
+            (self.cfg.brief_min_score,),
+        ):
+            add(r[0])
         return out
 
     def _fresh_at(self, posted_at: str | None) -> bool:
@@ -441,6 +483,8 @@ class Browser:
             return self.next(session)
         need = NEEDS.get(step["kind"])  # None for check / glance / verify: they use no cap
         left = self._left(session)
+        if step["kind"] == "feed" and (left["comment"] > 0 or left["like"] > 0):
+            need = None  # a feed pick needs a comment or a like left, not both
         if need and left[need] <= 0:
             self._mark(step["id"], "skipped", note=f"{need} cap reached (day, session or following total)")
             return self.next(session)
@@ -464,7 +508,18 @@ class Browser:
                     f"REFUSED: report the count with run.sh browser verify S{session} --others <n>, "
                     'or skip with --skip "<why>".'
                 )
-        bad = sorted(set(did) - ALLOWED[step["kind"]])
+        allowed = ALLOWED[step["kind"]]
+        if step["kind"] == "feed" and not skip:
+            if step["target"] == "feed":
+                raise Refused(
+                    f"REFUSED: S{session}.{seq} has no post yet. Pick one first: run.sh browser pick S{session} {seq} "
+                    '--link <post link> --author <username> --comment "<comment>" (or --like-only), or --skip "<why>".'
+                )
+            may = set((step["may"] or "").split(","))
+            allowed = {a for a in allowed if a in may}
+            allowed |= {"already-liked"} if "like" in may else set()
+            allowed |= {"already-following"} if "follow" in may else set()
+        bad = sorted(set(did) - allowed)
         if bad:
             raise Refused(f"REFUSED: a {step['kind']} step can't report {', '.join(bad)}.")
         now = self.now()
@@ -480,10 +535,11 @@ class Browser:
                 step["id"],
             ),
         )
-        if "follow" in did:
+        if "follow" in did or "already-following" in did:
+            who = step["author"] if step["kind"] == "feed" else step["target"]
             self.db.execute(
                 "INSERT OR IGNORE INTO follows (username, source, followed_at) VALUES (?, ?, ?)",
-                (step["target"], "browser", now.isoformat()),
+                (who, "browser-feed" if step["kind"] == "feed" else "browser", now.isoformat()),
             )
         if step["brief_id"]:  # the brief learns what happened, so it never offers the post again
             new = "skipped" if skip else ("done" if "comment" in did else ("liked" if did else "skipped"))
@@ -510,6 +566,131 @@ class Browser:
                 f"look. Look at each post for the time given. Next: run.sh browser next S{session}."
             )
         return f"OK S{session}.{seq}. Next: run.sh browser next S{session}."
+
+    def pick(
+        self,
+        session: int,
+        seq: int,
+        link: str,
+        author: str,
+        comment: str | None = None,
+        caption: str = "",
+        like_only: bool = False,
+        follow: bool = False,
+    ) -> str:
+        """A feed step's second half: the post Grok chose in the home feed, and the comment it wrote for it. Checked
+        here before anything is clicked: a real post link, not ourselves, a rival or an account we skip, not a post
+        engaged before, not an account picked from the feed in the last week, no giveaway or rival in the caption,
+        and the comment passes the brand check (category outbound) and was never used before. A refused pick
+        changes nothing: pick another post, write another comment, or skip. The look time starts again here."""
+        s = self._session(session)
+        if s["status"] != "started":
+            raise Refused(f"REFUSED: S{session} is {s['status']}; nothing can be picked in it.")
+        step = self.db.execute("SELECT * FROM browser_steps WHERE session=? AND seq=?", (session, seq)).fetchone()
+        if step is None or step["kind"] != "feed" or step["status"] != "issued":
+            raise Refused(f"REFUSED: S{session}.{seq} isn't a feed step that browser next handed out.")
+        if step["target"] != "feed":
+            raise Refused(f"REFUSED: S{session}.{seq} already has its post ({step['target']}). Report it with done.")
+        m = POST_LINK.fullmatch((link or "").strip())
+        if not m:
+            raise Refused(
+                "REFUSED: that isn't a post link. Copy the post's own link (https://www.instagram.com/p/... or "
+                "/reel/...), not a profile or the feed."
+            )
+        kind = "reel" if m.group(1).startswith("reel") else "p"
+        permalink = f"https://www.instagram.com/{kind}/{m.group(2)}/"
+        a = USERNAME.fullmatch((author or "").strip())
+        if not a:
+            raise Refused(f'REFUSED: "{author}" isn\'t an Instagram username.')
+        who = a.group(1).lower()
+        problems: list[str] = []
+        if who in self._skip_accounts():
+            problems.append(f"@{who} is an account we never engage with (ourselves, a rival, or marked skip)")
+        engaged = self.db.execute(
+            "SELECT 1 FROM browser_steps WHERE target=? AND status IN ('done','issued') AND id != ? "
+            "UNION SELECT 1 FROM brief_posts WHERE permalink=? AND status IN ('done','liked','in-session')",
+            (permalink, step["id"], permalink),
+        ).fetchone()
+        if engaged:
+            problems.append("we've already engaged with that post")
+        since = (self.now() - timedelta(days=FEED_AUTHOR_DAYS)).isoformat()
+        if self.db.execute(
+            "SELECT 1 FROM browser_steps WHERE kind='feed' AND lower(author)=? AND status IN ('done','issued') "
+            "AND id != ? AND issued_at >= ?",
+            (who, step["id"], since),
+        ).fetchone():
+            problems.append(
+                f"@{who} was picked from the feed in the last {FEED_AUTHOR_DAYS} days: choose another account"
+            )
+        rivals = [r.lower() for r in self.kn.rules.get("rivals", [])]
+        if GIVEAWAY.search(caption or "") or any(r in (caption or "").lower() for r in rivals):
+            problems.append("the caption is a giveaway or names a rival")
+        if problems:
+            raise Refused("REFUSED: pick another post: " + "; ".join(problems) + ".")
+
+        left = self._left(session)
+        may: list[str] = []
+        text = None
+        if not like_only and left["comment"] > 0:
+            text = " ".join((comment or "").split())
+            if not text:
+                raise Refused('REFUSED: write the comment (--comment "...") or use --like-only.')
+            bad = [str(v) for v in policy.check(text, policy.Context(self.phase, "outbound"), self.kn.rules)]
+            key = _norm(text).lower()
+            used = self.db.execute(
+                "SELECT comment FROM brief_posts WHERE comment IS NOT NULL "
+                "UNION ALL SELECT text FROM browser_steps WHERE text IS NOT NULL AND id != ?",
+                (step["id"],),
+            ).fetchall()
+            if any(_norm(u[0]).lower() == key or _norm(u[0]).lower()[:40] == key[:40] for u in used):
+                bad.append("used before: write each comment fresh, never the same one twice (growth plan 6.3)")
+            if bad:
+                raise Refused(
+                    "REFUSED: the comment didn't pass the check: " + "; ".join(bad) + ". Write a different one "
+                    "for this post, or use --like-only."
+                )
+            may.append("comment")
+        if left["like"] > 0:
+            may.append("like")
+        follow_note = ""
+        if follow:
+            if left["follow"] <= 0:
+                follow_note = " (no follow: today's follows are used up)"
+            elif self.db.execute("SELECT 1 FROM follows WHERE lower(username)=?", (who,)).fetchone():
+                follow_note = f" (no follow: we already follow @{who})"
+            else:
+                may.append("follow")
+        if not may:
+            raise Refused(
+                f"REFUSED: no comments or likes left for now. Run run.sh browser done S{session} {seq} "
+                '--skip "caps reached".'
+            )
+        self.db.execute(
+            "UPDATE browser_steps SET target=?, author=?, text=?, may=?, issued_at=?, note='picked from the feed' "
+            "WHERE id=?",
+            (permalink, who, text, ",".join(may), self.now().isoformat(), step["id"]),
+        )
+        self.db.commit()
+        row = self.db.execute("SELECT * FROM browser_steps WHERE id=?", (step["id"],)).fetchone()
+        return self._describe(row) + follow_note
+
+    def auto(self, on: bool, owner_tapped: bool) -> str:
+        """The owner's standing yes (v1.1): while auto is on, a routine may start a planned session itself
+        (`start --auto`) instead of waiting for "engage S<n>". Every other limit stays: caps, the ramp, quiet hours,
+        the gap and the count per day, the 48-hour stop. Turning it on is the owner's tap; turning it off never is,
+        and any stop or verify mismatch turns it off."""
+        if on and not owner_tapped:
+            raise Refused("REFUSED: turning auto engage on is the owner's tap: run.sh browser auto on --owner-tapped.")
+        self.ledger.kv_set("browser.auto", "on" if on else "")
+        if on:
+            return (
+                "AUTO ON: the brief routines start and run each planned session themselves, within every cap. "
+                'Say "auto engage off" (run.sh browser auto off) to go back to one tap per session.'
+            )
+        return 'AUTO OFF: each session waits for the owner\'s "engage S<n>" again.'
+
+    def auto_on(self) -> bool:
+        return self.ledger.kv_get("browser.auto") == "on"
 
     def _api_comments_today(self) -> int:
         """Comments the account itself posted today through the API or the app: live replies and first comments
@@ -555,6 +736,7 @@ class Browser:
                 f"the ledger allows {allowed}"
             )
             self.ledger.kv_set("browser.paused", why)
+            self.ledger.kv_set("browser.auto", "")
             return (
                 f"MISMATCH S{session}: {why}. Browser sessions are paused. Tell the owner: look at Your activity "
                 "-> Comments, then say browser resume or browser stop."
@@ -603,6 +785,34 @@ class Browser:
                 f'S{step["session"]} --others <n> (or --skip "<why>" if the page won\'t load).'
             )
         target = step["target"]
+        if kind == "feed" and target == "feed":
+            return (
+                f"STEP {sid} · feed · open https://www.instagram.com/ (our home feed) and scroll it like a person "
+                f"for about {step['dwell_seconds'] + 20} s. Choose ONE post from another account that fits us: a "
+                "parent, teacher or creator sharing young children, play, early learning, reading, numbers, family "
+                "life. Not an ad, not a giveaway, not a child's own account, nothing sad, political or about a "
+                "child's health, no rival, no post we've touched before. Write a fresh, warm comment for that post "
+                "alone (like a parent: one or two short sentences about what's in it; no app, link, price, "
+                "hashtag, @mention or 'follow us').\n"
+                f"Then: run.sh browser pick S{step['session']} {step['seq']} --link <the post's link> --author "
+                '<username> --caption "<first line of the caption>" --comment "<your comment>" (add --follow if '
+                "the account is a parent or creator in our world worth following; or --like-only). If nothing "
+                f'fits: run.sh browser done S{step["session"]} {step["seq"]} --skip "nothing fitting in the feed". '
+                "Don't like, comment or follow anything before pick answers."
+            )
+        if kind == "feed":
+            may = (step["may"] or "").split(",")
+            todo = [w for w in ("like", "comment", "follow") if w in may]
+            where = f"open {target} and " + ", ".join(
+                {"like": "like it", "comment": "comment", "follow": f"follow @{step['author']}"}[w] for w in todo
+            )
+            text = f' · comment, exactly: "{step["text"]}"' if "comment" in may else ""
+            return (
+                f"STEP {sid} · feed · {where} · look {step['dwell_seconds']} s first{text}\n"
+                f"Then: run.sh browser done S{step['session']} {step['seq']} --did {','.join(todo)} "
+                '(only what you really did), or --skip "<why>". If Instagram shows any warning, '
+                '"Try again later" or a login check: run.sh browser stop "<what it said>".'
+            )
         if kind == "like_reply":
             where = f"open our post with the comment {target.split(':', 1)[1]} and like that comment"
         elif kind == "follow":
@@ -649,6 +859,7 @@ class Browser:
         ).days
         lines = [
             f"BROWSER · {'on' if self.cfg.browser_enabled else 'off'} · ramp day {days}"
+            + (" · auto engage on" if self.auto_on() else "")
             + (f" · {blocked}" if blocked else ""),
             "today: " + " · ".join(f"{used[a]}/{c['day'][a]} {a}s" for a in ACTIONS),
         ]
@@ -693,6 +904,7 @@ class Browser:
     def stop(self, reason: str) -> str:
         until = self.now() + timedelta(hours=self.cfg.browser_cooldown_hours)
         self.ledger.kv_set("browser.cooldown_until", until.isoformat())
+        self.ledger.kv_set("browser.auto", "")  # after any warning the owner decides again
         self.ledger.kv_set("browser.stop_reason", reason[:200])
         for (s,) in self.db.execute(
             "SELECT session FROM browser_sessions WHERE status IN ('planned','started')"

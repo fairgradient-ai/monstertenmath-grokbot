@@ -176,8 +176,11 @@ def build_parser() -> argparse.ArgumentParser:
     br.add_argument("items", nargs="*")
     br.add_argument("--text")
     bw = sub.add_parser("browser", help="likes, comments and follows in the Grok browser, one step at a time")
-    bw.add_argument("action", choices=["plan", "start", "next", "done", "verify", "stop", "resume", "status", "manual"])
-    bw.add_argument("session", nargs="?", help="S<n>, or a reason for stop")
+    bw.add_argument(
+        "action",
+        choices=["plan", "start", "next", "pick", "done", "verify", "stop", "resume", "status", "manual", "auto"],
+    )
+    bw.add_argument("session", nargs="?", help="S<n>, a reason for stop, or on/off for auto")
     bw.add_argument("seq", nargs="?", type=int)
     bw.add_argument("--did", default="")
     bw.add_argument("--ok", action="store_true")
@@ -189,6 +192,13 @@ def build_parser() -> argparse.ArgumentParser:
     bw.add_argument("--follows", type=int, default=0)
     bw.add_argument("--following", type=int)
     bw.add_argument("--owner-tapped", action="store_true")
+    bw.add_argument("--auto", action="store_true", help="start: a routine's start while the owner has auto on")
+    bw.add_argument("--link", help="pick: the feed post's link")
+    bw.add_argument("--author", help="pick: the feed post's account")
+    bw.add_argument("--caption", default="", help="pick: the first line of the caption")
+    bw.add_argument("--comment", help="pick: the comment Grok wrote for that post")
+    bw.add_argument("--like-only", action="store_true")
+    bw.add_argument("--follow", action="store_true", help="pick: follow that account too, if follows are left")
     ins = sub.add_parser("insights", help="read per-post insights and report (week: the last 7 days)")
     ins.add_argument("action", nargs="?", choices=["day", "week", "show"], default="day")
     ad = sub.add_parser("ads", help="which posts are worth promoting (suggestions only; never spends)")
@@ -806,9 +816,34 @@ def browser_command(args, b: Browser) -> int:
     if a == "manual":
         print(b.manual(args.comments, args.likes, args.follows, args.following))
         return 0
+    if a == "auto":
+        v = (args.session or "").lower()
+        if v not in ("on", "off"):
+            raise Refused("REFUSED: run.sh browser auto on --owner-tapped, or run.sh browser auto off.")
+        print(b.auto(v == "on", args.owner_tapped))
+        return 0
     session = _session_arg(args.session)
     if a == "start":
-        print(b.start(session, args.owner_tapped))
+        print(b.start(session, args.owner_tapped, auto=args.auto))
+        return 0
+    if a == "pick":
+        if args.seq is None or not args.link or not args.author:
+            raise Refused(
+                f"REFUSED: run.sh browser pick S{session} <step> --link <post link> --author <username> "
+                '--comment "<comment>" (or --like-only).'
+            )
+        print(
+            b.pick(
+                session,
+                args.seq,
+                args.link,
+                args.author,
+                comment=args.comment,
+                caption=args.caption,
+                like_only=args.like_only,
+                follow=args.follow,
+            )
+        )
         return 0
     if a == "next":
         print(b.next(session))
