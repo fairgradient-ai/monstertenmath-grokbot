@@ -3,7 +3,7 @@ name: monsterten-browser-engagement
 description: How to run a browser session for @monstertenmath, liking, commenting and following in the Grok browser one step at a time with human pauses, including posts Grok picks from the home feed. Use when the owner says "engage S<n>", when a brief routine made a browser plan, or when a run.sh browser command answers. The engine plans, paces and counts; you click only what it hands out.
 license: Proprietary
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   category: social
 ---
 
@@ -42,6 +42,11 @@ steps, a 90-minute gap between sessions, and a 48-hour stop after any warning. Y
      another post or write another comment (never argue with the check), or skip the step. When pick answers
      with a STEP line, do exactly what it names, like any other step. Don't touch anything before pick answers.
      If nothing in the feed fits, `run.sh browser done S7 <k> --skip "nothing fitting in the feed"`.
+   - **One step, one browser action.** Do each step as a single Computer action (or one short browser script):
+     open the printed link, wait the look time on the page, then do the like, comment or follow it named, and
+     stop. Don't split it into separate navigate, click, type and check actions: each one can need an approval,
+     and the owner shouldn't have to tap five times for one post. Re-read the page in the same action to
+     confirm the like or comment went through, and report only what did.
    - Report what you really did: `run.sh browser done S7 <k> --did like,comment` (or `--did like`,
      `--did follow`, `--did already-liked`). For step 0 (the check), `--ok`. If the post is gone, private or
      clearly not a fit, `--skip "<why>"` and do nothing on it.
