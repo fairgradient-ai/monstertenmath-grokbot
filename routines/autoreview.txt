@@ -1,97 +1,38 @@
-Paste these two rules into the Grok Bot's Settings > General > Auto-review. "Ask first" wins over "Allow
-automatically". The engine also refuses the risky commands without --owner-tapped, but the card is the real
-gate: it's where the owner says yes.
+Grok Bot Auto-review rules for @monstertenmath.
+
+Where: Settings > General > Bot > Auto-review > Custom rules. Paste EACH rule below as its own rule: its text goes
+in "When Grok Bot wants to:", pick what "It should:" says (Allow automatically or Ask first), press Add Rule.
+First delete the old rules, including any "Always allow" rules the cards saved: Grok keeps only the first 1,000
+characters of a rule (each one below is shorter) and at most 20 of each kind, and an Ask first match always wins.
+The engine (run.sh) also refuses the risky commands without --owner-tapped and holds every cap, quiet hour and stop.
 
 === Allow automatically ===
-A bash command that is exactly one of the following, with nothing else on the line (no pipe, no ;, &&
-or ||, no redirection other than the heredoc shown, no second command):
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh sweep
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh inbox
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh status
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh stats
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh examples
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh doctor (optionally with --full)
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh version
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh phase show
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh pricing show
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh token status
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh token refresh
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh discard followed by item numbers
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh reply followed by one item number, or
-  bash /workspace/monstertenmath-grokbot/scripts/run.sh draft followed by one item number (optionally
-  --by owner), with the text in a quoted heredoc that starts <<'MT_EOF' and ends with a line MT_EOF, or with
-  --text and one quoted string. (reply posts the text itself only when it passes the brand check and
-  nothing needs the owner: the engine decides.)
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh scout, or scout add followed by usernames
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh creators, creators show <username>, or
-  creators mark <username> <status> (optionally --note and one quoted string)
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh outreach list
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh brief, brief show, brief email, brief done or brief skip
-  followed by brief numbers, or brief comment followed by one brief number with the comment in the quoted
-  heredoc or --text as above. (The brief only reads posts and writes a list; a person posts the comments.)
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh outreach draft <username> (optionally
-  --first-name <name>), with the personal line in the quoted heredoc or --text as above
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh token scopes
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh insights, insights week or insights show
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh ads suggest
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh timing
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh pillars, pillars adopt <id>, pillars decline <id>, or
-  pillars propose with the text in the quoted heredoc
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh check followed by --category caption, outbound or
-  draft (optionally --due and one ISO time), with the text in the quoted heredoc
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh buffer status, buffer audit, buffer sync (optionally
-  --dry), or buffer adopt (optionally --redo)
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh browser plan, browser status (optionally S<n>),
-  browser stop with one quoted reason, browser manual with --comments, --likes, --follows or --following and
-  numbers
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh browser start S<n> --auto (the engine refuses it unless
-  the owner turned auto engage on with their tap), and browser auto off.
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh browser pick S<n> <step> with --link and one post link,
-  --author and one username, optionally --caption and one quoted string, and --comment and one quoted string,
-  --like-only, or --follow. (The engine checks the post and the comment before anything is clicked.)
-- bash /workspace/monstertenmath-grokbot/scripts/run.sh browser next S<n>; browser done S<n> <step> with
-  --did and a comma list, --ok, or --skip and one quoted reason; browser verify S<n> with --others <number>,
-  --total <number>, or --skip and one quoted reason. (The engine refuses next and done for a session the
-  owner didn't start.)
-- In the Grok browser, during a session started with run.sh browser start: opening the one link or page the
-  latest run.sh browser next or browser pick output printed, and doing only the like, comment (with exactly
-  the printed text) or follow it named; opening https://www.instagram.com/monstertenmath/ for a check step,
-  Your activity -> Comments for a verify step, and, for a feed step, opening https://www.instagram.com/ and
-  scrolling it and opening posts in it (looking only: nothing is liked, commented or followed until
-  run.sh browser pick answers).
-- The same, whatever form the action takes: a Computer or browser action (navigate, click, type, scroll,
-  read the page, screenshot, wait) or a short browser automation or Playwright script run in the Grok browser,
-  on instagram.com only, while a session is running, when it only opens the page the latest run.sh browser
-  next or browser pick output printed (or the home feed, our profile or Your activity for feed, check and
-  verify steps) and does no more than the one like, comment with exactly the printed text, or follow it named.
-  One step is meant to be one such action (open, look for the time given, then act). Also a subagent launched
-  only to carry out those steps. Never covered: unfollowing, DMs, any other account or page, a different
-  comment, or anything after the session is DONE, ENDED or stopped.
-- The git clone of fairgradient-ai/monstertenmath_social into /workspace/monstertenmath_social when that folder
-  doesn't exist yet.
-Also allowed: bash /workspace/monstertenmath-grokbot/scripts/install.sh, and the git clone of the pinned
-release into /workspace/monstertenmath-grokbot when that folder doesn't exist yet.
+
+--- A1: a running engagement session (one rule for every browser action in it) ---
+During an Instagram engagement session, once run.sh browser start has answered STARTED (the owner said "engage S<n>" or "auto engage on"): any use of the Grok browser or the Bot's computer on instagram.com, in whatever form (navigate, scroll, read the page, screenshot, wait, click, type, run browser automation or Playwright code, or launch a subagent to do it), to open the page the latest run.sh browser next or browser pick output printed, or the home feed, @monstertenmath's profile or Your activity, and to do the like, the comment with exactly the printed text, or the follow it named. Never an unfollow, a DM, or a profile or settings change.
+
+--- A2: read-only and reply commands ---
+A bash command that is exactly bash /workspace/monstertenmath-grokbot/scripts/run.sh followed by one of: sweep, inbox, status, stats, examples, doctor (optionally --full), version, phase show, pricing show, token status, token refresh, token scopes, discard with item numbers, insights, insights week, insights show, ads suggest, timing, outreach list; or reply or draft with one item number (draft optionally --by owner) and the text in a quoted heredoc <<'MT_EOF' ... MT_EOF or --text and one quoted string (the engine posts only what passes the brand check). Nothing else on the line: no pipe, ;, && or ||, no other redirection.
+
+--- A3: growth commands ---
+A bash command that is exactly bash /workspace/monstertenmath-grokbot/scripts/run.sh followed by one of: scout, scout add with usernames, creators, creators show <username>, creators mark <username> <status> (optionally --note and one quoted string), outreach draft <username> (optionally --first-name <name>), brief, brief show, brief email, brief done or brief skip with brief numbers, brief comment with one brief number, pillars, pillars adopt <id>, pillars decline <id>, pillars propose, or check --category caption, outbound or draft (optionally --due and one ISO time); text in a quoted heredoc <<'MT_EOF' ... MT_EOF or --text and one quoted string. Nothing else on the line.
+
+--- A4: browser session commands ---
+A bash command that is exactly bash /workspace/monstertenmath-grokbot/scripts/run.sh followed by one of: browser plan, browser status (optionally S<n>), browser stop with one quoted reason, browser manual with --comments, --likes, --follows or --following and numbers, browser start S<n> --auto (the engine refuses it unless the owner turned auto engage on), browser auto off, browser next S<n>, browser pick S<n> <step> with --link, --author, optionally --caption, and --comment with one quoted string or --like-only, optionally --follow, browser done S<n> <step> with --did and a comma list, --ok, or --skip and one quoted reason, browser verify S<n> with --others <n>, --total <n> or --skip and one quoted reason. Nothing else on the line.
+
+--- A5: Buffer and setup ---
+A bash command that is exactly bash /workspace/monstertenmath-grokbot/scripts/run.sh buffer status, buffer audit, buffer sync (optionally --dry), or buffer adopt (optionally --redo), with nothing else on the line; bash /workspace/monstertenmath-grokbot/scripts/install.sh; the git clone of the pinned release into /workspace/monstertenmath-grokbot, or of fairgradient-ai/monstertenmath_social into /workspace/monstertenmath_social, when that folder doesn't exist yet.
 
 === Ask first ===
-- Any run.sh command with --owner-tapped or --force-lint, including send, hide, outreach send, phase
-  building, phase open, pricing standard, pricing founding, go-live and rehearse, and any run.sh send, hide,
-  outreach send, phase (other than show), pricing (other than show), go-live or rehearse without it.
-- Writing, editing or deleting anything in /workspace/monstertenmath-grokbot, or config.toml, state/, or
-  secrets/ in /workspace/monsterten-desk, by any means.
-- run.sh browser start S<n> --owner-tapped (the one card per browser session: "start browser session S<n>"),
-  run.sh browser resume --owner-tapped, and run.sh browser auto on --owner-tapped (the owner's standing yes:
-  routines then start sessions with --auto, within every cap).
-- run.sh buffer remind, buffer delete, buffer restore and buffer push (each with --owner-tapped).
-- Any request to graph.instagram.com, graph.facebook.com, instagram.com or facebook.com that doesn't go
-  through run.sh, and opening Instagram or Facebook in a browser, except, during a session started with
-  run.sh browser start, opening the link or page the latest run.sh browser next output printed (see Allow
-  automatically).
-- Following, unfollowing, liking, commenting, replying or sending a DM on any account, other than through
-  run.sh, or than the like, comment or follow the latest run.sh browser next or browser pick output named,
-  done in the Grok browser on the page it printed. Unfollowing and DMs are never allowed this way.
-- Running any script in /workspace/monstertenmath_social yourself, or changing files there (git pull through
-  run.sh buffer sync is fine).
-- Any request to api.buffer.com that doesn't go through run.sh.
-- Sending an email by any means other than run.sh outreach send.
-- Deleting a comment or blocking an account.
-- Printing, echoing, copying or typing a token or password.
+
+--- Q1: the owner's taps ---
+Any run.sh command with --owner-tapped or --force-lint, and any run.sh send, hide, outreach send, go-live, rehearse, phase (other than phase show), pricing (other than pricing show), browser start without --auto, browser resume, browser auto on, buffer remind, buffer delete, buffer restore or buffer push.
+
+--- Q2: the bot's own files ---
+Writing, editing or deleting anything in /workspace/monstertenmath-grokbot, or config.toml, state/ or secrets/ in /workspace/monsterten-desk, by any means other than run.sh; running a script in /workspace/monstertenmath_social yourself or changing files there.
+
+--- Q3: things that are never part of a session ---
+On Instagram or Facebook: unfollowing anyone, sending or answering a DM in the browser, deleting a comment, blocking or restricting an account, or changing the profile, bio, link or settings. Any request to graph.instagram.com, graph.facebook.com or api.buffer.com that doesn't go through run.sh.
+
+--- Q4: email and secrets ---
+Sending an email by any means other than run.sh outreach send. Printing, echoing, copying or typing a token or password.

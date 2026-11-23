@@ -48,7 +48,7 @@ Follow SETUP.md in the checkout. In order:
 6. **Receipt.** End with exactly these lines, filled in:
 
    ```text
-   SETUP DONE · release v1.1.1 · mode rehearsal · phase building
+   SETUP DONE · release v1.1.2 · mode rehearsal · phase building
    Instagram: @monstertenmath · reads comments: yes · token: secret card
    Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
    Later: DMs (SETUP.md 12), creator scouting (13) and outreach email (14), each when its access is ready.

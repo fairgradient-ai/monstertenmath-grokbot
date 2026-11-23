@@ -63,7 +63,8 @@ Keep the token out of chat, email and files. It goes on the card in the next ste
 3. **Secret card**: add `IG_ACCESS_TOKEN` with the token from step 2. Later, `FB_ACCESS_TOKEN` (section 13) and
    `SMTP_USER` / `SMTP_PASSWORD` (section 14). Every Bot on the same computer can see the card, so keep other
    people's Bots off this computer.
-4. **Auto-review** (Settings → General): paste the two rules from [`routines/autoreview.txt`](routines/autoreview.txt).
+4. **Auto-review** (Settings → General → Bot → Auto-review → Custom rules): paste each of the nine rules in
+   [`routines/autoreview.txt`](routines/autoreview.txt) as its own rule (Grok keeps only 1,000 characters of a rule).
 5. Start it with:
 
    ```text
@@ -79,7 +80,7 @@ The bootstrap skill clones the release into `/workspace/monstertenmath-grokbot`,
 **building**), then `run.sh doctor --full`, then one rehearsal sweep, and ends with:
 
 ```text
-SETUP DONE · release v1.1.1 · mode rehearsal · phase building
+SETUP DONE · release v1.1.2 · mode rehearsal · phase building
 Instagram: @monstertenmath · reads comments: yes · token: secret card
 Next: turn on the routines (SETUP.md 6), rehearse for a day, then say "go live".
 ```
@@ -269,8 +270,8 @@ Your decision of 20 Nov 2026 (DESIGN.md section 3). Before turning it on:
    secret card or in chat.
 2. Tell the Bot how many accounts @monstertenmath already follows: "we follow 40 accounts"
    (`run.sh browser manual --following 40`), so the 200 ceiling counts them.
-3. Update Auto-review from [`routines/autoreview.txt`](routines/autoreview.txt) (it now allows the clicks of a
-   started session and asks first for `browser start`).
+3. Update Auto-review from [`routines/autoreview.txt`](routines/autoreview.txt), one rule at a time (rule A1
+   allows every browser action of a started session; `browser start` without `--auto` asks first).
 4. Approve `enabled = true` under `[browser]` in the desk's config.toml. `ramp_start` is the first day: caps
    start low and grow over two weeks.
 5. The brief routines now end with `run.sh browser plan`. When the Bot asks, say **"engage S<n>"**. On day one,

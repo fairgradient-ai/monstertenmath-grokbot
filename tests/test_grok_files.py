@@ -54,8 +54,8 @@ def test_routines_call_only_safe_commands():
 def test_every_command_has_an_auto_review_rule():
     rules = (ROOT / "routines" / "autoreview.txt").read_text()
     allow, ask = rules.split("=== Ask first ===")
-    for cmd in cli_commands():
-        assert f"run.sh {cmd}" in rules or (cmd in ask), cmd
+    for cmd in cli_commands():  # each rule names run.sh once, then its commands (rules are 1,000 characters at most)
+        assert f"run.sh {cmd}" in rules or re.search(rf"(?<![\w-]){re.escape(cmd)}(?![\w-])", rules), cmd
     for risky in ("send", "hide", "outreach send", "go-live", "rehearse", "--owner-tapped", "--force-lint"):
         assert risky in ask, risky
         assert f"run.sh {risky}" not in allow, risky
@@ -82,3 +82,19 @@ def test_voice_examples_pass_the_check(kn):
     assert len(examples) >= 3
     for text in examples:
         assert check(text, Context("building"), kn.rules) == [], text
+
+
+def test_auto_review_rules_fit_grok():
+    """Grok keeps only the first 1,000 characters of a custom rule and at most 20 of each kind (FAI-891): each
+    rule is pasted on its own, so each must fit, and the session rule must cover every form a browser action takes."""
+    text = (ROOT / "routines" / "autoreview.txt").read_text()
+    allow, ask = text.split("=== Allow automatically ===")[1].split("=== Ask first ===")
+    for section in (allow, ask):
+        rules = [r.strip() for r in re.split(r"^--- .+ ---$", section, flags=re.M)[1:]]
+        assert 1 <= len(rules) <= 20
+        for rule in rules:
+            assert 0 < len(rule) <= 1000, (len(rule), rule[:60])
+    session = re.split(r"^--- .+ ---$", allow, flags=re.M)[1]
+    for form in ("navigate", "click", "type", "browser automation", "Playwright", "subagent", "browser pick"):
+        assert form in session, form
+    assert "instagram.com" not in ask.split("graph.instagram.com")[0]  # no Ask first rule catches the session
