@@ -58,15 +58,27 @@ the risk as low as the engine can make it (`src/monsterbot/browser.py`):
 - **One step at a time, revealed late.** `browser next` hands out one link (and one comment) only after its
   random gap (45–150 s by default) since the last step finished, and the Bot reports each step with
   `browser done`. A step reported sooner than its look time is "early"; two end the session.
-- **Caps that ramp.** Days 0–6 of `ramp_start`: 15 comments, 30 likes and no follows a day; days 7–13: 25, 50
-  and 10; then the config's numbers (30, 60, 25), with per-session caps too and a ceiling of 200 accounts
-  followed. Comments a person posted by hand (`brief done`, `browser manual`) count toward the same caps.
+- **Caps that ramp.** Days 0–6 of `ramp_start`: 20 comments, 40 likes and 10 follows a day; days 7–13: 25, 50
+  and 20; then the config's numbers (30, 60, 25), with per-session caps too and a ceiling of 200 accounts
+  followed. (v1.1, owner 23 Nov: "follow more people", "you have not been commenting". Week one had no follows
+  and 15 comments; it is still under the growth plan's 30 comments a day.) Comments a person posted by hand (`brief done`, `browser manual`) count toward the same caps.
 - **Spacing.** At most 3 sessions a day, 90 minutes apart, none in quiet hours (22:00–07:30), and no action
   handed out in the last 15 minutes before quiet hours.
 - **Stop signs.** Any warning, "Try again later" or login check: `browser stop` pauses everything for 48
   hours. A click already made is still recorded, so the caps never undercount.
 - **Verify.** The last step of a session with a comment counts today's comments on other accounts on our own
   activity page. More than the ledger allows pauses sessions until the owner looks (`browser resume`).
+- **Feed steps (v1.1).** Grok picks the post in our home feed and writes the comment; `browser pick` checks both
+  before anything is clicked: a real post link, not us, a rival or an account marked skip/declined, not a post
+  engaged before, one feed pick per account a week, no giveaway or rival in the caption, and the comment passes
+  the outbound check and was never used before. A refused pick changes nothing. A pick may add a follow while
+  follows are left. The look time restarts at the pick.
+- **Who is followed.** Parents who commented warmly on our posts in 14 days (once is enough since v1.1),
+  shortlisted creators, creators whose posts we commented on, then scouted creators scoring at least
+  `[brief] min_score`, and accounts Grok picked from the feed with `--follow`.
+- **Auto engage (v1.1).** "Auto engage on" (`browser auto on --owner-tapped`) is the owner's standing yes: the
+  brief routines start each planned session with `browser start S<n> --auto`. Every cap, quiet hours, the
+  90-minute gap and the 3-a-day limit still apply; a stop or a verify mismatch turns auto off.
 - **Never.** No unfollowing, no DMs, no comments that fail the brand check (category `outbound`): those become
   likes. Every comment is re-checked when the session is planned.
 

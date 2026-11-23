@@ -13,7 +13,8 @@ from tests.conftest import Clock
 
 # Tue 1 Dec 2026, 14:00 Eastern: day 11 of the ramp, inside waking hours.
 T0 = datetime(2026, 12, 1, 19, 0, tzinfo=UTC)
-CFG = Config(browser_enabled=True)
+CFG = Config(browser_enabled=True, browser_feed_per_session=0)  # feed steps have their own tests below
+FEED = Config(browser_enabled=True, browser_feed_per_session=2)
 
 
 @pytest.fixture(autouse=True)
@@ -80,9 +81,9 @@ def run_session(b, clock, session, did_for=None):
 
 def test_caps_ramp():
     c = caps(CFG, datetime(2026, 11, 22, 12, tzinfo=UTC))
-    assert c["day"]["follow"] == 0 and c["session"]["comment"] == 8
+    assert c["day"] == {"comment": 20, "like": 40, "follow": 10} and c["session"]["comment"] == 8
     c = caps(CFG, datetime(2026, 11, 28, 12, tzinfo=UTC))
-    assert c["day"]["follow"] == 10
+    assert c["day"]["follow"] == 20
     c = caps(CFG, datetime(2026, 12, 10, 12, tzinfo=UTC))
     assert c["day"]["comment"] == 30 and c["session"]["follow"] == 8
 
@@ -267,17 +268,20 @@ def test_bad_comment_becomes_a_like(env, monkeypatch):
     assert "comment" not in kinds and "like" in kinds
 
 
-def test_follows_only_from_day_7(env, monkeypatch):
+def test_follows_from_day_0_at_a_lower_cap(env, monkeypatch):
     make, ledger, clock = env
-    ledger.upsert_creator("kinder_with_kate", T0, status="shortlist")
+    for i in range(6):
+        ledger.upsert_creator(f"kinder_with_kate{i}", T0, status="shortlist")
     b = make()
     s = b.plan()
     kinds = [r[0] for r in ledger.db.execute("SELECT kind FROM browser_steps WHERE session=?", (s,))]
-    assert "follow" in kinds  # day 11
+    assert kinds.count("follow") == 6  # day 11: session cap 7
     clock.now = datetime(2026, 11, 22, 18, tzinfo=UTC)  # day 2
     ledger.db.execute("DELETE FROM browser_steps")
     ledger.db.execute("DELETE FROM browser_sessions")
-    assert make().plan() == 0  # nothing to do: no follows allowed yet
+    s = make().plan()
+    kinds = [r[0] for r in ledger.db.execute("SELECT kind FROM browser_steps WHERE session=?", (s,))]
+    assert kinds.count("follow") == 4  # day 2: session cap 4
 
 
 def test_manual_counts_toward_caps(env):

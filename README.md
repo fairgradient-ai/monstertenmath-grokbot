@@ -34,7 +34,11 @@ to post.
 Since v1.0 it also likes, comments and follows on other accounts in the Grok browser, but only in a session
 you start ("engage S7"), one step at a time with random breaks, under caps that ramp over two weeks, and it
 stops for 48 hours at any warning ([`DESIGN.md`](DESIGN.md), section 3: your decision, and the risk it carries).
-It never unfollows or DMs other accounts. It keeps Buffer in step with `schedule.json` on the social repo's
+Since v1.1 each session also has **feed steps**: Grok scrolls our home feed, picks a fitting post from a parent,
+teacher or creator, writes a fresh comment for it, and the engine checks the post and the comment before anything
+is clicked. Follows start on day 0 at a low cap (10 a day in week one) from parents who commented, fitting
+creators and accounts we engaged with. "Auto engage on" (one tap) lets the brief routines run sessions themselves
+under the same caps; any warning turns it off. It never unfollows or DMs other accounts. It keeps Buffer in step with `schedule.json` on the social repo's
 `main` (merged posts only), and every Sunday scores the pillars and proposes new ones. Every reply, comment,
 caption and email passes the pack's 30-second check in code first ([`knowledge/rules.toml`](knowledge/rules.toml)).
 
@@ -59,6 +63,9 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 | "founding price closed"    | Back to $79.99 / $12.99; founding questions come to you   | **yes**   |
 | "go live" / "stop posting" | Replies post by themselves / nothing posts                | **yes**   |
 | "engage S7"                | Runs browser session S7: likes, comments, follows, paced  | **yes**   |
+| "engage now"               | Plans a session now and asks for "engage S<n>"            | no        |
+| "auto engage on"           | Routines run up to 3 paced sessions a day, no tap each    | **yes**   |
+| "auto engage off"          | Back to one tap per session                               | no        |
 | "stop engaging"            | Stops browser sessions for 48 hours                       | no        |
 | "sync Buffer"              | Merged posts from main into Buffer, then an audit         | no        |
 | "delete #512 from Buffer"  | Deletes one scheduled post (also remind, restore, push)   | **yes**   |

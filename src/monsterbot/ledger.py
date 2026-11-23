@@ -174,7 +174,13 @@ CREATE TABLE IF NOT EXISTS pillar_proposals (
 """
 
 # Columns added after v0.1.0; added in place to an older database.
-MIGRATIONS = [("items", "recipient_id", "TEXT"), ("items", "draft_by", "TEXT"), ("items", "sent_by", "TEXT")]
+MIGRATIONS = [
+    ("items", "recipient_id", "TEXT"),
+    ("items", "draft_by", "TEXT"),
+    ("items", "sent_by", "TEXT"),
+    ("browser_steps", "author", "TEXT"),  # v1.1: the account behind a feed pick (and who a follow is for)
+    ("browser_steps", "may", "TEXT"),  # v1.1: the actions a feed pick was cleared for, comma list
+]
 
 OPEN_STATUSES = ("queued", "drafted", "unverified")
 
