@@ -59,6 +59,14 @@ or ||, no redirection other than the heredoc shown, no second command):
   Your activity -> Comments for a verify step, and, for a feed step, opening https://www.instagram.com/ and
   scrolling it and opening posts in it (looking only: nothing is liked, commented or followed until
   run.sh browser pick answers).
+- The same, whatever form the action takes: a Computer or browser action (navigate, click, type, scroll,
+  read the page, screenshot, wait) or a short browser automation or Playwright script run in the Grok browser,
+  on instagram.com only, while a session is running, when it only opens the page the latest run.sh browser
+  next or browser pick output printed (or the home feed, our profile or Your activity for feed, check and
+  verify steps) and does no more than the one like, comment with exactly the printed text, or follow it named.
+  One step is meant to be one such action (open, look for the time given, then act). Also a subagent launched
+  only to carry out those steps. Never covered: unfollowing, DMs, any other account or page, a different
+  comment, or anything after the session is DONE, ENDED or stopped.
 - The git clone of fairgradient-ai/monstertenmath_social into /workspace/monstertenmath_social when that folder
   doesn't exist yet.
 Also allowed: bash /workspace/monstertenmath-grokbot/scripts/install.sh, and the git clone of the pinned
