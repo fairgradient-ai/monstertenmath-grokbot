@@ -60,7 +60,7 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 | "stats"                    | Followers against the pace line, and the newest posts     | no        |
 | "we're open"               | Switches the answers to the launch phase (after the gate) | **yes**   |
 | "founding price on"        | Price answers give the founding price, its terms whole    | **yes**   |
-| "founding price closed"    | Back to $59.99 / $12.99; founding questions come to you   | **yes**   |
+| "founding price closed"    | Back to $79.99 / $12.99; founding questions come to you   | **yes**   |
 | "go live" / "stop posting" | Replies post by themselves / nothing posts                | **yes**   |
 | "engage S7"                | Runs browser session S7: likes, comments, follows, paced  | **yes**   |
 | "engage now"               | Plans a session now and asks for "engage S<n>"            | no        |

@@ -186,10 +186,10 @@ holding line and every Collab email:
   the Monster's retired name; no rival named or tagged; no hashtags; no @mention but the person answered.
 - Trial terms whole or not at all, and any dollar amount must be a real price. (A Collab email's fee is not a
   product price, so emails are checked as category "email".)
-- **The founding price** (the owner's decision, 19 Nov 2026: $29.99 a year (yearly only, 50% off the regular $59.99) for the first 500
+- **The founding price** (the owner's decision, 19 Nov 2026: $59.99 a year or $9.99 a month for the first 500
   families who sign up, theirs for good, even if they cancel and come back) is a desk switch, `pricing`, that
   the owner turns on after seeing it on the site's ticket and off when the 500 are in. It counts only in the open
-  phase. While it's in force, a price mention needs $29.99 a year, "first 500 families" and "for good" besides
+  phase. While it's in force, a price mention needs $59.99 a year, "first 500 families" and "for good" besides
   the trial terms; `open_founding` texts replace `open` ones. While it isn't, the bot never names it, and a
   question about it goes to the owner (they know who is a founding family). "If I cancel, do I keep the founding
   price?" answers ahead of the billing escalation, unless it's about a charge. Standard is the default: quoting a

@@ -112,16 +112,16 @@ After the launch-day gate passes (pack, section 0), in this order:
 3. Set the stores the app is really in (gate step 4) in `/workspace/monsterten-desk/config.toml`, for example
    `stores = ["app_store"]`. Ask the Bot to show you the file first, then approve the edit. Until it's set, "iPhone
    or Android?" comes to you instead of getting an answer.
-4. If the site's ticket showed the founding price at gate step 3 ($29.99 a year (yearly only, 50% off the regular $59.99)), tell the Bot
+4. If the site's ticket showed the founding price at gate step 3 ($59.99 a year or $9.99 a month), tell the Bot
    **"founding price on"** and tap the card: `run.sh pricing founding --owner-tapped`. The price answers then
    give it with its terms whole (the first 500 families who sign up, theirs for good, even if they cancel and
-   come back). If the site shows only $59.99 / $12.99, skip this: the Bot stays on the standard price.
+   come back). If the site shows only $79.99 / $12.99, skip this: the Bot stays on the standard price.
 
 If launch slips, nothing changes: the phase stays `building`. If you flipped it too early, say "back to
 building".
 
 **When the first 500 families are in** (or the site stops showing the founding price), tell the Bot **"founding
-price closed"** and tap the card (`run.sh pricing standard --owner-tapped`). The answers go back to $59.99 or
+price closed"** and tap the card (`run.sh pricing standard --owner-tapped`). The answers go back to $79.99 or
 $12.99, and any question about the founding price comes to you: only you know who is a founding family.
 
 ## 8. Go live

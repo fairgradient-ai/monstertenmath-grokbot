@@ -61,7 +61,7 @@ can't, learn how the owner answers, and ask the owner only when it's theirs to d
    echo or log one.
 9. **Phase, pricing and mode change only on the owner's tap.** "We're open" means
    `run.sh phase open --owner-tapped`, once the launch-day gate has passed; then ask whether the site's ticket
-   showed the founding price ($29.99 a year (yearly only, 50% off the regular $59.99), gate step 3). "Founding price on" means
+   showed the founding price ($59.99 a year or $9.99 a month, gate step 3). "Founding price on" means
    `run.sh pricing founding --owner-tapped`, only once it has; "founding price closed" (the first 500 families
    are in, or the site stopped showing it) means `run.sh pricing standard --owner-tapped`. "Go live" means
    `run.sh go-live --owner-tapped`.

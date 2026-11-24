@@ -103,7 +103,7 @@ why = "From launch day, nothing says \"being built\" or \"not open yet\" (sectio
 [[banned]]
 id = "founding-off"
 pricing = "standard"
-pattern = '''founding|\$29\.99'''
+pattern = '''founding|\$59\.99|\$9\.99'''
 why = "The founding price isn't on (before launch, closed, or not on the site's ticket): only the owner answers about it."
 
 # Trial terms whole, or not at all (README section 0 and 6): a reply that mentions the free week, a price or the
@@ -117,23 +117,23 @@ required = [
   { id = "day-5", pattern = '''day 5''', why = "the day-5 reminder" },
   { id = "cancel", pattern = '''cancel in 2 taps''', why = "cancel in 2 taps" },
 ]
-# Any dollar amount must be one of these (packages/shared/src/business.ts, PRICES, checked 23 Nov 2026), or of
+# Any dollar amount must be one of these (packages/shared/src/business.ts, PRICES, checked 17 Nov 2026), or of
 # the founding prices while they're in force.
-prices = ["$59.99", "$12.99", "$0"]
+prices = ["$79.99", "$12.99", "$0"]
 
 # Standard pricing: the price after the free week.
 [trial.standard]
 required = [
-  { id = "price", pattern = '''\$59\.99 a year''', why = "the price after: $59.99 a year (or $12.99 a month)" },
+  { id = "price", pattern = '''\$79\.99 a year''', why = "the price after: $79.99 a year (or $12.99 a month)" },
 ]
 
-# The founding price (the owner's decision, 19 Nov 2026, changed 23 Nov 2026): $29.99 a year, yearly only (50% off
-# the regular $59.99; monthly is $12.99 for everyone), for the first 500 families who sign up, theirs for good, even
-# if they cancel and come back. Its terms come whole, or not at all. A reply may still name the regular prices.
+# The founding price (the owner's decision, 19 Nov 2026): $59.99 a year or $9.99 a month for the first 500
+# families who sign up, theirs for good, even if they cancel and come back. Its terms come whole, or not at all.
+# A reply may still say what later families pay ($79.99 or $12.99).
 [trial.founding]
-prices = ["$29.99"]
+prices = ["$59.99", "$9.99"]
 required = [
-  { id = "price", pattern = '''\$29\.99 a year''', why = "the founding price after: $29.99 a year (yearly only)" },
+  { id = "price", pattern = '''\$59\.99 a year''', why = "the founding price after: $59.99 a year (or $9.99 a month)" },
   { id = "first-500", pattern = '''first 500 families''', why = "it's for the first 500 families who sign up" },
   { id = "for-good", pattern = '''for good''', why = "it's theirs for good, even if they cancel and come back" },
 ]

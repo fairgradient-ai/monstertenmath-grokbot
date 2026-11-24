@@ -9,7 +9,7 @@ OPEN = Context("open")
 
 TRIAL_OK = (
     "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. "
-    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $12.99 a month."
+    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
 )
 
 
@@ -62,7 +62,7 @@ def test_building_phase_points_nowhere(kn, text):
 def test_signup_as_a_noun_is_fine_before_launch(kn):
     building_price = (
         "At launch: a 7-day free trial. You add a card at signup and nothing is charged that day. We remind you "
-        "on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $12.99 a month."
+        "on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
     )
     assert check(building_price, BUILDING, kn.rules) == []
 
@@ -76,7 +76,7 @@ def test_trial_terms_whole_or_not_at_all(kn):
     assert check(TRIAL_OK, OPEN, kn.rules) == []
     v = check("Try the 7 days free!", OPEN, kn.rules)
     assert any(x.id == "trial-terms" for x in v)
-    v = check("It's $59.99 a year.", OPEN, kn.rules)
+    v = check("It's $79.99 a year.", OPEN, kn.rules)
     assert any(x.id == "trial-terms" for x in v)
 
 
