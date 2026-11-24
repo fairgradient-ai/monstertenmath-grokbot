@@ -16,8 +16,7 @@ FOUNDING = Context("open", pricing="founding")
 
 FOUNDING_OK = (
     "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. "
-    "We remind you on day 5, and you can cancel in 2 taps. "
-    "After the 7 days it's $29.99 a year (50% off the regular $59.99) or $12.99 a month. "
+    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $29.99 a year (50% off the regular $59.99) or $12.99 a month. "
     "That's our founding price for the first 500 families who sign up, and it's yours for good, even if you "
     "cancel and come back later. After the first 500, it's $59.99 a year or $12.99 a month."
 )
