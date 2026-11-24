@@ -131,7 +131,9 @@ required = [
 # families who sign up, theirs for good, even if they cancel and come back. Its terms come whole, or not at all.
 # A reply may still say what later families pay ($79.99 or $12.99).
 [trial.founding]
-prices = ["$59.99", "$9.99"]
+# Launch offer (23 Nov 2026, monstertenmath FAI-897): a yearly plan started by Dec 31, 2026 pays $29.99 for the first
+# year, then $59.99. $29.99 stays allowed only while the founding price is on; remove it on Jan 1, 2027.
+prices = ["$59.99", "$9.99", "$29.99"]
 required = [
   { id = "price", pattern = '''\$59\.99 a year''', why = "the founding price after: $59.99 a year (or $9.99 a month)" },
   { id = "first-500", pattern = '''first 500 families''', why = "it's for the first 500 families who sign up" },
