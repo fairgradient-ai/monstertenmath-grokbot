@@ -545,7 +545,7 @@ def pricing_note(pricing: str, phase: str) -> str:
     if phase == "open":
         return (
             " Price answers give the founding price, $59.99 a year or $9.99 a month for the first 500 families,"
-            " with its terms whole."
+            " with its terms whole, and the launch offer: $29.99 for the first year on a yearly plan started by Dec 31."
         )
     return " The founding price starts with the open phase; until then the answers stay as they are."
 

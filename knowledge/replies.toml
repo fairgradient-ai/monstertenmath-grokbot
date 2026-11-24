@@ -70,6 +70,8 @@ pattern = '''\bai\b|a\.i\.|is (this|it|that) (real|fake)|real (video|footage|per
 
 # ---------------------------------------------------------------------------------------------------
 # Questions the pack has an answer for. `building` is the Days 1-4 reply, `open` the reply from launch
+# Launch offer (the owner, 23 Nov 2026, monstertenmath FAI-897): a founding family that starts a yearly plan by Dec 31,
+# 2026 pays $29.99 for the first year, then $59.99. The `open_founding` answers say so; take that sentence out on Jan 1.
 # day (after the gate). `open_founding` replaces `open` while the founding price is on (run.sh pricing
 # founding). A phase without text sends the comment to you. question_only = true needs a "?" or a question
 # word, so "love the price" doesn't get the price reply.
@@ -91,7 +93,7 @@ open = "Now! Start with the free 2-minute check at the link in bio. You play it 
 id = "founding"
 question_only = true
 pattern = '''founding|first 500|\b500 families|how many (spots|places|seats|families)\b.*\bleft|(spots|places|seats) (still )?(left|remaining|available)|keep (the|my|this|that) (low |lower |founding )?price|lock(ed)? in (the|my|this|that) price|price (locked|for good|forever)|grandfather\w*'''
-open_founding = "The founding price is $59.99 a year or $9.99 a month, for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. It starts after the free week: you add a card at signup and nothing is charged that day, we remind you on day 5, and you can cancel in 2 taps. The price on the site's ticket is always the one you'd pay."
+open_founding = "The founding price is $59.99 a year or $9.99 a month, for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. It starts after the free week: you add a card at signup and nothing is charged that day, we remind you on day 5, and you can cancel in 2 taps. Launch offer: start a yearly plan by Dec 31 and your first year is $29.99 instead of $59.99. The price on the site's ticket is always the one you'd pay."
 ahead_of_escalation = ["billing"]
 unless = '''refund\w*|charged|charge me|billing|scam\w*|rip ?off|twice|double'''
 
@@ -109,7 +111,7 @@ question_only = true
 pattern = '''cancel (at )?any ?time|any ?time cancel|cancel whenever|\b(easy|easily|simple|quick|hard|difficult|tricky|impossible|a pain) (is it )?(to cancel|cancel(l?ing|l?ation))|cancel(l?ing|l?ation) (is |it )?(easy|simple|quick|hard|difficult|tricky|a pain)|\b(way|possible|able) to cancel|\bcan (i|you|we|u|one) (still |always |just |easily |then )?cancel\b|\bif (i|we|you) (\w+ to )?cancel\b|how (does|do|will|would) cancel(l?ing|l?ation) work|how (would|could) (i|we|you|one) cancel|cancell?ation policy'''
 building = "You can cancel in 2 taps. At launch there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $79.99 a year or $12.99 a month, unless you cancel."
 open = "You can cancel in 2 taps. First there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $79.99 a year or $12.99 a month, unless you cancel."
-open_founding = "You can cancel in 2 taps. First there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $59.99 a year or $9.99 a month, unless you cancel. That's our founding price for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. After the first 500, it's $79.99 a year or $12.99 a month."
+open_founding = "You can cancel in 2 taps. First there's a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and after the 7 days it's $59.99 a year or $9.99 a month, unless you cancel. That's our founding price for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. Launch offer: start a yearly plan by Dec 31 and your first year is $29.99 instead of $59.99. After the first 500, it's $79.99 a year or $12.99 a month."
 ahead_of_escalation = ["billing"]
 unless = '''charg\w*|\bbill(s|ed|ing)?\b|refund\w*|money back|\bpaid\b|payment|scam\w*|rip ?off|fraud\w*|twice|double|\b(my|our) (subscription|account|membership|plan|order|(free )?(trial|week))\b|cancel (it|this|that) for (me|us)|cancel (me|us)\b|can you (please |pls )?cancel (it|this|that|mine|ours)\b|cancell?ed\b|already cancel|(can'?t|cannot|couldn'?t|unable to|tried to|trying to) cancel|why can'?t (i|we|you)|(won'?t|doesn'?t|didn'?t|wouldn'?t) let (me|us)|(please|pls|plz) cancel|(?<!if )\b(i|we) (really )?(want|need|wanna|would like|'d like) to cancel'''
 
@@ -119,14 +121,14 @@ question_only = true
 pattern = '''how much|\bprice\b|\bpricing\b|\bcost\b|\bcosts\b|is it free|is this free|subscription\b|monthly fee|one[- ]time'''
 building = "At launch: a 7-day free trial. You add a card at signup and nothing is charged that day. We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
 open = "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
-open_founding = "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $9.99 a month. That's our founding price for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. After the first 500, it's $79.99 a year or $12.99 a month."
+open_founding = "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $9.99 a month. That's our founding price for the first 500 families who sign up, and it's yours for good, even if you cancel and come back later. Launch offer: start a yearly plan by Dec 31 and your first year is $29.99 instead of $59.99. After the first 500, it's $79.99 a year or $12.99 a month."
 
 [[faq]]
 id = "card-for-check"
 question_only = true
 pattern = '''(need|ask|asks|require|requires|want|wants|take|takes) (for )?(a |my )?(credit |debit )?card'''
 open = "No. The check is free and asks for no card. If you then start the free week, you add a card at signup and nothing is charged that day. We remind you on day 5, you can cancel in 2 taps, and after the 7 days it's $79.99 a year or $12.99 a month."
-open_founding = "No. The check is free and asks for no card. If you then start the free week, you add a card at signup and nothing is charged that day. We remind you on day 5, you can cancel in 2 taps, and after the 7 days it's $59.99 a year or $9.99 a month: our founding price for the first 500 families who sign up, yours for good, even if you cancel and come back later."
+open_founding = "No. The check is free and asks for no card. If you then start the free week, you add a card at signup and nothing is charged that day. We remind you on day 5, you can cancel in 2 taps, and after the 7 days it's $59.99 a year or $9.99 a month: our founding price for the first 500 families who sign up, yours for good, even if you cancel and come back later. Launch offer: start a yearly plan by Dec 31 and your first year is $29.99 instead of $59.99."
 
 [[faq]]
 id = "link"
