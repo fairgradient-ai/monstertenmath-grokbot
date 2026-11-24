@@ -55,15 +55,15 @@ def test_cancel_texts_carry_every_trial_term(kn, field):
     for term in ("7-day free trial", "card at signup", "nothing is charged that day", "day 5", "cancel in 2 taps"):
         assert term in text
     if field == "open_founding":
-        for term in ("$59.99 a year or $9.99 a month", "first 500 families", "for good", "$79.99 a year"):
+        for term in ("$29.99 a year (50% off the regular $59.99) or $12.99 a month", "first 500 families", "for good"):
             assert term in text
     else:
-        assert "$79.99 a year or $12.99 a month" in text
+        assert "$59.99 a year or $12.99 a month" in text
         assert "founding" not in text
 
 
 def test_standard_cancel_text_isnt_used_while_founding(kn):
-    # With the founding price on, a new family pays $59.99, so the standard text would fail the check.
+    # With the founding price on, a new family pays $29.99, so the standard text would fail the check.
     founding = Context("open", "faq", pricing="founding")
     assert "trial-terms" in {v.id for v in check(faq(kn, "cancel").open, founding, kn.rules)}
 

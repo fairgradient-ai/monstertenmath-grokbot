@@ -74,10 +74,10 @@ All commands are `bash /workspace/monstertenmath-grokbot/scripts/run.sh <command
 runs `gate.py open` and unlocks the after-launch posts in Buffer. Remind them if they mention only one.
 
 **The founding price.** Right after "we're open", ask: "Did the site's ticket show the founding price,
-$59.99 a year or $9.99 a month (gate step 3)?" Only on a yes, and on their tap, run `run.sh pricing founding`.
+$29.99 a year (yearly only, 50% off the regular $59.99) (gate step 3)?" Only on a yes, and on their tap, run `run.sh pricing founding`.
 Then the price answers give it with its terms whole: the first 500 families who sign up, theirs for good, even
 if they cancel and come back. When the owner says the first 500 are in (or the site stopped showing it), run
-`run.sh pricing standard` on their tap: the answers go back to $79.99 or $12.99, and a question about the
+`run.sh pricing standard` on their tap: the answers go back to $59.99 or $12.99, and a question about the
 founding price comes to them, since only they know who is a founding family. You never know how many places
 are left, so never say, guess or hint at a number, and never write "filling fast", "only N left" or "before
 it's gone": the engine holds any reply that does.
@@ -87,7 +87,7 @@ When the owner gives a store at launch ("it's on the App Store"), tell them to s
 
 ## Writing text into a command
 
-Always pass written text with this quoted heredoc (`<<'MT_EOF'`, quotes included). It keeps `$79.99`,
+Always pass written text with this quoted heredoc (`<<'MT_EOF'`, quotes included). It keeps `$59.99`,
 apostrophes and quotation marks exactly as written; `--text "..."` would let the shell eat a `$7`.
 
 ```bash
