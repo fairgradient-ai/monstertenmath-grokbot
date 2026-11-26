@@ -871,3 +871,730 @@ ai = true
 voice = "ai"
 caption_start = "Try it tonight: the doubles plate. Put f"
 ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label. Every activity comes from the lesson scripts in Monster Ten."
+
+# --- Added 26 Nov 2026 from schedule.json (scripts/sync_social.py listed 79 pieces missing) ---
+
+# The Thanksgiving cut of the launch film (Thu 26 Nov 2026): the same film as #700, so the same AI line.
+
+[[piece]]
+key = "#701"
+name = "This Thanksgiving (launch film cut)"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "This Thanksgiving, what gift keeps on gr"
+ai_reply = "Good question! The film is drawn in our app's style with help from AI image and video tools, and the voices and music are AI-made, which is why it has the AI label. The games and lessons in it are the real Monster Ten."
+
+# The evening series, 8:30 pm ET (social repo, instagram/tools/v12): Quick look, Under the cup, chants, Math myths, what a grade
+# covers, countdowns and the free check. Flat pictures from the app's own art kit; AI voices and music. The AI line is the first
+# two sentences of the game Reels' line, word for word. No play-along keys yet: a guess gets the usual lines.
+
+[[piece]]
+key = "#801"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Quick! How many dots? 👀 The dots flash f"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#802"
+name = "A fair Thanksgiving"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "One pie, four plates. Let's share it fai"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#803"
+name = "Why a ten-frame?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Why does the Monster always have a littl"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#804"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "There were 10 crackers. The Monster hid"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#805"
+name = "Kindergarten math"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "What does kindergarten math actually cov"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#806"
+name = "Make ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "1 and 9. 2 and 8. 3 and 7. 4 and 6. 5 an"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#807"
+name = "Is counting on fingers cheating?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is counting on fingers cheating? Not at"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#808"
+name = "The free check"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Not sure where your child should start?"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#811"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many dots did you see? One second, n"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#812"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Under the cup: 10 crackers, 6 left out."
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#813"
+name = "Make five"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "1 and 4. 2 and 3. 3 and 2. 4 and 1. 5 an"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#814"
+name = "Count to 100 first?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Do kids need to count to 100 before they"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#815"
+name = "Pre-K math"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "What does pre-K math look like? Counting"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#816"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Blink and you'll miss it. How many dots?"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#817"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "The Monster took some again. 10 crackers"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#818"
+name = "Doubles"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "1 and 1 is 2. 2 and 2 is 4. 3 and 3 is 6"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#819"
+name = "Just worksheets?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is early math just worksheets? Not at 4"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#820"
+name = "Count down!"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Ten, nine, eight... Happy holidays! 🎉 Co"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#821"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Two flashes tonight. How many dots in ea"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#822"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Small numbers today: 5 crackers, 3 on th"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#823"
+name = "Teen numbers"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Ten and one, eleven. Ten and two, twelve"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#824"
+name = "Too young at four?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is 4 too young for math? Not at all. See"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#825"
+name = "First grade math"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "What does first grade math cover? Adding"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#826"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Can you see it without counting? Try thi"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#827"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "4 crackers on the plate, 10 to start. Wh"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#828"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Two small flashes. Can your kid beat the"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#829"
+name = "Count down!"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Ten, nine, eight... Happy New Year! 🎉 Co"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#830"
+name = "Counting or seeing?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is counting the same as understanding? N"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#831"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "One second per ten-frame. How many dots?"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#832"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Half and half? 10 crackers, 5 showing. H"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#833"
+name = "Make ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "9 and 1. 8 and 2. 7 and 3. 6 and 4. 5 an"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#834"
+name = "Write numbers first?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Do kids need to write numbers before the"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#835"
+name = "A night of Monster Ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Here's a night of Monster Ten, 10 minute"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#836"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Quick look time. How many dots? 👀 The do"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#837"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Start with 5. See 2. Guess the cup befor"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#838"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Easy start for little ones: 5 crackers,"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#839"
+name = "Correct every miss?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Should you correct every wrong answer? T"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#840"
+name = "The free 2-minute check"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Where should your child start? Play the"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#841"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Eyes on the ten-frame. How many dots fla"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#842"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "A sneaky one: 10 crackers and you see 9."
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#843"
+name = "Make ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "6 and 4. 2 and 8. 7 and 3. 1 and 9. 5 an"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#844"
+name = "Is ten minutes enough?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is 10 minutes a night enough? Yes, when"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#845"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "One more quick look. How many dots? 👀 Th"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#846"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Five-second game for the dinner table: h"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#847"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "10 crackers, only 3 left out. The Monste"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#848"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Full rows help. How many dots this time?"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#849"
+name = "Good at math to teach?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Do you have to be good at math to teach"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#850"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "One more for the cup: 10 crackers, 2 on"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+# The Chalkboard Reels (social repo, instagram/tools/v13), Tue and Thu 4 pm ET and Sat 8:30 pm ET.
+# source = "bot": both AI lines below are new and written for the bot. #901 shows a real chalkboard and a real drawing (its caption
+# says so); every other board is a picture drawn for the Reel. In all of them the sketched room is made with an image model, and
+# the voices and music are AI-made. Read both before going live.
+
+[[piece]]
+key = "#901"
+name = "How many planets?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many planets did she draw? Count alo"
+ai_reply = "Good question! The chalkboard and the drawing are real. The sketched room around them, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#902"
+name = "Make ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many petals on these two flowers, al"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#903"
+name = "Spot the double"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many spots does this ladybug have? C"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#904"
+name = "Take away"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many apples are on the tree? Count t"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#905"
+name = "Longest to shortest"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Which fish is the longest? And which one"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#906"
+name = "One more"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many ducks are on the pond? Count al"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#907"
+name = "Fair share"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Six cookies, two plates. Can you share t"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#908"
+name = "Which is more?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Red cars or blue cars: which row has mor"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#909"
+name = "Two more"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many stars are in this night sky? Co"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#910"
+name = "Which is more?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Which snowman has more buttons? Count ea"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#911"
+name = "Count by twos"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many mittens are on the line? Try co"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#912"
+name = "Doubles"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many ornaments are on this tree, alt"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#913"
+name = "Make ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Two piles of presents. How many are ther"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#914"
+name = "Take away"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many balloons are left after two flo"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#915"
+name = "Count to ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Count the fireworks! How many light up t"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#916"
+name = "Make ten"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Six dots in a ten frame. How many more m"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#917"
+name = "One more"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many circles long is this caterpilla"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#918"
+name = "One for each"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is there a flower for every bee? Count t"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#919"
+name = "Tallest"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Which block tower is the tallest? Point"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#920"
+name = "Count on"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many dots on both dice? Start at the"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#921"
+name = "Find the shape"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many triangles can you find in this"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#922"
+name = "Take away"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How many birds are on the wire? Then thr"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#923"
+name = "Ten and more"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "A full ten frame and three more dots. Ho"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#924"
+name = "Patterns"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Circle, triangle, circle, triangle... wh"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#925"
+name = "Measure it"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "How long is this snake? Count the blocks"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#926"
+name = "Find the shape"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "What shapes make up this house? Look clo"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#927"
+name = "Halves"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Is this pizza cut in half? Count the top"
+ai_reply = "Good question! The chalk picture is drawn for this Reel, not filmed. The sketched room, the voices and the music are AI-made, which is why it has the AI label."
+
+# The growth team's Reels, #1001 on (social repo, instagram/growth-team/RUNBOOK.md): new numbers or a new myth inside the evening
+# series' templates, each scheduled through a lineup review the owner approved.
+
+[[piece]]
+key = "#1001"
+name = "Quick look"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Can you see six without counting to six?"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#1002"
+name = "Special toys for math?"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Do you need special toys to teach math a"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
+
+[[piece]]
+key = "#1003"
+name = "Under the cup"
+type = "reel"
+ai = true
+voice = "ai"
+caption_start = "Five crackers, and just one stays on the"
+ai_reply = "Good question! The pictures are drawn from our own game art, and the voice and music are AI-made, which is why it has the AI label."
