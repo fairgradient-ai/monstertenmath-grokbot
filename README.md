@@ -1,15 +1,70 @@
-# Monster Ten Social Bot
+<p align="center">
+  <a href="https://www.instagram.com/monstertenmath/"><img src=".github/readme/banner.png" alt="Monster Ten social bot: answers comments, finds creators, reports what works" width="100%"></a>
+</p>
 
-A Grok Bot that works as [@monstertenmath](https://www.instagram.com/monstertenmath/)'s social agency under the
-launch pack's rules: it answers every comment and DM, finds the right creators and writes them Collab emails,
-likes, comments and follows in the Grok browser with human pauses (one tap per session), keeps Buffer in step
-with the approved calendar, and reports what works: insights, ads worth promoting, content pillars and posting
-times. It learns how you answer, and asks you only about a child's health, legal, rivals, complaints and money.
+<p align="center">
+  <a href="https://github.com/fairgradient-ai/monstertenmath-grokbot/actions/workflows/ci.yml"><img src="https://github.com/fairgradient-ai/monstertenmath-grokbot/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <img src="https://img.shields.io/badge/Python-3.11+-22306A?logo=python&logoColor=white" alt="Python 3.11+">
+  <img src="https://img.shields.io/badge/dependencies-standard_library_only-13A08C" alt="Standard library only">
+  <img src="https://img.shields.io/badge/tests-407_offline-FFC233" alt="407 offline tests">
+  <img src="https://img.shields.io/badge/lint-ruff-2B2420?logo=ruff&logoColor=white" alt="ruff">
+</p>
+
+<p align="center">
+  <a href="DESIGN.md">Design</a> ·
+  <a href="SETUP.md">Setup</a> ·
+  <a href="routines/autoreview.txt">What needs your tap</a> ·
+  <a href="knowledge/rules.toml">The check in code</a> ·
+  <a href="https://github.com/fairgradient-ai/monstertenmath_social">Social repo</a>
+</p>
+
+A Grok Bot that works as [@monstertenmath](https://www.instagram.com/monstertenmath/)'s social agency under the launch
+pack's rules: it **answers every comment and DM**, **finds the right creators** and writes them Collab emails, likes,
+comments and follows in the Grok browser with human pauses, **keeps Buffer in step** with the approved calendar, and
+**reports what works**: insights, ads worth promoting, content pillars and posting times. It learns how you answer, and
+asks you only about a child's health, legal, rivals, complaints and money.
 
 Built from the launch pack in [fairgradient-ai/monstertenmath_social](https://github.com/fairgradient-ai/monstertenmath_social)
 (`instagram/README.md` sections 6–7, `instagram/growth-plan.md` 6.2 and 6.5), in the shape of
 [kapadias/pickletime-grokbot](https://github.com/kapadias/pickletime-grokbot). The design and the reasons are in
 [`DESIGN.md`](DESIGN.md); setting it up is [`SETUP.md`](SETUP.md).
+
+## Contents
+
+- [How a comment is answered](#how-a-comment-is-answered)
+- [What it does](#what-it-does)
+- [Say these](#say-these)
+- [What protects you](#what-protects-you)
+- [How it fits together](#how-it-fits-together)
+- [Layout](#layout)
+- [Development](#development)
+
+## How a comment is answered
+
+```mermaid
+flowchart LR
+    c(["A comment or DM<br/>on @monstertenmath"]):::navy --> ledger{{"Answered before?<br/>SQLite ledger"}}:::cream
+    ledger -- "yes" --> stop1["Nothing<br/>(once only)"]:::grey
+    ledger -- "no" --> triage["Sort it<br/>triage.py"]:::sun
+    triage -- "canned: '3!', price,<br/>cancel, thanks" --> pack["The pack's answer<br/>for today's phase"]:::cream
+    triage -- "new question" --> draft["A reply in the<br/>brand voice"]:::cream
+    triage -- "health, legal, money,<br/>rivals, complaints" --> ask["A holding line or a<br/>careful draft; you decide"]:::coral
+    triage -- "spam" --> spam["Listed: 'hide 16'"]:::grey
+    pack --> check{{"30-second check<br/>in code (rules.toml)"}}:::teal
+    draft --> check
+    ask --> check
+    check -- "passes, under the caps" --> post(["Posted"]):::navy
+    check -- "fails" --> stop2["Nothing posted"]:::grey
+
+    classDef navy fill:#22306A,stroke:#2B2420,color:#FFFFFF,stroke-width:2px
+    classDef cream fill:#FFFCF7,stroke:#2B2420,color:#2B2420,stroke-width:2px
+    classDef sun fill:#FFC233,stroke:#2B2420,color:#2B2420,stroke-width:2px
+    classDef teal fill:#13A08C,stroke:#2B2420,color:#FFFFFF,stroke-width:2px
+    classDef coral fill:#F2542D,stroke:#2B2420,color:#FFFFFF,stroke-width:2px
+    classDef grey fill:#F2EEE8,stroke:#2B2420,color:#2B2420,stroke-width:1px,stroke-dasharray:4 3
+```
+
+In rehearsal (where it starts) the "Posted" step only shows what it would say.
 
 ## What it does
 
@@ -89,6 +144,27 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
   outreach emails a day. A creator who says no is never written to again.
 - **Secrets** stay on the secret card and are never printed.
 
+## How it fits together
+
+```mermaid
+flowchart TB
+    you(["You<br/>in the Grok chat"]):::navy -- "say: inbox, send 14, engage S7…" --> grok["Grok Bot<br/>agents/, skills/, routines/"]:::sun
+    grok -- "scripts/run.sh" --> engine["The engine<br/>src/monsterbot"]:::teal
+    know[("knowledge/<br/>rules, replies, pieces")]:::cream --> engine
+    engine <--> ig[("Instagram<br/>comments, DMs, insights")]:::cream
+    engine <--> buffer[("Buffer<br/>the approved calendar")]:::cream
+    engine --> mail[("Mailbox<br/>Collab emails")]:::cream
+    grok -- "browser sessions" --> feed["Likes, comments,<br/>follows, paced"]:::cream
+    social["monstertenmath_social<br/>main branch"]:::coral -- "sync_social.py" --> know
+    social -- "merged posts" --> buffer
+
+    classDef navy fill:#22306A,stroke:#2B2420,color:#FFFFFF,stroke-width:2px
+    classDef cream fill:#FFFCF7,stroke:#2B2420,color:#2B2420,stroke-width:2px
+    classDef sun fill:#FFC233,stroke:#2B2420,color:#2B2420,stroke-width:2px
+    classDef teal fill:#13A08C,stroke:#2B2420,color:#FFFFFF,stroke-width:2px
+    classDef coral fill:#F2542D,stroke:#2B2420,color:#FFFFFF,stroke-width:2px
+```
+
 ## Layout
 
 | Path                          | What                                                                      |
@@ -100,25 +176,30 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 | `src/monsterbot/`             | The engine: Python 3.11+, standard library only                           |
 | `scripts/`                    | `run.sh` (the only entry point), `install.sh`, `env.sh`, `sync_social.py` |
 | `config/config.template.toml` | The desk's config: account, caps, DMs, scout, outreach, pace line         |
-| `tests/`                      | 175 offline tests against a fake Instagram, Graph and mailbox             |
+| `tests/`                      | 407 offline tests against a fake Instagram, Graph and mailbox             |
 
 ## Development
 
+> [!NOTE]
+> The QA team (in the monstertenmath repo, `qa/`) runs this repo's `pytest` every night and, weekly, the bot in
+> rehearsal only.
+
 ```bash
+# Tools (the engine itself needs nothing beyond Python 3.11+)
 pip install pytest ruff
-```
 
-```bash
+# Tests and lint
 pytest -q && ruff check src tests scripts
-```
 
-```bash
+# A local desk against the fake Instagram
 MT_DESK=/tmp/desk MT_CHANNEL=fake:src/monsterbot/fixtures/fake_instagram.json bash scripts/install.sh
-```
 
-```bash
+# One sweep at a fixed time, in rehearsal
 MT_DESK=/tmp/desk MT_CHANNEL=fake:src/monsterbot/fixtures/fake_instagram.json MT_NOW=2026-11-20T02:00:00+00:00 bash scripts/run.sh sweep
 ```
 
-Changes arrive by pull request into `main`. A change to replies or rules is a change to what the account says:
-keep it in step with the launch pack.
+Changes arrive by pull request into `main` (a merged PR means **Done** in Linear, Area label: bot). Every branch but
+`main` is deleted once merged. A change to replies or rules is a change to what the account says: keep it in step with
+the launch pack.
+
+<p align="center"><sub>© 2026 fairgradient.ai LLC · <a href="https://monstertenmath.com">monstertenmath.com</a> · <a href="https://www.instagram.com/monstertenmath/">@monstertenmath</a></sub></p>
