@@ -541,11 +541,11 @@ def _run(args, desk: Desk) -> int:
 
 def pricing_note(pricing: str, phase: str) -> str:
     if pricing == "standard":
-        return " Price answers give $79.99 a year or $12.99 a month, and never name the founding price."
+        return " Price answers give $59.99 a year or $7.99 a month, and never name the launch offer."
     if phase == "open":
         return (
-            " Price answers give the founding price, $59.99 a year or $9.99 a month for the first 500 families,"
-            " with its terms whole, and the launch offer: $29.99 for the first year on a yearly plan started by Dec 31."
+            " Price answers give $59.99 a year or $7.99 a month, and the launch offer with its terms whole:"
+            " the first 500 families pay $29.99 for the first year of a yearly plan, then $59.99 a year."
         )
     return " The founding price starts with the open phase; until then the answers stay as they are."
 

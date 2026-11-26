@@ -6,7 +6,7 @@
   <a href="https://github.com/fairgradient-ai/monstertenmath-grokbot/actions/workflows/ci.yml"><img src="https://github.com/fairgradient-ai/monstertenmath-grokbot/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <img src="https://img.shields.io/badge/Python-3.11+-22306A?logo=python&logoColor=white" alt="Python 3.11+">
   <img src="https://img.shields.io/badge/dependencies-standard_library_only-13A08C" alt="Standard library only">
-  <img src="https://img.shields.io/badge/tests-409_offline-FFC233" alt="409 offline tests">
+  <img src="https://img.shields.io/badge/tests-407_offline-FFC233" alt="407 offline tests">
   <img src="https://img.shields.io/badge/lint-ruff-2B2420?logo=ruff&logoColor=white" alt="ruff">
 </p>
 
@@ -115,7 +115,7 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 | "stats"                    | Followers against the pace line, and the newest posts     | no        |
 | "we're open"               | Switches the answers to the launch phase (after the gate) | **yes**   |
 | "founding price on"        | Price answers give the founding price, its terms whole    | **yes**   |
-| "founding price closed"    | Back to the standard price; founding questions come to you | **yes**  |
+| "founding price closed"    | Back to $59.99 / $7.99; founding questions come to you   | **yes**   |
 | "go live" / "stop posting" | Replies post by themselves / nothing posts                | **yes**   |
 | "engage S7"                | Runs browser session S7: likes, comments, follows, paced  | **yes**   |
 | "engage now"               | Plans a session now and asks for "engage S<n>"            | no        |
@@ -133,7 +133,7 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 - **The check in code.** Outcome promises, "test" or "screening", countdowns, hashtags, rivals, links before
   launch, half the trial terms, a store the app isn't in: any of these and nothing is posted.
 - **The founding price only while it's on.** It stays off until you've seen it on the site's ticket and said
-  "founding price on". Then every mention carries its terms (the first 500 families, theirs for good), and no
+  "founding price on". Then every mention carries its terms (the first 500 families), and no
   reply ever says how many places are left. Once you say it's closed, the bot never names it again.
 - **Your tap where it matters.** Sensitive replies, Collab emails (they offer money), hiding, the phase and the
   mode go through Grok's Ask-first cards ([`routines/autoreview.txt`](routines/autoreview.txt)), and the
@@ -176,7 +176,7 @@ flowchart TB
 | `src/monsterbot/`             | The engine: Python 3.11+, standard library only                           |
 | `scripts/`                    | `run.sh` (the only entry point), `install.sh`, `env.sh`, `sync_social.py` |
 | `config/config.template.toml` | The desk's config: account, caps, DMs, scout, outreach, pace line         |
-| `tests/`                      | 409 offline tests against a fake Instagram, Graph and mailbox             |
+| `tests/`                      | 407 offline tests against a fake Instagram, Graph and mailbox             |
 
 ## Development
 
