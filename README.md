@@ -60,7 +60,7 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 | "stats"                    | Followers against the pace line, and the newest posts     | no        |
 | "we're open"               | Switches the answers to the launch phase (after the gate) | **yes**   |
 | "founding price on"        | Price answers give the founding price, its terms whole    | **yes**   |
-| "founding price closed"    | Back to $79.99 / $12.99; founding questions come to you   | **yes**   |
+| "founding price closed"    | Back to $59.99 / $7.99; founding questions come to you   | **yes**   |
 | "go live" / "stop posting" | Replies post by themselves / nothing posts                | **yes**   |
 | "engage S7"                | Runs browser session S7: likes, comments, follows, paced  | **yes**   |
 | "engage now"               | Plans a session now and asks for "engage S<n>"            | no        |
@@ -78,7 +78,7 @@ caption and email passes the pack's 30-second check in code first ([`knowledge/r
 - **The check in code.** Outcome promises, "test" or "screening", countdowns, hashtags, rivals, links before
   launch, half the trial terms, a store the app isn't in: any of these and nothing is posted.
 - **The founding price only while it's on.** It stays off until you've seen it on the site's ticket and said
-  "founding price on". Then every mention carries its terms (the first 500 families, theirs for good), and no
+  "founding price on". Then every mention carries its terms (the first 500 families), and no
   reply ever says how many places are left. Once you say it's closed, the bot never names it again.
 - **Your tap where it matters.** Sensitive replies, Collab emails (they offer money), hiding, the phase and the
   mode go through Grok's Ask-first cards ([`routines/autoreview.txt`](routines/autoreview.txt)), and the

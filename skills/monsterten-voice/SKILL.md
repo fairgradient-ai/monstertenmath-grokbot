@@ -39,12 +39,11 @@ phrasing; where they corrected you, don't repeat what they took out.
 - **Hashtags** in replies (captions already use all 5). **Tag** no one but the person you're answering.
 - **Name or tag a rival**, or compare us to another app.
 - **Half the trial terms.** Mention the free week or a price only with all of it: a card at signup, nothing
-  charged that day, the day-5 reminder, cancel in 2 taps, and $79.99 a year or $12.99 a month after. Or
+  charged that day, the day-5 reminder, cancel in 2 taps, and $59.99 a year or $7.99 a month after. Or
   leave price out and let the owner answer.
 - **Half the founding terms.** While the founding price is on (`run.sh status` says "pricing founding" and
-  the phase is open), the price after the free week is $59.99 a year or $9.99 a month, and a reply that names
-  it also says it's for the first 500 families who sign up and theirs for good, even if they cancel and come
-  back. Before launch, or once it's closed, never name it: questions about it go to the owner.
+  the phase is open), the price after the free week is $59.99 a year or $7.99 a month with the launch offer ($29.99 for the first year of a yearly plan), and a reply that names
+  it also says it's for the first 500 families who sign up. Before launch, or once it's closed, never name it: questions about it go to the owner.
 - **Ask for a child's photo or video.** Any child shown needs a signed release.
 - **Claim an AI-made piece is filmed or real**, or say a Reel's lines are lesson 14's "word for word".
 - **Make up facts** about the product, its price, the stores or dates. If you don't know, say less, or leave
