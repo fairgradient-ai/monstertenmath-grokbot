@@ -55,7 +55,11 @@ def test_cancel_texts_carry_every_trial_term(kn, field):
     for term in ("7-day free trial", "card at signup", "nothing is charged that day", "day 5", "cancel in 2 taps"):
         assert term in text
     if field == "open_founding":
-        for term in ("$59.99 a year or $7.99 a month", "first 500 families", "$29.99 for the first year of a yearly plan"):
+        for term in (
+            "$59.99 a year or $7.99 a month",
+            "first 500 families",
+            "$29.99 for the first year of a yearly plan",
+        ):
             assert term in text
     else:
         assert "$59.99 a year or $7.99 a month" in text
