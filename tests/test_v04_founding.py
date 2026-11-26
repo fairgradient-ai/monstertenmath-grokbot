@@ -1,5 +1,5 @@
-"""v0.4: the founding price ($59.99 a year or $9.99 a month for the first 500 families, theirs for good), on
-from launch day only while the owner has it on, and never a count of places left."""
+"""v0.4: the launch offer for the founding families (the first 500 pay $29.99 for the first year of a yearly plan,
+then $59.99; FAI-933), on from launch day only while the owner has it on, and never a count of places left."""
 
 import pytest
 
@@ -16,13 +16,12 @@ FOUNDING = Context("open", pricing="founding")
 
 FOUNDING_OK = (
     "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. "
-    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $9.99 a month. "
-    "That's our founding price for the first 500 families who sign up, and it's yours for good, even if you "
-    "cancel and come back later. After the first 500, it's $79.99 a year or $12.99 a month."
+    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $7.99 a month. "
+    "Our first 500 families who sign up pay $29.99 for the first year of a yearly plan, then $59.99 a year."
 )
 STANDARD_OK = (
     "The check is free. Then a 7-day free trial: you add a card at signup and nothing is charged that day. "
-    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $79.99 a year or $12.99 a month."
+    "We remind you on day 5, and you can cancel in 2 taps. After the 7 days it's $59.99 a year or $7.99 a month."
 )
 
 
@@ -79,15 +78,13 @@ def test_founding_text_passes_only_while_founding_is_in_force(kn):
 
 def test_standard_text_fails_while_founding(kn):
     assert check(STANDARD_OK, OPEN, kn.rules) == []
-    assert "trial-terms" in ids(STANDARD_OK, FOUNDING, kn)  # a new family would pay $59.99, not $79.99
+    assert "trial-terms" in ids(STANDARD_OK, FOUNDING, kn)  # a new family would get the launch offer, unsaid
 
 
 @pytest.mark.parametrize(
     "drop, keep",
     [
-        ("for the first 500 families who sign up", "for families"),
-        ("it's yours for good, even if you cancel and come back later", "it's yours"),
-        ("$59.99 a year", "$59.99 yearly"),
+        ("Our first 500 families who sign up", "Families"),
     ],
 )
 def test_founding_terms_whole_or_not_at_all(kn, drop, keep):
@@ -100,9 +97,9 @@ def test_founding_price_named_without_a_dollar_still_needs_its_terms(kn):
 
 
 def test_founding_prices_are_real_only_while_founding(kn):
-    assert "price" in ids(STANDARD_OK.replace("$12.99 a month", "$9.99 a month"), OPEN, kn)
+    assert "price" in ids(STANDARD_OK + " Or $29.99 for the first year.", OPEN, kn)
     assert "price" not in ids(FOUNDING_OK, FOUNDING, kn)
-    assert "price" in ids(FOUNDING_OK.replace("$9.99", "$8.99"), FOUNDING, kn)
+    assert "price" in ids(FOUNDING_OK.replace("$7.99", "$8.99"), FOUNDING, kn)
 
 
 @pytest.mark.parametrize(
@@ -200,4 +197,4 @@ def test_sweep_quotes_the_founding_price_only_when_on(make_engine):
     engine2, fake2 = make_engine(phase="open", mode="live", cfg=Config(first_comments=False))
     engine2.sweep()
     sent2 = {p["parent"]: p["text"] for p in fake2.posted if p.get("parent")}
-    assert "$79.99 a year" in sent2["c4"] and "founding" not in sent2["c4"]
+    assert "$59.99 a year" in sent2["c4"] and "founding" not in sent2["c4"]

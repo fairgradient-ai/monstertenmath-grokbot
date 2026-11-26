@@ -49,11 +49,11 @@ def test_draft_from_heredoc_keeps_dollar_signs_and_quotes(run):
     text = (
         "Our lessons are made for 4 to 6. If you start the free week later, you add a card at signup and "
         "nothing is charged that day. We remind you on day 5, you can cancel in 2 taps, and after the 7 days "
-        "it's $79.99 a year or $12.99 a month.\n"
+        "it's $59.99 a year or $7.99 a month.\n"
     )
     code, out = run("draft", n, stdin=text)
     assert code == 0, out
-    assert "passes the check" in out and "$79.99" in out
+    assert "passes the check" in out and "$59.99" in out
 
 
 def test_send_needs_the_tap_and_rehearsal_posts_nothing(run, tmp_path):
